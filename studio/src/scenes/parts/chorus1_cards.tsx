@@ -3,7 +3,7 @@ import {C, F} from '../../theme';
 import {clamp, ease, lerp} from '../../lib/anim';
 import {beatPulse} from '../../lib/audio';
 import {Flower} from '../../components/Flower';
-import {Clawd, IArtifact, ICode} from '../../components/Icons';
+import {Gemmy, IArtifact, ICode} from '../../components/Icons';
 
 // ------------------------------------------------------------------------------------------------
 // Pop-up-book artifact cards (code, chart, poem, svg flower, mini-game) for chorus 1 "STIMULATIONS"
@@ -130,7 +130,7 @@ const FlowerBody: React.FC<{t: number; at: number}> = ({t, at}) => {
 };
 
 const GameBody: React.FC<{t: number; at: number}> = ({t, at}) => {
-  // Clawd hops over sliding blocks; score ticks
+  // Gemmy hops over sliding blocks; score ticks
   const ground = 168;
   const speed = 260;
   const local = Math.max(0, t - at);
@@ -148,7 +148,7 @@ const GameBody: React.FC<{t: number; at: number}> = ({t, at}) => {
       ))}
       <div style={{position: 'absolute', left: blockX, top: ground - 34, width: 26, height: 34, background: C.green, borderRadius: 4}} />
       <div style={{position: 'absolute', left: 64, top: ground - 50 - jump}}>
-        <Clawd cell={4.5} walk={local * 6} arms={jump > 30 ? 1 : 0} />
+        <Gemmy cell={3.8} walk={local * 6} arms={jump > 30 ? 1 : 0} />
       </div>
     </div>
   );

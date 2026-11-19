@@ -153,50 +153,77 @@ export const AntigravityLogo: React.FC<{
   );
 };
 
-/** Clawd (GemiBot) — legacy pixel mascot helper (16x10 grid) */
-export const CLAWD_GRID = [
-  '.......##.......',
-  '......####......',
-  '...##########...',
-  '..############..',
-  '..##.######.##..',
-  '################',
-  '..############..',
-  '...##########...',
-  '....##....##....',
-  '...##......##...',
+/** Gemmy — Google Gemini Star pixel mascot (15x13 grid, 4-point Gemini spark with running feet) */
+export const GEMMY_GRID = [
+  '.......T.......',
+  '.......T.......',
+  '......TTB......',
+  '......TBB......',
+  '.....TWBBV.....',
+  '...TTEBBBEIV...',
+  'TTTBBEEBBEIVVVV',
+  '...TBBBBIIVV...',
+  '.....BBIIV.....',
+  '......BIV......',
+  '.....K.I.K.....',
+  '.....K...K.....',
+  '.....KK..KK....',
 ];
-export const Clawd: React.FC<{cell?: number; color?: string; eye?: string; walk?: number; arms?: number; blink?: boolean; style?: React.CSSProperties}> = ({
+
+const GEMMY_PAL: Record<string, string> = {
+  T: '#0EA5E9', // sky cyan highlight
+  B: '#4285F4', // Google Gemini blue
+  I: '#5B6EF5', // Gemini cobalt midtone
+  V: '#8B5CF6', // Gemini violet bevel
+  W: '#FFFFFF', // starlight glint
+  E: '#0F172A', // eyes
+  K: '#1E3A8A', // sapphire boots
+};
+
+export const Gemmy: React.FC<{cell?: number; color?: string; eye?: string; walk?: number; arms?: number; blink?: boolean; style?: React.CSSProperties}> = ({
   cell = 8,
-  color = '#5B6EF5',
-  eye = '#000',
+  color,
+  eye = '#0F172A',
   walk = 0,
   arms = 0,
   blink = false,
   style,
 }) => {
   const rects: React.ReactNode[] = [];
-  CLAWD_GRID.forEach((row, y) => {
+  GEMMY_GRID.forEach((row, y) => {
     [...row].forEach((ch, x) => {
-      const isEye = (x === 4 || x === 11) && y === 4;
-      if (ch === '#') {
-        let dy = 0;
-        if (y >= 8) {
-          // legs alternate with walk phase
-          const legPair = x < 8 ? 0 : 1;
-          dy = Math.round(Math.sin(walk * Math.PI * 2 + legPair * Math.PI) * 0.6);
-        }
-        if ((x <= 1 || x >= 14) && arms) dy -= arms;
-        rects.push(<rect key={`${x}-${y}`} x={x * cell} y={(y + dy) * cell} width={cell + 0.4} height={cell + 0.4} fill={color} />);
-      } else if (isEye) {
+      if (ch === '.') return;
+      if (ch === 'E') {
+        // 2-px tall eyes (r05..r06); collapse to top-bottom center line during blink
+        if (blink && y === 5) return;
         rects.push(
-          <rect key={`e${x}-${y}`} x={x * cell} y={y * cell + (blink ? cell * 0.5 : 0)} width={cell + 0.4} height={blink ? cell * 0.4 : cell + 0.4} fill={eye} />,
+          <rect
+            key={`e${x}-${y}`}
+            x={x * cell}
+            y={y * cell + (blink ? cell * 0.45 : 0)}
+            width={cell + 0.4}
+            height={blink ? cell * 0.45 : cell + 0.4}
+            fill={eye}
+          />,
         );
+        return;
       }
+      let dy = 0;
+      if (y >= 10 && ch === 'K') {
+        const legPair = x < 7 ? 0 : 1;
+        dy = arms > 0 ? -0.65 : Math.round(Math.sin(walk * Math.PI * 2 + legPair * Math.PI) * 0.65);
+      } else if ((x <= 1 || x >= 13) && y === 6 && arms) {
+        // Horizontal star wingtips lift upward smoothly on hops/jumps without disconnecting
+        dy -= arms * 0.55;
+      } else if ((x === 2 || x === 12) && y === 6 && arms) {
+        dy -= arms * 0.25;
+      }
+      const fill = ch === 'W' ? GEMMY_PAL.W : color ?? GEMMY_PAL[ch] ?? GEMMY_PAL.I;
+      rects.push(<rect key={`${x}-${y}`} x={x * cell} y={(y + dy) * cell} width={cell + 0.4} height={cell + 0.4} fill={fill} />);
     });
   });
   return (
-    <svg width={16 * cell} height={11 * cell} viewBox={`0 ${-cell} ${16 * cell} ${11 * cell}`} style={style} shapeRendering="crispEdges">
+    <svg width={15 * cell} height={14 * cell} viewBox={`0 ${-cell} ${15 * cell} ${14 * cell}`} style={style} shapeRendering="crispEdges">
       {rects}
     </svg>
   );

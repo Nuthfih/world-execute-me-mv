@@ -5,7 +5,7 @@ import { clamp, ease, lerp, mix, pulse, rand, seg, springy } from '../../lib/ani
 import { beatPulse } from '../../lib/audio';
 import { Flower, PETAL_ANG } from '../../components/Flower';
 import { appTheme } from '../../components/ClaudeApp';
-import { Clawd, IArrowUp, IChevron, ICode, IMic, IPlus } from '../../components/Icons';
+import { Gemmy, IArrowUp, IChevron, ICode, IMic, IPlus } from '../../components/Icons';
 import { Ring } from '../../components/FX';
 import { Cap } from './pre2_common';
 
@@ -215,12 +215,12 @@ const TaskMontage: React.FC<{ t: number }> = ({ t }) => {
           <Ring key={'r' + i} x={d.x} y={d.y} t={t} at={d.at + 0.06} r0={120} r1={330} color={C.clayLight} width={4} dur={0.35} />
         ))}
       </AbsoluteFill>
-      {/* Clawd on the run */}
-      <div style={{ position: 'absolute', left: clawdX - 88, top: 818 - hop, opacity: 1 - exitK }}>
-        <Clawd cell={11} walk={t * 4.3} arms={Math.sin(t * 25) > 0 ? 1 : 0} />
-        {/* speed lines */}
-        {[0, 1, 2].map((k) => (
-          <div key={k} style={{ position: 'absolute', left: -60 - k * 18, top: 26 + k * 20, width: 46, height: 5, borderRadius: 3, background: C.clayLight, opacity: 0.7 - k * 0.2 }} />
+      {/* Gemmy on the run */}
+      <div style={{ position: 'absolute', left: clawdX - 75, top: 794 - hop, opacity: 1 - exitK }}>
+        <Gemmy cell={10} walk={t * 4.3} arms={Math.sin(t * 25) > 0 ? 1 : 0} />
+        {/* Gemini cosmic speed streaks */}
+        {['#0EA5E9', '#5B6EF5', '#8B5CF6'].map((col, k) => (
+          <div key={k} style={{ position: 'absolute', left: -62 - k * 18, top: 44 + k * 20, width: 48, height: 5, borderRadius: 3, background: col, opacity: 0.75 - k * 0.18 }} />
         ))}
       </div>
       <Cap t={t} text="And then do whatever" color={C.ink} hl={C.clay} outAt={93.72} />
