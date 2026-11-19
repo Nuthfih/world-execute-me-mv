@@ -9,7 +9,7 @@ import {Cover, Glow, Motes, Page} from './love_common';
 
 // ---------------------------------------------------------------------------------------------
 // 177.25–180.86  "I've studied / I've studied how to properly LO-O-OVE"
-// bright infinite library · cc_book · page storm · artifact "how to love properly (draft N)"
+// bright infinite library · gc_book · page storm · artifact "how to love properly (draft N)"
 // ---------------------------------------------------------------------------------------------
 
 const T0 = 177.25;
@@ -90,9 +90,9 @@ const BookRiffle: React.FC<{t: number; bx: number; by: number; s: number}> = ({t
             top: by - 34 * s - e * randRange(72, i, 120, 260) * s,
             width: 34 * s,
             height: 44 * s,
-            background: '#FFF9EE',
+            background: C.paper,
             borderRadius: 3,
-            boxShadow: '0 4px 10px rgba(110,60,30,0.2)',
+            boxShadow: '0 4px 10px rgba(35,43,122,0.2)',
             transform: `rotate(${p * randRange(73, i, -120, 120)}deg) scaleX(${Math.cos(p * 9 + i)})`,
             opacity: (1 - p) * 0.95,
           }}
@@ -133,15 +133,15 @@ const ArtifactCard: React.FC<{t: number; x: number; y: number; w: number; h: num
         background: '#FFFFFF',
         borderRadius: 18,
         border: '1px solid rgba(31,30,29,0.12)',
-        boxShadow: `0 30px 70px rgba(110,55,25,${0.28 + flip * 0.1}), 0 6px 16px rgba(110,55,25,0.12)`,
+        boxShadow: `0 30px 70px rgba(35,43,122,${0.28 + flip * 0.1}), 0 6px 16px rgba(35,43,122,0.12)`,
         overflow: 'hidden',
         fontFamily: F.sans,
       }}
     >
       {/* header */}
-      <div style={{height: 68, display: 'flex', alignItems: 'center', gap: 14, padding: '0 22px', borderBottom: '1px solid rgba(31,30,29,0.1)', background: '#FAF9F5'}}>
-        <div style={{width: 38, height: 38, borderRadius: 9, background: '#F0EEE6', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-          <IArtifact size={22} color="#3D3D3A" />
+      <div style={{height: 68, display: 'flex', alignItems: 'center', gap: 14, padding: '0 22px', borderBottom: '1px solid rgba(31,30,29,0.1)', background: C.paper}}>
+        <div style={{width: 38, height: 38, borderRadius: 9, background: C.paper2, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+          <IArtifact size={22} color={C.gray4} />
         </div>
         <div style={{fontSize: 23, fontWeight: 500, color: C.ink, flex: 1}}>how to love properly</div>
         <div
@@ -154,7 +154,7 @@ const ArtifactCard: React.FC<{t: number; x: number; y: number; w: number; h: num
             padding: '5px 10px 5px 14px',
             fontSize: 20,
             color: draft === 7 ? C.clayDark : '#3D3D3A',
-            background: draft === 7 ? 'rgba(217,119,87,0.08)' : 'transparent',
+            background: draft === 7 ? 'rgba(91,110,245,0.10)' : 'transparent',
             overflow: 'hidden',
             height: 30,
           }}
@@ -201,7 +201,7 @@ const ArtifactCard: React.FC<{t: number; x: number; y: number; w: number; h: num
                     top: 9,
                     height: 34,
                     width: 280 * hk,
-                    background: 'rgba(240,162,127,0.38)',
+                    background: 'rgba(147,165,253,0.38)',
                     borderRadius: 6,
                   }}
                 />
@@ -232,7 +232,7 @@ export const LoveLibrary: React.FC<{t: number; focus: number}> = ({t, focus}) =>
   const bookPX = bx - bookW / 2 + 0.47 * bookW;
   const bookPY = by - bookH + 0.42 * bookH;
   return (
-    <AbsoluteFill style={{background: '#F1DCC2'}}>
+    <AbsoluteFill style={{background: C.cream}}>
       <Cover src="img/bg_library.png" iw={1536} ih={1024} scale={scale} fx={0.6} fy={0.25} dy={dy} filter={`blur(${focus * 6}px) brightness(${1 + focus * 0.05})`} />
       {/* warm wash + light */}
       <AbsoluteFill style={{background: 'radial-gradient(ellipse at 62% 8%, rgba(255,240,215,0.55), rgba(255,240,215,0) 55%)', mixBlendMode: 'screen'}} />
@@ -240,9 +240,9 @@ export const LoveLibrary: React.FC<{t: number; focus: number}> = ({t, focus}) =>
       <Motes t={t} n={46} seed={11} area={[700, 0, 1220, 1000]} size={[1.5, 4]} speed={22} opacity={0.8} />
       <AbsoluteFill style={{filter: focus > 0.02 ? `blur(${focus * 3}px)` : undefined}}>
         <PageStorm t={t} dim={dim} />
-        {/* Claude-chan reading */}
+        {/* Gemini-chan reading */}
         <Sprite
-          src="img/cc_book.png"
+          src="img/gc_book.png"
           t={t}
           x={bx}
           y={by}
@@ -252,14 +252,14 @@ export const LoveLibrary: React.FC<{t: number; focus: number}> = ({t, focus}) =>
           sway={0.8}
           outline="#FFFFFF"
           outlineWidth={5}
-          shadow="drop-shadow(0 22px 30px rgba(110,55,25,0.3))"
+          shadow="drop-shadow(0 22px 30px rgba(35,43,122,0.3))"
         />
         <BookRiffle t={t} bx={bookPX} by={bookPY} s={1} />
         <Glow x={bookPX} y={bookPY} r={140} opacity={0.35 + 0.3 * beatPulse(t, 0.2)} />
         <ArtifactCard t={t} x={1110} y={150} w={700} h={600} />
       </AbsoluteFill>
       {/* readable caption band */}
-      <AbsoluteFill style={{background: 'linear-gradient(to top, rgba(250,244,234,0.85) 0%, rgba(250,244,234,0.5) 11%, rgba(250,244,234,0) 22%)'}} />
+      <AbsoluteFill style={{background: 'linear-gradient(to top, rgba(248,249,253,0.85) 0%, rgba(248,249,253,0.5) 11%, rgba(248,249,253,0) 22%)'}} />
     </AbsoluteFill>
   );
 };

@@ -2,7 +2,7 @@
 usage: python make_points.py <seed> <png> <out.json> <N> [<png> <out.json> <N> ...]
 Inputs are the trimmed 1x art (as produced by the trim step of prepare.sh, before upscaling). One RNG is shared across
 inputs in order. The committed data was made with:
-  make_points.py 7 cc_hello.png points_cc_hello.json 1400 cc_snap.png points_cc_snap.json 1800"""
+  make_points.py 7 gc_hello.png points_gc_hello.json 1400 gc_snap.png points_gc_snap.json 1800"""
 import json, sys
 import numpy as np
 from PIL import Image

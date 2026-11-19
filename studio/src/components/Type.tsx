@@ -104,6 +104,7 @@ export const Keyword: React.FC<KeywordProps> = ({
       : outMode === 'shrink'
       ? {transform: `scale(${1 - outK * 0.6})`, opacity: 1 - outK}
       : {opacity: 1 - outK};
+  const ls = mode === 'spaced' ? letterSpacing + 0.5 * (1 - ease.outCubic(clamp(dt / 0.8))) : letterSpacing;
   const letters = chars.map((ch, i) => {
     let o = 1, ty = 0, sc = 1, rot = 0;
     const li = clamp((dt - (i / n) * D) / 0.12);
@@ -127,7 +128,8 @@ export const Keyword: React.FC<KeywordProps> = ({
         key={i}
         style={{
           display: 'inline-block',
-          width: isF ? '0.62em' : undefined,
+          letterSpacing: isF ? '0px' : undefined,
+          paddingRight: isF ? `${ls}em` : undefined,
           opacity: o,
           transform: `translateY(${ty}px) scale(${sc}) rotate(${rot}deg)`,
           position: 'relative',
@@ -135,20 +137,23 @@ export const Keyword: React.FC<KeywordProps> = ({
         }}
       >
         {isF ? (
-          <span style={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -47%)'}}>
-            <Flower
-              size={size * 0.37}
-              open={0.15 + 0.85 * ease.outBack(flowerOpen)}
-              spin={(1 - ease.outCubic(flowerOpen)) * -160 + dt * 25}
-              color={flowerColor}
-              centerColor={flowerCenter}
-              shade={null}
-            />
+          <span style={{position: 'relative', display: 'inline-block'}}>
+            <span style={{visibility: 'hidden'}}>O</span>
+            <span style={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -48%)'}}>
+              <Flower
+                size={size * 0.34}
+                open={0.15 + 0.85 * ease.outBack(flowerOpen)}
+                spin={(1 - ease.outCubic(flowerOpen)) * -160 + dt * 25}
+                color={flowerColor}
+                centerColor={flowerCenter}
+                centerScale={0.72}
+                shade={null}
+              />
+            </span>
           </span>
         ) : (
           ch
         )}
-        {isF ? <span style={{visibility: 'hidden'}}>O</span> : null}
       </span>
     );
   });
@@ -170,7 +175,7 @@ export const Keyword: React.FC<KeywordProps> = ({
           fontSize: size,
           lineHeight: 1,
           color,
-          letterSpacing: `${mode === 'spaced' ? letterSpacing + 0.5 * (1 - ease.outCubic(clamp(dt / 0.8))) : letterSpacing}em`,
+          letterSpacing: `${ls}em`,
           whiteSpace: 'nowrap',
           transform: `translateY(${groupY}px) scale(${groupScale})`,
           opacity: groupOpacity,
@@ -186,7 +191,7 @@ export const Keyword: React.FC<KeywordProps> = ({
   );
 };
 
-// ---------------------------------------------------------------- Lyric line (Claude's voice, serif, word-timed)
+// ---------------------------------------------------------------- Lyric line (Gemini's voice, serif, word-timed)
 type LyricProps = {
   cue: Cue;
   t: number;

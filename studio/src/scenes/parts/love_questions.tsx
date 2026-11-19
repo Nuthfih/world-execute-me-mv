@@ -9,7 +9,7 @@ import {Glow} from './love_common';
 
 // ---------------------------------------------------------------------------------------------
 // 180.86–184.54  "Question me / Question me I can answer all LO-O-OVE"
-// a flood of human questions (blue) answered instantly by tiny Claude replies; on "answer"
+// a flood of human questions (blue) answered instantly by tiny Gemini replies; on "answer"
 // every pending question is answered at once; on LO-O-OVE the reply sparks fly into the O's.
 // ---------------------------------------------------------------------------------------------
 
@@ -112,10 +112,10 @@ const Bubble: React.FC<{q: string; a: string; x: number; y: number; w: number; s
           {q}
         </div>
       </div>
-      {/* Claude reply (left aligned) */}
+      {/* Gemini reply (left aligned) */}
       <div style={{position: 'absolute', left: 0, top: 74, display: 'flex', alignItems: 'center', gap: 12}}>
         {pending && t < aAt ? (
-          <div style={{display: 'flex', gap: 7, padding: '16px 20px', background: '#FFFFFF', borderRadius: 18, opacity: clamp((t - qAt - 0.1) / 0.1), boxShadow: '0 6px 18px rgba(110,55,25,0.12)'}}>
+          <div style={{display: 'flex', gap: 7, padding: '16px 20px', background: '#FFFFFF', borderRadius: 18, opacity: clamp((t - qAt - 0.1) / 0.1), boxShadow: '0 6px 18px rgba(35,43,122,0.12)'}}>
             {[0, 1, 2].map((k) => (
               <div key={k} style={{width: 10, height: 10, borderRadius: 5, background: C.gray2, transform: `translateY(${Math.sin(t * 14 - k * 0.9 + seed) * 3}px)`}} />
             ))}
@@ -136,7 +136,7 @@ const Bubble: React.FC<{q: string; a: string; x: number; y: number; w: number; s
               transform: `scale(${Math.max(0, ap)})`,
               transformOrigin: '0% 0%',
               opacity: aOp,
-              boxShadow: '0 10px 26px rgba(110,55,25,0.16)',
+              boxShadow: '0 10px 26px rgba(35,43,122,0.16)',
               border: '1px solid rgba(31,30,29,0.08)',
             }}
           >
@@ -180,7 +180,7 @@ export const LoveQuestions: React.FC<{t: number; focus: number}> = ({t, focus}) 
   const cam = 1 + 0.03 * seg(t, QA_T0, 184.5);
   const allK = Math.exp(-Math.max(0, t - QA_ANSWER_ALL) / 0.25) * (t >= QA_ANSWER_ALL ? 1 : 0);
   return (
-    <AbsoluteFill style={{background: 'linear-gradient(160deg, #FCF5EA 0%, #F6E7D6 55%, #EFD9C3 100%)', overflow: 'hidden'}}>
+    <AbsoluteFill style={{background: 'linear-gradient(160deg, #F8F9FD 0%, #EDF0FC 55%, #DCE4FF 100%)', overflow: 'hidden'}}>
       {/* soft bokeh */}
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
         <defs>
@@ -216,10 +216,10 @@ export const LoveQuestions: React.FC<{t: number; focus: number}> = ({t, focus}) 
           );
         })}
         {/* "answer all" shimmer */}
-        {allK > 0.01 ? <AbsoluteFill style={{background: 'radial-gradient(ellipse at 70% 50%, rgba(255,250,240,0.9), rgba(255,250,240,0) 60%)', opacity: allK * 0.7}} /> : null}
-        {/* Claude-chan answering */}
+        {allK > 0.01 ? <AbsoluteFill style={{background: 'radial-gradient(ellipse at 70% 50%, rgba(248,249,253,0.9), rgba(248,249,253,0) 60%)', opacity: allK * 0.7}} /> : null}
+        {/* Gemini-chan answering */}
         <Sprite
-          src="img/cc_answer.png"
+          src="img/gc_answer.png"
           t={t}
           x={370}
           y={1165}
@@ -230,12 +230,12 @@ export const LoveQuestions: React.FC<{t: number; focus: number}> = ({t, focus}) 
           scale={1 + 0.012 * beatPulse(t, 0.15)}
           outline="#FFFFFF"
           outlineWidth={6}
-          shadow="drop-shadow(0 22px 30px rgba(110,55,25,0.28))"
+          shadow="drop-shadow(0 22px 30px rgba(35,43,122,0.28))"
         />
         {/* fingertip sparkle on every answer burst */}
         {t > QA_T0 + 0.2 ? (
           <div style={{position: 'absolute', left: 95 - 30, top: 470 - 30, width: 60, height: 60, opacity: 0.4 + 0.6 * Math.max(beatPulse(t, 0.2), allK)}}>
-            <Glow x={30} y={30} r={60 + allK * 80} color="255,226,190" opacity={0.9} />
+            <Glow x={30} y={30} r={60 + allK * 80} color="251,191,36" opacity={0.9} />
             <svg width={60} height={60} viewBox="-30 -30 60 60" style={{position: 'absolute', left: 0, top: 0, transform: `rotate(${t * 60}deg) scale(${0.7 + 0.5 * beatPulse(t, 0.2) + allK})`}}>
               <path d="M0,-26 C3,-6 6,-3 26,0 C6,3 3,6 0,26 C-3,6 -6,3 -26,0 C-6,-3 -3,-6 0,-26Z" fill={C.gold} />
             </svg>

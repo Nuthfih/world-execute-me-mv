@@ -3,7 +3,7 @@ import {C, F} from '../../theme';
 import {clamp, lerp} from '../../lib/anim';
 import {ClaudeApp} from '../../components/ClaudeApp';
 
-// Claude's own desktop window (dark claude.ai home), laid out at ~1920×1080 and scaled into its window rect,
+// Gemini's own desktop window (dark Gemini home), laid out at ~1920×1080 and scaled into its window rect,
 // so "maximize" is a pure scale/rect interpolation. Shared by S10 (end) and S11.
 
 export type Rect = {x: number; y: number; w: number; h: number};
@@ -54,15 +54,15 @@ export const ClaudeWindow: React.FC<{
         height: rect.h,
         borderRadius: radius,
         overflow: 'hidden',
-        background: '#1c1c1b',
+        background: '#171924',
         opacity,
-        boxShadow: `0 30px 80px rgba(0,0,0,${0.55 * (1 - k)}), 0 0 ${40 * border}px rgba(217,119,87,${0.7 * border})`,
-        border: `1px solid ${border > 0.05 ? `rgba(217,119,87,${0.4 + 0.6 * border})` : '#3a3a38'}`,
+        boxShadow: `0 30px 80px rgba(0,0,0,${0.55 * (1 - k)}), 0 0 ${40 * border}px rgba(91,110,245,${0.7 * border})`,
+        border: `1px solid ${border > 0.05 ? `rgba(91,110,245,${0.4 + 0.6 * border})` : '#32364A'}`,
         boxSizing: 'border-box',
       }}
     >
       {bar > 0.5 ? (
-        <div style={{height: bar, display: 'flex', alignItems: 'center', gap: 8, padding: '0 12px', background: '#262624', borderBottom: '1px solid #3a3a38', overflow: 'hidden'}}>
+        <div style={{height: bar, display: 'flex', alignItems: 'center', gap: 8, padding: '0 12px', background: '#1E2130', borderBottom: '1px solid #32364A', overflow: 'hidden'}}>
           <div style={{width: 12, height: 12, borderRadius: 6, background: '#E7675B'}} />
           <div style={{width: 12, height: 12, borderRadius: 6, background: '#E9B44C'}} />
           <div
@@ -75,12 +75,12 @@ export const ClaudeWindow: React.FC<{
               boxShadow: greenPress > 0 ? `0 0 ${14 * greenPress}px #6DBF67` : undefined,
             }}
           />
-          <div style={{flex: 1, textAlign: 'center', fontSize: 14, color: '#C2C0B6', fontFamily: F.sans, marginRight: 50}}>Claude</div>
+          <div style={{flex: 1, textAlign: 'center', fontSize: 14, color: '#B8BED4', fontFamily: F.sans, marginRight: 50}}>Gemini</div>
           <div style={{width: 10, height: 10, borderRadius: 5, background: C.clay}} />
         </div>
       ) : null}
       <div style={{position: 'absolute', left: 0, top: bar, width: lw, height: lh, transform: `scale(${s})`, transformOrigin: '0 0'}}>
-        <ClaudeApp t={t} width={lw} height={lh} zoom={Z} dark={1} home greeting=" " greetingOpacity={0} hideGreetFlower composer={{placeholder: 'How can I help you today?'}}>
+        <ClaudeApp t={t} width={lw} height={lh} zoom={Z} dark={1} home greeting=" " greetingOpacity={0} hideGreetFlower composer={{placeholder: 'Ask Gemini anything…'}}>
           {children}
         </ClaudeApp>
       </div>

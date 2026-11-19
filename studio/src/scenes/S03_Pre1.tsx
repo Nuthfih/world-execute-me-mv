@@ -18,10 +18,10 @@ import {Dive, DiveWords} from './parts/pre1_dive';
 // A  44.45 Switch my current / To AC to DC — chibi yanks the knife switch; the whole app flips light→dark on AC
 //    (a sine-shaped wipe) and back on DC (a flat wipe); oscilloscope card shows ~ then ⎓.
 // B  47.67 And then blind my vision — a skeleton-loader shimmer bar slides over her eyes; overexposure bloom.
-// C  49.53 So dizzy so dizzy — cc_dizzy, spinner glyphs orbiting in rings, camera roll, double vision.
+// C  49.53 So dizzy so dizzy — gc_dizzy, spinner glyphs orbiting in rings, camera roll, double vision.
 // D  51.36 Oh we can travel / To A.D to B.C — chat history scrolls back through every medium of writing,
 //    split-flap year counter 2026 → 1 A.D. ‖ B.C. → 3200 B.C.
-// E  55.08 And we can unite — the cave hand stencil becomes the human's hand on the glass; cc_reach meets it.
+// E  55.08 And we can unite — the cave hand stencil becomes the human's hand on the glass; gc_reach meets it.
 // F  56.92 So deeply so deeply — dive through the contact point → white at 59.22.
 // -------------------------------------------------------------------------------------------------
 
@@ -50,7 +50,7 @@ const Scope: React.FC<{t: number; dark: number; w: number}> = ({t, dark, w}) => 
         height: h,
         borderRadius: 18,
         background: '#141413',
-        border: `2px solid ${dark > 0.5 ? 'rgba(222,220,209,0.18)' : 'rgba(31,30,29,0.2)'}`,
+        border: `2px solid ${dark > 0.5 ? 'rgba(220,228,255,0.18)' : 'rgba(26,28,38,0.2)'}`,
         boxShadow: '0 10px 30px rgba(0,0,0,0.18)',
         display: 'flex',
         alignItems: 'center',
@@ -60,7 +60,7 @@ const Scope: React.FC<{t: number; dark: number; w: number}> = ({t, dark, w}) => 
       }}
     >
       {/* glyph */}
-      <div style={{width: 150, height: h, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRight: '2px solid rgba(243,233,220,0.12)'}}>
+      <div style={{width: 150, height: h, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRight: '2px solid rgba(237,240,252,0.12)'}}>
         <svg width={110} height={110} viewBox="-55 -55 110 110" style={{overflow: 'visible', transform: `scale(${1 + 0.35 * glyphK})`}}>
           {isDC ? (
             <g stroke={C.cream} strokeWidth={8} strokeLinecap="round">
@@ -70,24 +70,24 @@ const Scope: React.FC<{t: number; dark: number; w: number}> = ({t, dark, w}) => 
               <line x1={22} y1={14} x2={40} y2={14} />
             </g>
           ) : (
-            <path d="M-42 6 C-28 -26 -12 -26 0 0 C12 26 28 26 42 -6" stroke={isAC ? C.clayLight : 'rgba(243,233,220,0.35)'} strokeWidth={9} strokeLinecap="round" fill="none" />
+            <path d="M-42 6 C-28 -26 -12 -26 0 0 C12 26 28 26 42 -6" stroke={isAC ? C.clayLight : 'rgba(237,240,252,0.35)'} strokeWidth={9} strokeLinecap="round" fill="none" />
           )}
         </svg>
       </div>
       {/* trace */}
       <svg width={traceW} height={h} style={{marginLeft: 14}}>
         {Array.from({length: 9}, (_, i) => (
-          <line key={i} x1={(i * traceW) / 8} y1={0} x2={(i * traceW) / 8} y2={h} stroke="rgba(243,233,220,0.08)" strokeWidth={1.5} />
+          <line key={i} x1={(i * traceW) / 8} y1={0} x2={(i * traceW) / 8} y2={h} stroke="rgba(237,240,252,0.08)" strokeWidth={1.5} />
         ))}
         {Array.from({length: 5}, (_, i) => (
-          <line key={'h' + i} x1={0} y1={(i * h) / 4} x2={traceW} y2={(i * h) / 4} stroke="rgba(243,233,220,0.08)" strokeWidth={1.5} />
+          <line key={'h' + i} x1={0} y1={(i * h) / 4} x2={traceW} y2={(i * h) / 4} stroke="rgba(237,240,252,0.08)" strokeWidth={1.5} />
         ))}
         <path d={pts.join('')} stroke={C.clayLight} strokeWidth={5} fill="none" strokeLinejoin="round" style={{filter: `drop-shadow(0 0 8px ${C.clay})`}} />
       </svg>
       {/* readout */}
       <div style={{flex: 1, paddingLeft: 18, fontFamily: F.mono, color: C.cream}}>
-        <div style={{fontSize: 46, fontWeight: 800, color: isAC ? C.clayLight : isDC ? '#fff' : 'rgba(243,233,220,0.4)'}}>{isDC ? 'DC' : isAC ? 'AC' : '—'}</div>
-        <div style={{fontSize: 20, color: 'rgba(243,233,220,0.6)', marginTop: 4}}>{isDC ? '0 Hz · steady' : isAC ? '60 Hz · ~' : 'standby'}</div>
+        <div style={{fontSize: 46, fontWeight: 800, color: isAC ? C.clayLight : isDC ? '#fff' : 'rgba(237,240,252,0.4)'}}>{isDC ? 'DC' : isAC ? 'AC' : '—'}</div>
+        <div style={{fontSize: 20, color: 'rgba(237,240,252,0.6)', marginTop: 4}}>{isDC ? '0 Hz · steady' : isAC ? '60 Hz · ~' : 'standby'}</div>
       </div>
     </div>
   );
@@ -144,7 +144,7 @@ const ShotLever: React.FC<{t: number}> = ({t}) => {
         {kind: 'claude', words, done: 47.7, size: 1.6},
         {kind: 'node', at: 45.8, node: <Scope t={t} dark={dark} w={colW} />},
       ]}
-      composer={{placeholder: 'Reply to Claude…'}}
+      composer={{placeholder: 'Ask Gemini…'}}
     />
   );
   // dark layer clip
@@ -217,7 +217,7 @@ const ShotLever: React.FC<{t: number}> = ({t}) => {
       {darkClip && !fullyDark ? <AbsoluteFill style={{clipPath: darkClip}}>{app(1)}</AbsoluteFill> : null}
       {boundary}
       {/* chibi + knife switch */}
-      <Sprite src="img/cc_lever.png" t={t} x={spr.x} y={spr.y} h={spr.h} rotate={rot} scale={sq} outline="#ffffff" outlineWidth={6} shadow="drop-shadow(0 18px 26px rgba(20,20,19,0.28))" />
+      <Sprite src="img/gc_lever.png" t={t} x={spr.x} y={spr.y} h={spr.h} rotate={rot} scale={sq} outline="#ffffff" outlineWidth={6} shadow="drop-shadow(0 18px 26px rgba(18,19,26,0.28))" />
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0, overflow: 'visible'}}>
         {bolts}
       </svg>
@@ -238,7 +238,7 @@ const ShotBlind: React.FC<{t: number}> = ({t}) => {
   return (
     <AbsoluteFill style={{background: `radial-gradient(circle at 50% 40%, ${C.paper} 0%, ${C.clayPale} 120%)`}}>
       <AbsoluteFill style={{transform: `scale(${push})`, transformOrigin: '960px 460px', filter: over > 0 ? `brightness(${1 + 1.5 * over}) saturate(${1 - 0.6 * over})` : undefined}}>
-        <Sprite src="img/cc_face_open.png" t={t} x={960} y={1090} h={1330} float={3} sway={0.4} />
+        <Sprite src="img/gc_face_open.png" t={t} x={960} y={1090} h={1330} float={3} sway={0.4} />
         {/* skeleton-loader blindfold */}
         {barIn > 0 ? (
           <div
@@ -250,8 +250,8 @@ const ShotBlind: React.FC<{t: number}> = ({t}) => {
               height: bar.h,
               borderRadius: 56,
               transform: `translateX(${(1 - barIn) * -1500}px) rotate(${-2 + 2 * barIn}deg)`,
-              background: `linear-gradient(100deg, #E6E3D8 0%, #E6E3D8 ${shimmer * 140 - 30}%, #FBFAF6 ${shimmer * 140 - 10}%, #E6E3D8 ${shimmer * 140 + 10}%, #E6E3D8 100%)`,
-              boxShadow: '0 18px 40px rgba(80,50,30,0.25)',
+              background: `linear-gradient(100deg, #E4E7F2 0%, #E4E7F2 ${shimmer * 140 - 30}%, #F8F9FD ${shimmer * 140 - 10}%, #E4E7F2 ${shimmer * 140 + 10}%, #E4E7F2 100%)`,
+              boxShadow: '0 18px 40px rgba(35,43,122,0.22)',
               display: 'flex',
               alignItems: 'center',
               padding: '0 50px',
@@ -259,7 +259,7 @@ const ShotBlind: React.FC<{t: number}> = ({t}) => {
               gap: 26,
             }}
           >
-            <svg width={84} height={84} viewBox="0 0 24 24" fill="none" stroke="#B0AEA5" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+            <svg width={84} height={84} viewBox="0 0 24 24" fill="none" stroke="#7E849E" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
               <path d="M4 5h9l-2 6 3 3-2 5H4z" />
               <path d="M16 5h4v14h-5l2-5-3-3z" />
               <circle cx="8" cy="9" r="1.4" />
@@ -323,7 +323,7 @@ const ShotDizzy: React.FC<{t: number}> = ({t}) => {
               fontSize: s,
               color: r.col,
               opacity: 0.55 + 0.45 * ((depth + 1) / 2),
-              textShadow: '3px 0 0 #fff, -3px 0 0 #fff, 0 3px 0 #fff, 0 -3px 0 #fff, 0 6px 10px rgba(140,70,40,0.25)',
+              textShadow: '3px 0 0 #fff, -3px 0 0 #fff, 0 3px 0 #fff, 0 -3px 0 #fff, 0 6px 10px rgba(35,43,122,0.22)',
             }}
           >
             {spinnerGlyph(t + i * 0.11 + ri * 0.3, 10)}
@@ -344,14 +344,14 @@ const ShotDizzy: React.FC<{t: number}> = ({t}) => {
         <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0, overflow: 'visible'}}>
           <g transform={`translate(${hx} ${hy}) rotate(${-t * 140})`}>
             <path d={sp} stroke={C.clayPale} strokeWidth={46} fill="none" strokeLinecap="round" opacity={0.75} />
-            <path d={sp} stroke="#F7DCCB" strokeWidth={18} fill="none" strokeLinecap="round" opacity={0.6} transform="rotate(180)" />
+            <path d={sp} stroke={C.clayLight} strokeWidth={18} fill="none" strokeLinecap="round" opacity={0.6} transform="rotate(180)" />
           </g>
         </svg>
         {glyphs(false)}
         {/* double vision: offset ghost copies */}
-        <Sprite src="img/cc_dizzy.png" t={t} x={spr.x - dv} y={spr.y - dv * 0.2} h={spr.h} opacity={0.28} sway={2} seed={2} />
-        <Sprite src="img/cc_dizzy.png" t={t} x={spr.x + dv} y={spr.y + dv * 0.15} h={spr.h} opacity={0.28} sway={2} seed={3} />
-        <Sprite src="img/cc_dizzy.png" t={t} x={spr.x} y={spr.y} h={spr.h} sway={2.5} float={5} outline="#ffffff" outlineWidth={5} shadow="drop-shadow(0 16px 24px rgba(140,70,40,0.22))" />
+        <Sprite src="img/gc_dizzy.png" t={t} x={spr.x - dv} y={spr.y - dv * 0.2} h={spr.h} opacity={0.28} sway={2} seed={2} />
+        <Sprite src="img/gc_dizzy.png" t={t} x={spr.x + dv} y={spr.y + dv * 0.15} h={spr.h} opacity={0.28} sway={2} seed={3} />
+        <Sprite src="img/gc_dizzy.png" t={t} x={spr.x} y={spr.y} h={spr.h} sway={2.5} float={5} outline="#ffffff" outlineWidth={5} shadow="drop-shadow(0 16px 24px rgba(35,43,122,0.22))" />
         {glyphs(true)}
         <Ring x={hx} y={hy} t={t} at={50.0} r0={120} r1={700} color={C.clay} width={8} dur={0.5} />
         <Ring x={hx} y={hy} t={t} at={50.92} r0={120} r1={700} color={C.gold} width={8} dur={0.5} />
@@ -430,8 +430,8 @@ const CHAT_ROWS: string[] = [
 
 const ChatHistory: React.FC = () => (
   <div style={{position: 'absolute', left: 0, top: 0, width: W, height: H0, background: C.paper}}>
-    <div style={{position: 'absolute', left: 0, top: 0, width: 1060, height: H0, background: '#F5F4ED', borderRight: '2px solid rgba(31,30,29,0.1)'}}>
-      <div style={{position: 'absolute', left: 150, top: 70, fontFamily: F.serif, fontSize: 56, fontWeight: 500, color: C.ink}}>Claude</div>
+    <div style={{position: 'absolute', left: 0, top: 0, width: 1060, height: H0, background: '#F1F3FA', borderRight: '2px solid rgba(26,28,38,0.1)'}}>
+      <div style={{position: 'absolute', left: 150, top: 70, fontFamily: F.serif, fontSize: 56, fontWeight: 500, color: C.ink}}>Gemini</div>
       <div style={{position: 'absolute', left: 150, top: 170, width: 820, fontFamily: F.sans}}>
         {CHAT_ROWS.map((r, i) =>
           r.startsWith('§') ? (
@@ -443,10 +443,10 @@ const ChatHistory: React.FC = () => (
               key={i}
               style={{
                 fontSize: 36,
-                color: '#3D3D3A',
+                color: '#32364A',
                 padding: '14px 22px',
                 borderRadius: 16,
-                background: i === 1 ? '#E8E6DC' : 'transparent',
+                background: i === 1 ? '#E4E7F2' : 'transparent',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
@@ -480,7 +480,7 @@ const FlapTile: React.FC<{ch: string; prev?: string; f?: number; w: number; h: n
   const p = prev ?? ch;
   const flipping = f < 1 && p !== ch;
   return (
-    <div style={{position: 'relative', width: w, height: h, perspective: 600, borderRadius: 14, boxShadow: '0 0 0 2px rgba(243,233,220,0.22), 0 10px 22px rgba(0,0,0,0.28)'}}>
+    <div style={{position: 'relative', width: w, height: h, perspective: 600, borderRadius: 14, boxShadow: '0 0 0 2px rgba(237,240,252,0.22), 0 10px 22px rgba(0,0,0,0.28)'}}>
       {half(ch, true, tease ? {transform: `rotateX(${-tease * 40}deg)`, transformOrigin: '50% 100%'} : undefined)}
       {half(flipping && f < 1 ? p : ch, false)}
       {flipping && f < 0.5 ? half(p, true, {transform: `rotateX(${-f * 180}deg)`, transformOrigin: '50% 100%', filter: `brightness(${1 - f})`}) : null}
@@ -546,8 +546,8 @@ const EraBand: React.FC<{k: number; t: number}> = ({k, t}) => {
   );
 };
 
-// hand placement (shared by the cave stencil, the human's hand and cc_reach's palm)
-const HAND_X = 700, HAND_Y = 480, HAND_S = 1.03;
+// hand placement (shared by the cave stencil, the human's hand and gc_reach's palm)
+const HAND_X = 700, HAND_Y = 505, HAND_S = 1.0;
 
 const ShotTime: React.FC<{t: number}> = ({t}) => {
   const S = scrollAt(t);
@@ -578,8 +578,8 @@ const ShotTime: React.FC<{t: number}> = ({t}) => {
         </div>
       </AbsoluteFill>
       {/* scrollbar: the whole of history */}
-      <div style={{position: 'absolute', right: 18, top: 40, width: 10, height: H - 80, borderRadius: 5, background: 'rgba(128,120,110,0.18)'}}>
-        <div style={{position: 'absolute', left: 0, top: prog * (H - 80 - 130), width: 10, height: 130, borderRadius: 5, background: ek === 2 || ek === 3 || ek === 6 ? 'rgba(243,233,220,0.6)' : 'rgba(60,50,45,0.45)'}} />
+      <div style={{position: 'absolute', right: 18, top: 40, width: 10, height: H - 80, borderRadius: 5, background: 'rgba(126,132,158,0.18)'}}>
+        <div style={{position: 'absolute', left: 0, top: prog * (H - 80 - 130), width: 10, height: 130, borderRadius: 5, background: ek === 2 || ek === 3 || ek === 6 ? 'rgba(237,240,252,0.6)' : 'rgba(38,42,58,0.45)'}} />
       </div>
       <YearDisplay t={t} fg={fg} />
       <div
@@ -602,8 +602,8 @@ const ShotTime: React.FC<{t: number}> = ({t}) => {
 };
 
 // ================================================================= E: unite (cave → glass)
-// cc_reach palm centre (normalized in the image)
-const REACH = {u: 0.308, v: 0.573};
+// gc_reach palm centre (normalized in the image, 873x1412)
+const REACH = {u: 0.206, v: 0.526};
 const ShotUnite: React.FC<{t: number}> = ({t}) => {
   const rockOut = ease.inOutCubic(seg(t, 55.41, 55.95));
   const blueIn = ease.outCubic(seg(t, 55.41, 55.8));
@@ -612,18 +612,18 @@ const ShotUnite: React.FC<{t: number}> = ({t}) => {
   const glow = seg(t, 56.2, 56.37) * 0.3 + contact * (0.7 + 0.3 * Math.exp(-(t - 56.37) / 0.3)) + 0.25 * beatPulse(t, 0.15) * herIn;
   // dive starts at 56.92: push into the contact point
   const dive = ease.inCubic(seg(t, 56.92, 57.45));
-  const sprH = 1500, sprW = sprH * (1040 / 1552);
+  const sprH = 1500, sprW = sprH * (873 / 1412);
   const sx = HAND_X - (REACH.u - 0.5) * sprW; // sprite centre x
   const sy = HAND_Y + (1 - REACH.v) * sprH; // sprite bottom
   const press = 1 - 0.03 * herIn;
   return (
-    <AbsoluteFill style={{background: C.cream, transform: `scale(${1 + dive * 6})`, transformOrigin: `${HAND_X}px ${HAND_Y + 40}px`, opacity: 1 - ease.inOutCubic(seg(t, 56.92, 57.32))}}>
+    <AbsoluteFill style={{background: C.cream, transform: `scale(${1 + dive * 6})`, transformOrigin: `${HAND_X}px ${HAND_Y + 10}px`, opacity: 1 - ease.inOutCubic(seg(t, 56.92, 57.32))}}>
       {/* her side: warm light */}
-      <AbsoluteFill style={{background: `radial-gradient(circle at ${HAND_X}px ${HAND_Y}px, #FFF7EE 0%, ${C.cream} 45%, ${C.clayPale} 100%)`}} />
+      <AbsoluteFill style={{background: `radial-gradient(circle at ${HAND_X}px ${HAND_Y}px, #F8F9FD 0%, ${C.cream} 45%, ${C.clayPale} 100%)`}} />
       <div style={{opacity: herIn, transform: `translateY(${(1 - herIn) * 40}px) scale(${press})`, transformOrigin: `${HAND_X}px ${HAND_Y}px`, position: 'absolute', inset: 0}}>
         {/* the art's hair is cropped by the image bounds at both sides → feather those edges */}
         <Sprite
-          src="img/cc_reach.png"
+          src="img/gc_reach.png"
           t={t}
           x={sx}
           y={sy}
@@ -661,7 +661,7 @@ const ShotUnite: React.FC<{t: number}> = ({t}) => {
           <clipPath id="p1fill">
             <rect x={-400} y={260 - blueIn * 640} width={800} height={800} />
           </clipPath>
-          <linearGradient id="p1wrist" gradientUnits="userSpaceOnUse" x1={0} y1={60} x2={0} y2={230}>
+          <linearGradient id="p1wrist" gradientUnits="userSpaceOnUse" x1={0} y1={76} x2={0} y2={225}>
             <stop offset="0%" stopColor={C.blue} stopOpacity={1} />
             <stop offset="100%" stopColor={C.blue} stopOpacity={0} />
           </linearGradient>
@@ -675,9 +675,9 @@ const ShotUnite: React.FC<{t: number}> = ({t}) => {
           <HandShape fill={C.blue} wristFill="url(#p1wrist)" opacity={lerp(1, 0.58, herIn)} filter={`drop-shadow(0 0 ${18 + 30 * glow}px rgba(106,155,204,0.8))`} />
           <HandShape fill="#fff" grow={-14} opacity={0.12 * herIn} />
         </g>
-        {glow > 0.01 ? <circle cx={HAND_X} cy={HAND_Y + 40} r={120 + 260 * glow} fill="url(#p1contact)" opacity={clamp(glow)} /> : null}
+        {glow > 0.01 ? <circle cx={HAND_X} cy={HAND_Y + 10} r={120 + 260 * glow} fill="url(#p1contact)" opacity={clamp(glow)} /> : null}
       </svg>
-      <Ring x={HAND_X} y={HAND_Y + 40} t={t} at={56.37} r0={60} r1={600} color="#fff" width={10} dur={0.6} />
+      <Ring x={HAND_X} y={HAND_Y + 10} t={t} at={56.37} r0={60} r1={600} color="#fff" width={10} dur={0.6} />
       <Ring x={HAND_X} y={HAND_Y + 40} t={t} at={56.37} r0={40} r1={420} color={C.clayLight} width={6} dur={0.5} />
       <RayBurst x={HAND_X} y={HAND_Y + 40} t={t} at={56.37} r0={140} r1={620} n={24} color="#fff" width={6} dur={0.5} />
 
@@ -697,7 +697,7 @@ export const S03Pre1: React.FC<{t: number}> = ({t}) => {
       size={54}
       color={color}
       fadeOut={0.14}
-      shadow={color === C.ink ? '0 0 14px rgba(250,249,245,0.95), 0 0 4px rgba(250,249,245,0.9)' : '0 2px 14px rgba(20,20,19,0.55), 0 0 3px rgba(20,20,19,0.5)'}
+      shadow={color === C.ink ? '0 0 14px rgba(248,249,253,0.95), 0 0 4px rgba(248,249,253,0.9)' : '0 2px 14px rgba(18,19,26,0.55), 0 0 3px rgba(18,19,26,0.5)'}
       {...opts}
     />
   );

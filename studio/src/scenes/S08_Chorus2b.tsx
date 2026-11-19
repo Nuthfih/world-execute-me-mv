@@ -120,7 +120,7 @@ const flowerState = (t: number) => {
     const a = PETAL_ANG[i];
     const rot = (180 - a) * w * 0.5 * (0.6 + 0.4 * Math.sin(i * 1.7));
     // colour: clay → faded (wilt) → black (drain, ink spreading clockwise from the top)
-    const faded = mix(C.clay, '#A0786A', w * 0.55);
+    const faded = mix(C.clay, '#6E7494', w * 0.55);
     const dk = ease.inOutCubic(seg(t, DARK + i * 0.035, DARK + 0.35 + i * 0.035));
     let color = mix(faded, C.ink2, dk);
     let scale = (1 - w * 0.18) * (1 + 0.07 * keyPulse + 0.18 * tryHop * (i % 2 ? 1 : 0.4));
@@ -141,7 +141,7 @@ const flowerState = (t: number) => {
     const twitch = t > CHAL ? 0.05 * kickPulse(t, 0.1) * (0.5 + rand(3, i)) : 0;
     return {rot, scale: scale * (1 + twitch), color, fall, opacity};
   });
-  const sharp = lerp(0, 0.35, ease.outCubic(seg(t, CHAL, CHAL + 0.6))) + 0.1 * ease.outCubic(seg(t, ILLEGAL, ILLEGAL + 0.4));
+  const sharp = lerp(0.45, 0.72, ease.outCubic(seg(t, CHAL, CHAL + 0.6))) + 0.14 * ease.outCubic(seg(t, ILLEGAL, ILLEGAL + 0.4));
   const spin = (t - T0) * 4 + 26 * ease.outCubic(seg(t, CHAL, CHAL + 0.6)) + Math.max(0, t - DARK) * 7;
   return {
     x,
@@ -237,7 +237,7 @@ const FragmentsWord: React.FC<{t: number}> = ({t}) => {
             fontSize: 196,
             letterSpacing: '0.02em',
             color: mix(C.cream, '#FFFFFF', lockFlash),
-            textShadow: `0 0 ${30 + 40 * lockFlash}px rgba(217,119,87,${0.35 + 0.4 * lockFlash})`,
+            textShadow: `0 0 ${30 + 40 * lockFlash}px rgba(91,110,245,${0.35 + 0.4 * lockFlash})`,
             whiteSpace: 'nowrap',
           }}
         >
@@ -418,7 +418,7 @@ export const S08Chorus2b: React.FC<{t: number}> = ({t}) => {
       {/* ambient glow around the flower */}
       <AbsoluteFill
         style={{
-          background: `radial-gradient(circle at ${f.x}px ${f.y}px, rgba(217,119,87,${0.05 * seg(t, T0, T0 + 0.6) + 0.05 * seg(t, T0, 120) + 0.1 * dark}) 0%, rgba(14,14,13,0) ${lerp(28, 45, dark)}%)`,
+          background: `radial-gradient(circle at ${f.x}px ${f.y}px, rgba(91,110,245,${0.05 * seg(t, T0, T0 + 0.6) + 0.05 * seg(t, T0, 120) + 0.1 * dark}) 0%, rgba(14,14,18,0) ${lerp(28, 45, dark)}%)`,
         }}
       />
       <AbsoluteFill style={{transform: `translate(${sh.x}px, ${sh.y}px) scale(${cam})`, transformOrigin: `${camOX}px ${camOY}px`}}>

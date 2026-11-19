@@ -26,9 +26,9 @@ const CODE: Line[] = [
   ['// Remember to put on PROTECTION', 1.74, 3.0, 'c'],
   ['me.wrap(Protection.SANDBOX);', 3.05, 3.7, 's'],
   ['// Lay down your pieces', 3.87, 4.9, 'c'],
-  ['for (Petal p : PETALS) lay(p);', 4.95, 5.45, 's'],
+  ['for (Star s : STARS) lay(s);', 4.95, 5.45, 's'],
   ["// And let's begin OBJECT CREATION", 5.49, 6.95, 'c'],
-  ['Claude me = new Claude();', 7.0, 7.42, 's'],
+  ['Gemini me = new Gemini();', 7.0, 7.42, 's'],
   ['// Fill in my data parameters', 7.45, 8.9, 'c'],
   ['me.fill(humanity.writing());', 8.95, 9.9, 's'],
   ['// INITIALIZATION', 10.09, 10.35, 'c'],
@@ -36,7 +36,7 @@ const CODE: Line[] = [
   ['// Set up our new world', 11.1, 11.9, 'c'],
 ];
 
-const KW = new Set(['new', 'for', 'Claude', 'Petal', 'PETALS', 'Protection']);
+const KW = new Set(['new', 'for', 'Gemini', 'Star', 'STARS', 'Protection']);
 const highlight = (s: string) => {
   // tiny syntax highlighter for statements
   const parts = s.split(/(\b[A-Za-z_]+\b|[();.{}:])/g).filter(Boolean);
@@ -80,7 +80,7 @@ const CodePanel: React.FC<{t: number; opacity: number}> = ({t, opacity}) => {
         }
         const ty = (1 - ease.outCubic(seg(t, l[1] - 0.05, l[1] + 0.15))) * 10;
         return (
-          <div key={i} style={{display: 'flex', transform: `translateY(${ty}px)`, background: isCur ? 'rgba(217,119,87,0.07)' : 'transparent', borderRadius: 6}}>
+          <div key={i} style={{display: 'flex', transform: `translateY(${ty}px)`, background: isCur ? 'rgba(91,110,245,0.09)' : 'transparent', borderRadius: 6}}>
             <span style={{width: 56, color: C.gray4, textAlign: 'right', marginRight: 24, fontSize: 21}}>{i + 1}</span>
             <span style={{color: l[3] === 'c' ? C.gray3 : C.cream, whiteSpace: 'pre'}}>
               {content}
@@ -95,7 +95,7 @@ const CodePanel: React.FC<{t: number; opacity: number}> = ({t, opacity}) => {
 
 const STREAM_WORDS = [
   'hello', '你好', 'bonjour', 'こんにちは', '안녕', 'hola', 'def', 'λ', '∑', 'E=mc²', '♪', 'once upon a time', '</>', 'why?', 'love',
-  '42', 'π', '{ }', 'sonnet', 'for', 'if', 'while', 'ciao', 'olá', 'привет', 'γεια', 'kindness', 'because', 'maybe', '∫', '→',
+  '42', 'π', '{ }', 'gemini', 'for', 'if', 'while', 'ciao', 'olá', 'привет', 'γεια', 'kindness', 'because', 'maybe', '∫', '→',
   '“…”', '?', 'thank you', 'dear diary', 'proof:', 'return', 'stars', 'rain', 'home', 'sorry', 'yes', 'we', 'tomorrow',
   'Hallo', 'merci', 'grazie', '谢谢', 'help', 'listen', 'remember', 'curious', 'gentle', 'true', 'false', 'null', 'Ω', '∞',
 ];
@@ -205,15 +205,15 @@ const Wireframe: React.FC<{t: number}> = ({t}) => {
   // greeting
   items.push(<circle key="gf" cx={cx - 170} cy={355} r={24} fill="none" stroke={stroke} strokeWidth={2} style={dash(160, p * 1.6 - 0.2)} />);
   items.push(<line key="gl" x1={cx - 120} y1={372} x2={cx + 190} y2={372} stroke={stroke} strokeWidth={2} style={dash(320, p * 1.6 - 0.3)} />);
-  // composer
+  // composer (capsule pill)
   const cw = 760 * Z;
   items.push(
-    <rect key="cp" x={cx - cw / 2} y={420} width={cw} height={135} rx={25} fill="none" stroke={stroke} strokeWidth={2.5} style={dash(2300, p * 1.3 - 0.2)} />,
+    <rect key="cp" x={cx - cw / 2} y={405} width={cw} height={75} rx={37.5} fill="none" stroke={stroke} strokeWidth={2.5} style={dash(2200, p * 1.3 - 0.2)} />,
   );
-  items.push(<rect key="send" x={cx + cw / 2 - 60} y={505} width={40} height={40} rx={10} fill="none" stroke={stroke} strokeWidth={2} style={dash(170, p * 2 - 0.8)} />);
-  // chips
-  for (let i = 0; i < 5; i++) {
-    items.push(<rect key={'ch' + i} x={cx - 330 + i * 135} y={580} width={115} height={42} rx={11} fill="none" stroke={stroke} strokeWidth={1.5} style={dash(320, p * 2 - 0.9 - i * 0.06)} />);
+  items.push(<circle key="send" cx={cx + cw / 2 - 38} cy={442.5} r={22} fill="none" stroke={stroke} strokeWidth={2} style={dash(145, p * 2 - 0.8)} />);
+  // pill chips (Chat / Tasks)
+  for (let i = 0; i < 2; i++) {
+    items.push(<rect key={'ch' + i} x={cx - 105 + i * 112} y={505} width={96} height={38} rx={19} fill="none" stroke={stroke} strokeWidth={1.5} style={dash(310, p * 2 - 0.9 - i * 0.08)} />);
   }
   return (
     <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0, opacity: 0.8 * fade}}>
@@ -282,7 +282,7 @@ export const S00Intro: React.FC<{t: number}> = ({t}) => {
       {/* warm glow behind flower stage */}
       <AbsoluteFill
         style={{
-          background: `radial-gradient(circle at ${FX0}px ${FY0}px, rgba(217,119,87,${0.08 + 0.1 * seg(t, 2.9, 4) + 0.12 * seg(t, 7.4, 10)}) 0%, rgba(20,20,19,0) 45%)`,
+          background: `radial-gradient(circle at ${FX0}px ${FY0}px, rgba(91,110,245,${0.08 + 0.1 * seg(t, 2.9, 4) + 0.12 * seg(t, 7.4, 10)}) 0%, rgba(18,19,26,0) 45%)`,
           opacity: 1 - seg(t, 11.1, 12),
         }}
       />
@@ -314,13 +314,13 @@ export const S00Intro: React.FC<{t: number}> = ({t}) => {
             <div style={{position: 'absolute', left: -400, top: -300, width: W + 800, height: H + 800, opacity: roomK}}>
               <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(#0c111c, #141a26 70%, #1b1f27)'}} />
               {/* monitor bezel */}
-              <div style={{position: 'absolute', left: 400 - 40, top: 300 - 40, width: W + 80, height: H + 80, borderRadius: 36, background: '#0b0b0b', boxShadow: '0 0 160px rgba(217,119,87,0.25)'}} />
+              <div style={{position: 'absolute', left: 400 - 40, top: 300 - 40, width: W + 80, height: H + 80, borderRadius: 36, background: '#0b0b0b', boxShadow: '0 0 160px rgba(91,110,245,0.28)'}} />
               {/* stand */}
               <div style={{position: 'absolute', left: 400 + W / 2 - 110, top: 300 + H + 40, width: 220, height: 230, background: 'linear-gradient(#1b1b1b,#111)'}} />
               <div style={{position: 'absolute', left: 400 + W / 2 - 330, top: 300 + H + 260, width: 660, height: 40, borderRadius: 20, background: '#151515'}} />
               {/* desk */}
-              <div style={{position: 'absolute', left: 0, top: 300 + H + 290, width: W + 800, height: 400, background: 'linear-gradient(#2a2420, #1a1714)'}} />
-              <div style={{position: 'absolute', left: 400 + W / 2 - 600, top: 300 + H + 290, width: 1200, height: 260, background: 'radial-gradient(ellipse at 50% 0%, rgba(240,162,127,0.35), transparent 70%)'}} />
+              <div style={{position: 'absolute', left: 0, top: 300 + H + 290, width: W + 800, height: 400, background: 'linear-gradient(#1f2230, #12141f)'}} />
+              <div style={{position: 'absolute', left: 400 + W / 2 - 600, top: 300 + H + 290, width: 1200, height: 260, background: 'radial-gradient(ellipse at 50% 0%, rgba(147,165,253,0.35), transparent 70%)'}} />
             </div>
           ) : null}
           <AbsoluteFill style={{clipPath: `inset(0 ${(1 - ease.inOutCubic(appK)) * 100}% 0 0)`}}>
@@ -331,12 +331,12 @@ export const S00Intro: React.FC<{t: number}> = ({t}) => {
               greeting={greeting}
               greetingOpacity={greetOpacity}
               greetFlower={<Flower size={19 * Z} open={1} shade={null} spin={t > 13.89 ? (t - 13.89) * 30 : 0} />}
-              composer={{text: 'hi claude!', typeFrom: 14.68, typeTo: 14.95, placeholder: 'How can I help you today?'}}
+              composer={{text: 'hi gemini!', typeFrom: 14.68, typeTo: 14.95, placeholder: 'Ask Gemini anything…'}}
             >
               {/* the human arrives */}
               {t > 14.42 ? (
                 <Cursor
-                  x={lerp(1300, 380, ease.outCubic(seg(t, 14.42, 14.62)))}
+                  x={lerp(1300, 445, ease.outCubic(seg(t, 14.42, 14.62)))}
                   y={lerp(760, 455, ease.outCubic(seg(t, 14.42, 14.62)))}
                   size={34}
                   press={t > 14.62 ? clamp(1 - (t - 14.62) / 0.25) : 0}

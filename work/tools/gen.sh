@@ -1,7 +1,7 @@
 #!/bin/zsh
 # usage: gen.sh <name> <prompt-file> [ref images...]
 # Generates one image with codex (gpt-image-2) into assets/gen/<name>.png
-# e.g. work/tools/gen.sh cc_cat work/prompts/cc_cat.txt assets/gen/sheet_A.png   (all poses use sheet_A.png as the style reference)
+# e.g. work/tools/gen.sh gc_cat work/prompts/gc_cat.txt assets/gen/sheet_A.png   (all poses use sheet_A.png as the style reference)
 set -u
 mkdir -p ${0:A:h:h}/genlogs
 ROOT=${0:A:h:h:h}

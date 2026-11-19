@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" fill="none">
+  <defs>
+    <linearGradient id="geminiStar" x1="24" y1="24" x2="232" y2="232" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="48%" stop-color="#5B6EF5"/>
+      <stop offset="100%" stop-color="#A855F7"/>
+    </linearGradient>
+    <radialGradient id="geminiCore" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="70%" stop-color="#DCE4FF"/>
+      <stop offset="100%" stop-color="#93A5FD" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <path d="M128 12C131 74 182 125 244 128C182 131 131 182 128 244C125 182 74 131 12 128C74 125 125 74 128 12Z" fill="url(#geminiStar)"/>
+  <circle cx="128" cy="128" r="42" fill="url(#geminiCore)"/>
+</svg>

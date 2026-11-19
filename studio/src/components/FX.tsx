@@ -131,7 +131,7 @@ export const GlassSphere: React.FC<{x: number; y: number; r: number; k?: number;
   );
 };
 
-/** drifting petals (deterministic) */
+/** drifting 4-point Gemini stars & stardust (deterministic) */
 export const PetalField: React.FC<{t: number; n?: number; seed?: number; color?: string; size?: [number, number]; speed?: number; area?: [number, number, number, number]; opacity?: number; dir?: number}> = ({
   t,
   n = 30,
@@ -148,19 +148,21 @@ export const PetalField: React.FC<{t: number; n?: number; seed?: number; color?:
     <AbsoluteFill style={{pointerEvents: 'none', opacity}}>
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
         {Array.from({length: n}, (_, i) => {
-          const s = lerp(size[0], size[1], rand(seed, i));
+          const s = lerp(size[0], size[1], rand(seed, i)) * 0.85;
           const v = speed * lerp(0.6, 1.4, rand(seed + 1, i));
           const x0 = ax + rand(seed + 2, i) * aw;
           const y = ay + ((rand(seed + 3, i) * (ah + 200) + t * v * dir) % (ah + 200)) - 100;
           const x = x0 + Math.sin(t * lerp(0.6, 1.4, rand(seed + 4, i)) + i) * 40;
-          const r = t * lerp(-90, 90, rand(seed + 5, i)) + i * 37;
+          const r = t * lerp(-45, 45, rand(seed + 5, i)) + i * 37;
+          const tw = 0.6 + 0.4 * Math.abs(Math.cos(t * 2.4 + i));
+          const c = s * 0.18;
           return (
             <path
               key={i}
-              d={`M0,${-s} C${s * 0.55},${-s * 0.6} ${s * 0.5},${s * 0.4} 0,${s * 0.55} C${-s * 0.5},${s * 0.4} ${-s * 0.55},${-s * 0.6} 0,${-s} Z`}
+              d={`M0,${-s} Q${c},${-c} ${s},0 Q${c},${c} 0,${s} Q${-c},${c} ${-s},0 Q${-c},${-c} 0,${-s} Z`}
               fill={color}
-              transform={`translate(${x} ${y}) rotate(${r}) scale(1 ${0.6 + 0.4 * Math.cos(t * 2 + i)})`}
-              opacity={0.85}
+              transform={`translate(${x} ${y}) rotate(${r}) scale(${tw})`}
+              opacity={0.85 * tw}
             />
           );
         })}
@@ -327,17 +329,17 @@ export const OSWindow: React.FC<{x: number; y: number; w: number; h: number; tit
       height: h,
       borderRadius: 14,
       overflow: 'hidden',
-      background: dark ? '#1c1c1b' : '#fdfcf9',
+      background: dark ? '#1A1C26' : '#F8F9FD',
       boxShadow: '0 20px 50px rgba(0,0,0,0.35)',
-      border: `1px solid ${dark ? '#3a3a38' : '#ddd9cf'}`,
+      border: `1px solid ${dark ? '#32364A' : '#DDE1F0'}`,
       ...style,
     }}
   >
-    <div style={{height: 34, display: 'flex', alignItems: 'center', gap: 8, padding: '0 12px', background: dark ? '#262624' : '#f0eee6', borderBottom: `1px solid ${dark ? '#3a3a38' : '#e2ded3'}`}}>
+    <div style={{height: 34, display: 'flex', alignItems: 'center', gap: 8, padding: '0 12px', background: dark ? '#222533' : '#E9ECF8', borderBottom: `1px solid ${dark ? '#32364A' : '#DDE1F0'}`}}>
       <div style={{width: 12, height: 12, borderRadius: 6, background: '#E7675B'}} />
       <div style={{width: 12, height: 12, borderRadius: 6, background: '#E9B44C'}} />
       <div style={{width: 12, height: 12, borderRadius: 6, background: '#6DBF67'}} />
-      <div style={{flex: 1, textAlign: 'center', fontSize: 14, color: dark ? '#C2C0B6' : '#5E5D59', fontFamily: 'Inter', marginRight: 50}}>{title}</div>
+      <div style={{flex: 1, textAlign: 'center', fontSize: 14, color: dark ? '#B8BED4' : '#565B73', fontFamily: 'Inter', marginRight: 50}}>{title}</div>
       {accent ? <div style={{width: 10, height: 10, borderRadius: 5, background: accent}} /> : null}
     </div>
     <div style={{position: 'relative', width: '100%', height: h - 34}}>{children}</div>

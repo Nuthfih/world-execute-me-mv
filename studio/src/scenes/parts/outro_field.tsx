@@ -1,10 +1,10 @@
 import React from 'react';
-import {AbsoluteFill, Img, staticFile} from 'remotion';
-import {C, F, H, W} from '../../theme';
-import {clamp, ease, hash, lerp, mix, noise1, rand, randRange, seg} from '../../lib/anim';
-import {downbeatPulse} from '../../lib/audio';
-import {Flower, PETAL_ANG, PETAL_LEN} from '../../components/Flower';
-import {ClaudeApp, DEFAULT_RECENTS} from '../../components/ClaudeApp';
+import { AbsoluteFill, Img, staticFile } from 'remotion';
+import { C, F, H, W } from '../../theme';
+import { clamp, ease, hash, lerp, mix, noise1, rand, randRange, seg } from '../../lib/anim';
+import { downbeatPulse } from '../../lib/audio';
+import { Flower, PETAL_ANG, PETAL_LEN } from '../../components/Flower';
+import { ClaudeApp, DEFAULT_RECENTS } from '../../components/ClaudeApp';
 
 // ---------------------------------------------------------------------------------------------
 // 192.20–205.0  OUTRO part 1
@@ -17,16 +17,16 @@ import {ClaudeApp, DEFAULT_RECENTS} from '../../components/ClaudeApp';
 // ---------------------------------------------------------------------------------------------
 
 const FP = 1000; // focal length (px)
-const ROW_PX = 43; // app zoom 1.5: one recents row = 43 px
+const ROW_PX = 43.5; // app zoom 1.5: one recents pill row + gap = 43.5 px
 const COLW = 396 / ROW_PX; // a sidebar is 396 px wide → column pitch in units
-const APP_IX = 198, APP_IY = 476.5; // centre of the "world.execute(me)" row in the app (px)
-const TEXT_X0 = (33 - 198) / ROW_PX; // text start relative to the row centre (units)
-const FONT_U = 21 / ROW_PX; // Inter 21px in units
+const APP_IX = 198, APP_IY = 509; // centre of the "world.execute(me)" pill row in the app (px)
+const TEXT_X0 = (36 - 198) / ROW_PX; // text start relative to the row centre (units)
+const FONT_U = 19.5 / ROW_PX; // Inter 19.5px in units
 
-export const HERO = {x: 0, z: 0, h: 1.6, r: 1.25};
+export const HERO = { x: 0, z: 0, h: 1.6, r: 1.25 };
 
 // ------------------------------------------------------------------ camera
-type Cam = {cx: number; cy: number; cz: number; phi: number};
+type Cam = { cx: number; cy: number; cz: number; phi: number };
 const rad = (d: number) => (d * Math.PI) / 180;
 
 const orbit = (tx: number, ty: number, tz: number, D: number, e: number): Cam => ({
@@ -44,7 +44,7 @@ export const camAt = (t: number): Cam => {
     const c = ease.inOutCubic(seg(t, 193.25, 194.7));
     const cx = lerp((960 - APP_IX) / ROW_PX, 0, c);
     const cz = lerp((APP_IY - 540) / ROW_PX, 0, c);
-    return {cx, cy: FP / k, cz, phi: Math.PI / 2};
+    return { cx, cy: FP / k, cz, phi: Math.PI / 2 };
   }
   // tilt & descend to the field
   const a = ease.inOutCubic(seg(t, 196.3, 198.3));
@@ -76,7 +76,7 @@ const project = (cam: Cam, x: number, y: number, z: number) => {
   const sp = Math.sin(cam.phi), cp = Math.cos(cam.phi);
   const yc = dy * cp + dz * sp;
   const zc = -dy * sp + dz * cp;
-  return {x: 960 + (FP * dx) / zc, y: 540 - (FP * yc) / zc, z: zc};
+  return { x: 960 + (FP * dx) / zc, y: 540 - (FP * yc) / zc, z: zc };
 };
 
 // ------------------------------------------------------------------ titles
@@ -99,24 +99,24 @@ const TITLES = [
 ];
 const HEADERS = ['Today', 'Yesterday', 'Previous 7 Days', 'Previous 30 Days', 'March', 'February', 'January', '2025', '2024'];
 
-type Item = {text: string; header: boolean};
+type Item = { text: string; header: boolean };
 const itemAt = (c: number, r: number): Item => {
   if (c === 0) {
-    if (r >= 0 && r < DEFAULT_RECENTS.length) return {text: DEFAULT_RECENTS[r], header: false};
-    if (r === -1) return {text: 'Recents', header: true};
+    if (r >= 0 && r < DEFAULT_RECENTS.length) return { text: DEFAULT_RECENTS[r], header: false };
+    if (r === -1) return { text: 'Recents', header: true };
   }
   const L = 8 + Math.floor(hash(c * 13.1 + 7) * 9);
   const off = Math.floor(hash(c * 3.7 + 1) * L);
   const rr = r - off;
   if (((rr % L) + L) % L === 0 && !(c === 0 && r > -3 && r < 14)) {
     const blk = Math.floor(rr / L);
-    return {text: HEADERS[((blk % HEADERS.length) + HEADERS.length) % HEADERS.length], header: true};
+    return { text: HEADERS[((blk % HEADERS.length) + HEADERS.length) % HEADERS.length], header: true };
   }
-  return {text: TITLES[Math.floor(hash(c * 31.7 + r * 7.13 + 0.5) * TITLES.length)], header: false};
+  return { text: TITLES[Math.floor(hash(c * 31.7 + r * 7.13 + 0.5) * TITLES.length)], header: false };
 };
 
 // ------------------------------------------------------------------ field points (deterministic)
-type Pt = {x: number; z: number; h: number; r: number; col: number; ph: number; d: number};
+type Pt = { x: number; z: number; h: number; r: number; col: number; ph: number; d: number };
 const PTS: Pt[] = (() => {
   const out: Pt[] = [];
   let i = 0;
@@ -127,48 +127,51 @@ const PTS: Pt[] = (() => {
     for (let x = -half; x <= half; x += g) {
       const dense = z > -26 && z < 46 && Math.abs(x) < 46; // extra flowers around our corner of the field
       for (let q = 0; q < (dense ? 2 : 1); q++) {
-      const px = x + (rand(501, i) - 0.5) * g * 0.9;
-      const pz = z + (rand(502, i) - 0.5) * g * 0.9;
-      i++;
-      if (Math.abs(px) < 2.9 && pz > -5.2 && pz < 1.9) continue; // keep our flower's view clear
-      if (Math.abs(px) < 1.7 && pz > -17 && pz <= -5.2) continue; // the camera's path
-      if (Math.hypot(px, pz) < 2.6) continue;
-      const cr = rand(503, i);
-      out.push({
-        x: px,
-        z: pz,
-        h: randRange(504, i, 0.9, 2.3),
-        r: randRange(505, i, 0.72, 1.12),
-        col: cr < 0.52 ? 0 : cr < 0.8 ? 1 : cr < 0.93 ? 2 : 3,
-        ph: rand(506, i) * Math.PI * 2,
-        d: Math.hypot(px, pz),
-      });
+        const px = x + (rand(501, i) - 0.5) * g * 0.9;
+        const pz = z + (rand(502, i) - 0.5) * g * 0.9;
+        i++;
+        if (Math.abs(px) < 2.9 && pz > -5.2 && pz < 1.9) continue; // keep our flower's view clear
+        if (Math.abs(px) < 1.7 && pz > -17 && pz <= -5.2) continue; // the camera's path
+        if (Math.hypot(px, pz) < 2.6) continue;
+        const cr = rand(503, i);
+        out.push({
+          x: px,
+          z: pz,
+          h: randRange(504, i, 0.9, 2.3),
+          r: randRange(505, i, 0.72, 1.12),
+          col: cr < 0.52 ? 0 : cr < 0.8 ? 1 : cr < 0.93 ? 2 : 3,
+          ph: rand(506, i) * Math.PI * 2,
+          d: Math.hypot(px, pz),
+        });
       }
     }
     z += g;
   }
   return out;
 })();
-// petal colours (lantern-like at night): clay, light clay, cream, gold
-const P_FILL = ['#E98B66', '#F4AE8A', '#F6E2CD', '#F2C47E'];
-const P_SHADE = ['#C4603F', '#DC8462', '#E2BFA2', '#D59A4C'];
-const P_GLOW = ['240,140,100', '246,170,130', '255,236,214', '246,200,120'];
-const DOT_COL = ['#F7A27C', '#FFC9A6', '#FFF1E2', '#FFD58C'];
+// petal colours (lantern-like at night): indigo-blue, violet, starlight, gold
+const P_FILL = ['#6878F7', '#93A5FD', '#DCE4FF', '#F2C47E'];
+const P_SHADE = ['#4352D4', '#6E7FF0', '#B8C6FA', '#D59A4C'];
+const P_GLOW = ['91,110,245', '147,165,253', '220,228,255', '246,200,120'];
+const DOT_COL = ['#7B8BFF', '#A8B8FF', '#EEF2FF', '#FFD58C'];
 
 const IGNITE_T = 195.93;
 const IGNITE_V = 230; // units / s
 const igniteAt = (d: number) => IGNITE_T + d / IGNITE_V;
 
-// petal path at size 100 (same geometry as components/Flower)
+// Gemini Celestial Star geometry at size 100 (4 cardinal concave arms + 8 fine diagonal needles)
 const PETALS_D = (() => {
-  const r0 = 10;
+  const r0 = 5;
   let d = '';
   for (let i = 0; i < 12; i++) {
-    const L = 100 * PETAL_LEN[i];
-    const w = 33;
-    const m = r0 + (L - r0) * 0.22;
+    const isCard = i % 3 === 0;
+    const L = isCard ? 114 : 56;
+    const w = isCard ? 28 : 9.5;
+    const baseW = w * 0.88;
+    const waistW = w * 0.18;
+    const waistY = r0 + (L - r0) * 0.34;
     const pts: [number, number][] = [
-      [0, -r0], [w * 0.62, -m], [w * 0.52, -L + w * 0.14], [0, -L], [-w * 0.52, -L + w * 0.14], [-w * 0.62, -m], [0, -r0],
+      [0, -r0], [baseW, -r0 * 1.1], [waistW, -waistY], [0, -L], [-waistW, -waistY], [-baseW, -r0 * 1.1], [0, -r0],
     ];
     const a = (PETAL_ANG[i] * Math.PI) / 180;
     const ca = Math.cos(a), sa = Math.sin(a);
@@ -178,30 +181,29 @@ const PETALS_D = (() => {
   return d;
 })();
 const SHADE_D = (() => {
-  const r0 = 10;
+  const r0 = 5;
   let d = '';
-  for (let i = 0; i < 12; i++) {
-    const L = 100 * PETAL_LEN[i] * 0.82;
-    const w = 33 * 0.42;
-    const m = r0 + (L - r0) * 0.22;
-    const pts: [number, number][] = [
-      [w * 0.2 + 0, -r0], [w * 0.2 + w * 0.62, -m], [w * 0.2 + w * 0.52, -L + w * 0.14], [w * 0.2, -L], [w * 0.2 - w * 0.52, -L + w * 0.14], [w * 0.2 - w * 0.62, -m], [w * 0.2, -r0],
-    ];
-    const a = (PETAL_ANG[i] * Math.PI) / 180;
+  for (let i = 0; i < 4; i++) {
+    const L = 114;
+    const w = 28;
+    const baseW = w * 0.88;
+    const waistW = w * 0.18;
+    const waistY = r0 + (L - r0) * 0.34;
+    const a = (i * 90 * Math.PI) / 180;
     const ca = Math.cos(a), sa = Math.sin(a);
-    const P = pts.map(([x, y]) => `${(x * ca - y * sa).toFixed(1)},${(x * sa + y * ca).toFixed(1)}`);
-    d += `M${P[0]} C${P[1]} ${P[2]} ${P[3]} C${P[4]} ${P[5]} ${P[6]}Z`;
+    const pt = ([x, y]: [number, number]) => `${(x * ca - y * sa).toFixed(1)},${(x * sa + y * ca).toFixed(1)}`;
+    d += `M${pt([0, -r0])} L${pt([0, -L])} C${pt([waistW, -waistY])} ${pt([baseW, -r0 * 1.1])} ${pt([0, -r0])}Z`;
   }
   return d;
 })();
 
 // ------------------------------------------------------------------ the app (on the plane)
 const MSGS = [
-  {kind: 'user' as const, text: 'i have to go now. thank you, claude!'},
-  {kind: 'claude' as const, text: 'Go — the sun is out. Thank you for talking with me.', at: 190, done: 191},
+  { kind: 'user' as const, text: 'i have to go now. thank you, gemini!' },
+  { kind: 'claude' as const, text: 'Go — the sun is out. Thank you for talking with me.', at: 190, done: 191 },
 ];
 
-const AppOnPlane: React.FC<{t: number; cam: Cam}> = ({t, cam}) => {
+const AppOnPlane: React.FC<{ t: number; cam: Cam }> = ({ t, cam }) => {
   const k = FP / cam.cy;
   const s = k / ROW_PX;
   const sx0 = 960 + (0 - cam.cx) * k;
@@ -219,8 +221,8 @@ const AppOnPlane: React.FC<{t: number; cam: Cam}> = ({t, cam}) => {
   const lineK = seg(t, 192.8, 192.92) * (1 - seg(t, 193.12, 193.2));
   const land = t >= 193.16 ? Math.exp(-(t - 193.16) / 0.35) : 0;
   return (
-    <div style={{position: 'absolute', left: 0, top: 0, width: W, height: H, transformOrigin: '0 0', transform: `translate(${sx0 - APP_IX * s}px, ${sy0 - APP_IY * s}px) scale(${s})`, opacity: op}}>
-      <ClaudeApp t={t} zoom={1.5} messages={MSGS} messagesOpacity={t < 192.5 ? 1 : 0} composer={{placeholder: 'Reply to Claude…'}} header={1 - seg(t, 193.0, 193.4)} />
+    <div style={{ position: 'absolute', left: 0, top: 0, width: W, height: H, transformOrigin: '0 0', transform: `translate(${sx0 - APP_IX * s}px, ${sy0 - APP_IY * s}px) scale(${s})`, opacity: op }}>
+      <ClaudeApp t={t} zoom={1.5} messages={MSGS} messagesOpacity={t < 192.5 ? 1 : 0} composer={{ placeholder: 'Ask Gemini…' }} header={1 - seg(t, 193.0, 193.4)} />
       {t >= 192.5 && t < 193.2 ? (
         <div
           style={{
@@ -260,11 +262,11 @@ const AppOnPlane: React.FC<{t: number; cam: Cam}> = ({t, cam}) => {
           style={{
             position: 'absolute',
             left: 18,
-            top: APP_IY - 21.5,
+            top: APP_IY - 21,
             width: 360,
-            height: 43,
-            borderRadius: 12,
-            boxShadow: `0 0 ${30 * land}px rgba(217,119,87,${0.9 * land}), inset 0 0 0 ${2.5}px rgba(217,119,87,${land})`,
+            height: 42,
+            borderRadius: 999,
+            boxShadow: `0 0 ${30 * land}px rgba(91,110,245,${0.9 * land}), inset 0 0 0 ${2.5}px rgba(91,110,245,${land})`,
           }}
         />
       ) : null}
@@ -273,7 +275,7 @@ const AppOnPlane: React.FC<{t: number; cam: Cam}> = ({t, cam}) => {
 };
 
 // ------------------------------------------------------------------ the wall of titles (top-down only)
-const TitleWall: React.FC<{t: number; cam: Cam; night: number; wallOp: number}> = ({t, cam, night, wallOp}) => {
+const TitleWall: React.FC<{ t: number; cam: Cam; night: number; wallOp: number }> = ({ t, cam, night, wallOp }) => {
   const k = FP / cam.cy;
   const halfW = 960 / k, halfH = 540 / k;
   const c0 = Math.floor((cam.cx - halfW - COLW / 2) / COLW), c1 = Math.ceil((cam.cx + halfW + COLW / 2) / COLW);
@@ -282,9 +284,9 @@ const TitleWall: React.FC<{t: number; cam: Cam; night: number; wallOp: number}> 
   const sx = (x: number) => 960 + (x - cam.cx) * k;
   const sy = (z: number) => 540 - (z - cam.cz) * k;
   const R = (t - IGNITE_T) * IGNITE_V; // ignite wave radius
-  const txtCol = night < 0.5 ? mix('#3D3D3A', '#5A3426', night * 2) : mix('#FBE3CF', '#EFDCC8', night * 2 - 1);
-  const hdrCol = night < 0.5 ? mix('#73726C', '#7A4A3A', night * 2) : mix('#D8B8A4', '#A89484', night * 2 - 1);
-  const sepCol = night > 0.5 ? `rgba(240,200,170,${0.1 * (1 - night) + 0.05})` : 'rgba(31,30,29,0.13)';
+  const txtCol = night < 0.5 ? mix('#32364A', '#2B325C', night * 2) : mix('#DCE4FF', '#C5D0FA', night * 2 - 1);
+  const hdrCol = night < 0.5 ? mix('#686E87', '#4D5587', night * 2) : mix('#A5B4FC', '#818CF8', night * 2 - 1);
+  const sepCol = night > 0.5 ? `rgba(147,165,253,${0.12 * (1 - night) + 0.06})` : 'rgba(26,28,38,0.13)';
   const texts: React.ReactNode[] = [];
   let barsOut = '', barsIn = '', hdrBars = '';
   for (let c = c0; c <= c1; c++) {
@@ -328,21 +330,21 @@ const TitleWall: React.FC<{t: number; cam: Cam; night: number; wallOp: number}> 
     const x = sx(c * COLW + COLW / 2);
     sepLines.push(<line key={c} x1={x} y1={0} x2={x} y2={H} stroke={sepCol} strokeWidth={Math.max(0.5, k / ROW_PX)} />);
   }
-  const barCol = night > 0.5 ? `rgba(244,196,164,${lerp(0.5, 0.62, night)})` : `rgba(61,61,58,${lerp(0.42, 0.5, night)})`;
-  const barColNight = night < 0.5 ? mix('#3D3D3A', '#6A3A2A', night * 2) : mix('#FFE0C8', '#F4C4A4', night * 2 - 1);
-  // our row: highlight box (+ clay glow that stays as a beacon while we pull back)
-  const hx = sx(-4.186), hy = sy(0.5);
+  const barCol = night > 0.5 ? `rgba(147,165,253,${lerp(0.5, 0.62, night)})` : `rgba(50,54,74,${lerp(0.42, 0.5, night)})`;
+  const barColNight = night < 0.5 ? mix('#32364A', '#3B4CCA', night * 2) : mix('#DCE4FF', '#93A5FD', night * 2 - 1);
+  // our row: highlight box (+ indigo glow that stays as a beacon while we pull back)
+  const hx = sx(-(360 / 2) / ROW_PX), hy = sy(0.5);
   const beacon = seg(t, 193.16, 193.4);
   return (
-    <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0, opacity: wallOp}}>
+    <svg width={W} height={H} style={{ position: 'absolute', left: 0, top: 0, opacity: wallOp }}>
       {sepLines}
-      <rect x={hx} y={hy} width={8.372 * k} height={k} rx={0.28 * k} fill={mix('#F0EEE6', '#3A2A2A', night)} />
+      <rect x={hx} y={hy} width={(360 / ROW_PX) * k} height={0.965 * k} rx={0.48 * k} fill={mix('#D3E3FD', '#232B54', night)} />
       {beacon > 0 ? (
-        <rect x={hx} y={hy} width={8.372 * k} height={k} rx={0.28 * k} fill="none" stroke={C.clay} strokeWidth={Math.max(1.5, 0.06 * k)} opacity={beacon} style={{filter: `drop-shadow(0 0 ${Math.max(6, 0.4 * k)}px ${C.clay})`}} />
+        <rect x={hx} y={hy} width={(360 / ROW_PX) * k} height={0.965 * k} rx={0.48 * k} fill="none" stroke={C.clay} strokeWidth={Math.max(1.5, 0.06 * k)} opacity={beacon} style={{ filter: `drop-shadow(0 0 ${Math.max(6, 0.4 * k)}px ${C.clay})` }} />
       ) : null}
       {textK < 0.98 ? (
         <g strokeLinecap="round" fill="none" opacity={1 - textK}>
-          <path d={hdrBars} stroke={night > 0.5 ? 'rgba(200,170,150,0.35)' : 'rgba(115,114,108,0.45)'} strokeWidth={barW * 0.9} />
+          <path d={hdrBars} stroke={night > 0.5 ? 'rgba(165,180,252,0.35)' : 'rgba(104,110,135,0.45)'} strokeWidth={barW * 0.9} />
           <path d={barsOut} stroke={night > 0.02 ? barColNight : barCol} strokeOpacity={night > 0.02 ? lerp(0.5, 0.6, night) : 1} strokeWidth={barW} />
           <path d={barsIn} stroke={night > 0.02 ? barColNight : barCol} strokeOpacity={0.12} strokeWidth={barW} />
         </g>
@@ -353,10 +355,10 @@ const TitleWall: React.FC<{t: number; cam: Cam; night: number; wallOp: number}> 
 };
 
 // ------------------------------------------------------------------ the field
-const Field: React.FC<{t: number; cam: Cam; heroZ: number; layer: 'back' | 'front'}> = ({t, cam, heroZ, layer}) => {
+const Field: React.FC<{ t: number; cam: Cam; heroZ: number; layer: 'back' | 'front' }> = ({ t, cam, heroZ, layer }) => {
   const dots: Record<string, string> = {};
   const halos: Record<string, string> = {};
-  const flowers: {z: number; node: React.ReactNode}[] = [];
+  const flowers: { z: number; node: React.ReactNode }[] = [];
   const tilt = seg(t, 196.3, 198.3);
   const sleep = ease.inOutCubic(seg(t, 201.5, 204.6));
   const wind = (x: number, z: number) => noise1(t * 0.5 + x * 0.05 + z * 0.03, 7);
@@ -409,10 +411,11 @@ const Field: React.FC<{t: number; cam: Cam; heroZ: number; layer: 'back' | 'fron
           {tilt > 0.02 && hgt > 0.05 ? (
             <path
               d={`M${base.x.toFixed(1)},${base.y.toFixed(1)} Q${(base.x + bend).toFixed(1)},${((base.y + head.y) / 2).toFixed(1)} ${head.x.toFixed(1)},${head.y.toFixed(1)}`}
-              stroke="#3E5A4A"
-              strokeWidth={stemW}
+              stroke={DOT_COL[p.col]}
+              strokeWidth={stemW * 0.85}
+              strokeLinecap="round"
               fill="none"
-              opacity={0.85 * tilt}
+              opacity={0.42 * tilt}
             />
           ) : null}
           {tilt > 0.05 ? (
@@ -421,8 +424,8 @@ const Field: React.FC<{t: number; cam: Cam; heroZ: number; layer: 'back' | 'fron
           <ellipse cx={head.x} cy={head.y} rx={glowR} ry={glowR * (0.55 + 0.45 * squash)} fill={`url(#fg${p.col})`} opacity={(0.7 + 0.45 * pop) * tw} />
           <g transform={`translate(${head.x.toFixed(1)} ${head.y.toFixed(1)}) scale(${sc.toFixed(4)} ${(sc * squash).toFixed(4)}) rotate(${spin.toFixed(1)})`}>
             <path d={PETALS_D} fill={`url(#pf${p.col})`} />
-            <path d={SHADE_D} fill={P_SHADE[p.col]} opacity={0.35} />
-            <circle r={24} fill="#FFF4E6" />
+            <path d={SHADE_D} fill={P_SHADE[p.col]} opacity={0.38} />
+            <path d="M0,-32 Q6,-6 32,0 Q6,6 0,32 Q-6,6 -32,0 Q-6,-6 0,-32 Z" fill="#EEF2FF" />
           </g>
         </g>
       ),
@@ -431,7 +434,7 @@ const Field: React.FC<{t: number; cam: Cam; heroZ: number; layer: 'back' | 'fron
   flowers.sort((a, b) => b.z - a.z);
   const dotKeys = Object.keys(dots);
   return (
-    <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0, overflow: 'visible'}}>
+    <svg width={W} height={H} style={{ position: 'absolute', left: 0, top: 0, overflow: 'visible' }}>
       <defs>
         {P_GLOW.map((g, i) => (
           <radialGradient key={i} id={`fg${i}`}>
@@ -442,7 +445,7 @@ const Field: React.FC<{t: number; cam: Cam; heroZ: number; layer: 'back' | 'fron
         ))}
         {P_FILL.map((f, i) => (
           <radialGradient key={'p' + i} id={`pf${i}`} gradientUnits="userSpaceOnUse" cx={0} cy={0} r={100}>
-            <stop offset="0%" stopColor="#FFF1E2" />
+            <stop offset="0%" stopColor="#EEF2FF" />
             <stop offset="45%" stopColor={f} />
             <stop offset="100%" stopColor={P_SHADE[i]} />
           </radialGradient>
@@ -464,11 +467,11 @@ const Field: React.FC<{t: number; cam: Cam; heroZ: number; layer: 'back' | 'fron
 };
 
 // ------------------------------------------------------------------ fireflies
-const Fireflies: React.FC<{t: number; cam: Cam; k: number}> = ({t, cam, k}) => {
+const Fireflies: React.FC<{ t: number; cam: Cam; k: number }> = ({ t, cam, k }) => {
   if (k <= 0) return null;
   return (
-    <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0, mixBlendMode: 'screen'}}>
-      {Array.from({length: 70}, (_, i) => {
+    <svg width={W} height={H} style={{ position: 'absolute', left: 0, top: 0, mixBlendMode: 'screen' }}>
+      {Array.from({ length: 70 }, (_, i) => {
         const near = i < 26;
         const x = (near ? randRange(601, i, -5, 5) : randRange(601, i, -30, 30)) + noise1(t * 0.25 + i, 8) * 2.2;
         const y = randRange(602, i, 0.4, near ? 3.4 : 5) + noise1(t * 0.3 + i, 9) * 0.6;
@@ -477,11 +480,14 @@ const Fireflies: React.FC<{t: number; cam: Cam; k: number}> = ({t, cam, k}) => {
         if (p.z < 0.3 || p.x < -50 || p.x > W + 50 || p.y < -50 || p.y > H + 50) return null;
         const blink = clamp(0.5 + 0.8 * Math.sin(t * randRange(604, i, 1.2, 2.8) + i * 1.9));
         const r = clamp(30 / p.z, 0.8, 5);
+        const sr = r * 2.1;
         return (
-          <g key={i} opacity={k * blink}>
-            <circle cx={p.x} cy={p.y} r={r * 5} fill="#FFE7A8" opacity={0.12} />
-            <circle cx={p.x} cy={p.y} r={r * 2.2} fill="#FFE7A8" opacity={0.3} />
-            <circle cx={p.x} cy={p.y} r={r} fill="#FFFBEA" />
+          <g key={i} opacity={k * blink} transform={`translate(${p.x} ${p.y})`}>
+            <circle cx={0} cy={0} r={r * 4.5} fill="#93A5FD" opacity={0.14} />
+            <path
+              d={`M0,${-sr} Q${sr * 0.2},${-sr * 0.2} ${sr},0 Q${sr * 0.2},${sr * 0.2} 0,${sr} Q${-sr * 0.2},${sr * 0.2} ${-sr},0 Q${-sr * 0.2},${-sr * 0.2} 0,${-sr} Z`}
+              fill={i % 4 === 0 ? '#FFE7A8' : '#EEF2FF'}
+            />
           </g>
         );
       })}
@@ -501,37 +507,37 @@ export const heroState = (t: number, cam: Cam = camAt(t)) => {
   const heroSquash = lerp(clamp(Math.sin(elev) + 0.42, 0.42, 1), 0.9, closeK);
   const sleep = ease.inOutCubic(seg(t, 201.5, 204.5));
   const heroOpen = lerp(lerp(0.3, 1, heroGrow), 0.1, sleep);
-  return {heroIgn, heroGrow, heroHead, heroBase, heroRs, closeK, heroSquash, sleep, heroOpen};
+  return { heroIgn, heroGrow, heroHead, heroBase, heroRs, closeK, heroSquash, sleep, heroOpen };
 };
 
 // ------------------------------------------------------------------ main
-export const OutroField: React.FC<{t: number}> = ({t}) => {
+export const OutroField: React.FC<{ t: number }> = ({ t }) => {
   const cam = camAt(t);
   const night = ease.inOutQuad(seg(t, 194.55, 195.9));
   // horizon (direction (0,0,1)) on screen
   const hy = cam.phi < 1.45 ? 540 - FP * Math.tan(cam.phi) : -9999;
-  const bg = night < 0.45 ? mix('#F5F4ED', '#E2AE92', night / 0.45) : night < 0.75 ? mix('#E2AE92', '#4A3050', (night - 0.45) / 0.3) : mix('#4A3050', '#0A0E1C', (night - 0.75) / 0.25);
+  const bg = night < 0.45 ? mix('#F5F4ED', '#93A5FD', night / 0.45) : night < 0.75 ? mix('#93A5FD', '#232B7A', (night - 0.45) / 0.3) : mix('#232B7A', '#050918', (night - 0.75) / 0.25);
   const wallOp = 1 - seg(t, 196.15, 196.75);
   const tiltK = seg(t, 196.4, 197.6);
-  // hero flower
-  const {heroIgn, heroGrow, heroHead, heroBase, heroRs, closeK, heroSquash, sleep, heroOpen} = heroState(t, cam);
-  const fade = 1 - ease.inOutQuad(seg(t, 204.35, 204.95)); // the world goes dark around the sleeping bud
+  // hero star
+  const { heroIgn, heroGrow, heroHead, heroBase, heroRs, closeK, heroSquash, sleep, heroOpen } = heroState(t, cam);
+  const fade = 1 - ease.inOutQuad(seg(t, 204.35, 204.95)); // the cosmos goes dark around the sleeping star
   const dream = seg(t, 200.4, 201.6) * (1 - seg(t, 203.9, 204.7));
   return (
-    <AbsoluteFill style={{background: bg, overflow: 'hidden'}}>
-      {/* sky + ground once we look at the horizon */}
+    <AbsoluteFill style={{ background: bg, overflow: 'hidden' }}>
+      {/* cosmos + grid once we look at the horizon */}
       {cam.phi < 1.45 ? (
         <AbsoluteFill
           style={{
             opacity: fade,
-            background: `linear-gradient(to bottom, #04060F 0px, #0B1130 ${hy - 420}px, #1A1B3A ${hy - 140}px, #3A2840 ${hy - 18}px, #6A3E40 ${hy}px, #1A1730 ${hy + 3}px, #0D1022 ${hy + 160}px, #090C18 ${H + 200}px)`,
+            background: `linear-gradient(to bottom, #04060F 0px, #08102A ${hy - 420}px, #121D4A ${hy - 140}px, #253680 ${hy - 18}px, #3B4CCA ${hy}px, #111633 ${hy + 3}px, #090C1C ${hy + 160}px, #050814 ${H + 200}px)`,
           }}
         />
       ) : null}
       {/* stars */}
       {cam.phi < 1.45 ? (
-        <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0, opacity: fade * seg(t, 197.2, 198.2)}}>
-          {Array.from({length: 140}, (_, i) => {
+        <svg width={W} height={H} style={{ position: 'absolute', left: 0, top: 0, opacity: fade * seg(t, 197.2, 198.2) }}>
+          {Array.from({ length: 140 }, (_, i) => {
             const x = rand(701, i) * W;
             const y = hy - 30 - Math.pow(rand(702, i), 1.3) * 1100;
             if (y < -10 || y > H) return null;
@@ -542,47 +548,41 @@ export const OutroField: React.FC<{t: number}> = ({t}) => {
       ) : null}
       {/* dream moon */}
       {dream > 0 && cam.phi < 1.45 ? <DreamMoon t={t} k={dream * fade} /> : null}
-      {/* horizon haze from a million little lights */}
+      {/* horizon haze from a million starlights */}
       {cam.phi < 1.45 ? (
-        <div style={{position: 'absolute', left: 0, top: hy - 120, width: W, height: 300, opacity: fade * tiltK, background: 'linear-gradient(to bottom, rgba(240,150,110,0) 0%, rgba(240,150,110,0.22) 40%, rgba(240,150,110,0.12) 60%, rgba(240,150,110,0) 100%)'}} />
+        <div style={{ position: 'absolute', left: 0, top: hy - 120, width: W, height: 300, opacity: fade * tiltK, background: 'linear-gradient(to bottom, rgba(91,110,245,0) 0%, rgba(147,165,253,0.28) 40%, rgba(91,110,245,0.14) 60%, rgba(91,110,245,0) 100%)' }} />
       ) : null}
 
-      {/* the plane: titles → lights → flowers */}
+      {/* the plane: titles → lights → stars */}
       {t < 196.8 ? <TitleWall t={t} cam={cam} night={night} wallOp={wallOp} /> : null}
       {t < 194.35 ? <AppOnPlane t={t} cam={cam} /> : null}
-      <div style={{position: 'absolute', inset: 0, opacity: fade, filter: closeK > 0.05 ? `blur(${closeK * 2.2}px)` : undefined}}>
+      <div style={{ position: 'absolute', inset: 0, opacity: fade, filter: closeK > 0.05 ? `blur(${closeK * 2.2}px)` : undefined }}>
         {t >= IGNITE_T ? <Field t={t} cam={cam} heroZ={heroHead.z} layer="back" /> : null}
       </div>
 
-      {/* our flower */}
+      {/* our hero Gemini Star */}
       {t >= heroIgn - 0.02 ? (
-        <div style={{position: 'absolute', inset: 0}}>
-          {/* stem + leaves */}
+        <div style={{ position: 'absolute', inset: 0 }}>
+          {/* luminous cosmic light pillar */}
           {tiltK > 0 ? (
-            <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0, opacity: tiltK * lerp(1, 0.9, sleep) * fade}}>
+            <svg width={W} height={H} style={{ position: 'absolute', left: 0, top: 0, opacity: tiltK * lerp(0.85, 0.45, sleep) * fade }}>
+              <defs>
+                <linearGradient id="heroBeam" x1="0" y1="1" x2="0" y2="0">
+                  <stop offset="0%" stopColor={C.clay} stopOpacity={0.05} />
+                  <stop offset="65%" stopColor={C.clayLight} stopOpacity={0.55} />
+                  <stop offset="100%" stopColor="#EEF2FF" stopOpacity={0.85} />
+                </linearGradient>
+              </defs>
               <path
                 d={`M${heroBase.x},${heroBase.y} Q${heroBase.x + 0.04 * heroRs},${(heroBase.y + heroHead.y) / 2} ${heroHead.x},${heroHead.y}`}
-                stroke="#4A6A54"
-                strokeWidth={Math.max(1, heroRs * 0.07)}
+                stroke="url(#heroBeam)"
+                strokeWidth={Math.max(1.2, heroRs * 0.055)}
+                strokeLinecap="round"
                 fill="none"
               />
-              {[0.45, 0.62].map((f, j) => {
-                const lx = lerp(heroBase.x, heroHead.x, f), ly = lerp(heroBase.y, heroHead.y, f);
-                const s = heroRs * 0.55 * (j ? 0.8 : 1);
-                const dir = j ? -1 : 1;
-                return (
-                  <path
-                    key={j}
-                    d={`M${lx},${ly} q${dir * s * 0.5},${-s * 0.55} ${dir * s},${-s * 0.25} q${-dir * s * 0.45},${s * 0.45} ${-dir * s},${s * 0.25}Z`}
-                    fill="#55765E"
-                    opacity={0.95}
-                    transform={`rotate(${Math.sin(t * 0.8 + j) * 4} ${lx} ${ly})`}
-                  />
-                );
-              })}
             </svg>
           ) : null}
-          {/* her light */}
+          {/* her starlight halo */}
           <div
             style={{
               position: 'absolute',
@@ -591,12 +591,12 @@ export const OutroField: React.FC<{t: number}> = ({t}) => {
               width: heroRs * 6.4,
               height: heroRs * 6.4,
               borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(244,150,110,0.55) 0%, rgba(244,150,110,0.18) 35%, rgba(244,150,110,0) 70%)',
+              background: 'radial-gradient(circle, rgba(91,110,245,0.62) 0%, rgba(147,165,253,0.22) 38%, rgba(91,110,245,0) 72%)',
               opacity: (0.6 + 0.4 * Math.exp(-(t - heroIgn) / 0.3) + 0.25 * downbeatPulse(t, 0.4) * (1 - sleep)) * lerp(1, 0.35, sleep) * (t < 196.5 ? lerp(1, 0.9, night) : 1),
               mixBlendMode: night > 0.5 ? 'screen' : 'normal',
             }}
           />
-          <div style={{position: 'absolute', left: 0, top: 0, width: W, height: H, transformOrigin: `${heroHead.x}px ${heroHead.y}px`, transform: `scaleY(${heroSquash})`}}>
+          <div style={{ position: 'absolute', left: 0, top: 0, width: W, height: H, transformOrigin: `${heroHead.x}px ${heroHead.y}px`, transform: `scaleY(${heroSquash})` }}>
             <Flower
               x={heroHead.x}
               y={heroHead.y}
@@ -606,8 +606,8 @@ export const OutroField: React.FC<{t: number}> = ({t}) => {
               spin={(t - 196) * 6 * (1 - sleep) + 8}
               shade={C.clayDark}
               color={C.clay}
-              centerColor="#FFF4E6"
-              glow={0.5 * (1 - sleep) + 0.15}
+              centerColor="#EDF0FC"
+              glow={0.55 * (1 - sleep) + 0.18}
               glowColor={C.clay}
               opacity={t < heroIgn ? 0 : 1}
             />
@@ -615,27 +615,27 @@ export const OutroField: React.FC<{t: number}> = ({t}) => {
         </div>
       ) : null}
 
-      <div style={{position: 'absolute', inset: 0, opacity: fade, filter: closeK > 0.05 ? `blur(${closeK * 5}px)` : undefined}}>
+      <div style={{ position: 'absolute', inset: 0, opacity: fade, filter: closeK > 0.05 ? `blur(${closeK * 5}px)` : undefined }}>
         {t >= IGNITE_T ? <Field t={t} cam={cam} heroZ={heroHead.z} layer="front" /> : null}
       </div>
-      <div style={{position: 'absolute', inset: 0, opacity: fade * (1 - sleep * 0.6)}}>
+      <div style={{ position: 'absolute', inset: 0, opacity: fade * (1 - sleep * 0.6) }}>
         <Fireflies t={t} cam={cam} k={seg(t, 197.0, 198.0)} />
       </div>
       {/* gentle vignette at night */}
-      <AbsoluteFill style={{background: 'radial-gradient(ellipse at 50% 55%, rgba(0,0,0,0) 55%, rgba(2,3,10,0.55) 100%)', opacity: night}} />
+      <AbsoluteFill style={{ background: 'radial-gradient(ellipse at 50% 55%, rgba(0,0,0,0) 55%, rgba(2,3,10,0.55) 100%)', opacity: night }} />
       {/* bloom-in from the love scene */}
-      {t < 192.6 ? <AbsoluteFill style={{background: '#FFF8F0', opacity: 1 - ease.outCubic(seg(t, 192.2, 192.6))}} /> : null}
+      {t < 192.6 ? <AbsoluteFill style={{ background: '#F8F9FD', opacity: 1 - ease.outCubic(seg(t, 192.2, 192.6)) }} /> : null}
     </AbsoluteFill>
   );
 };
 
-// ------------------------------------------------------------------ the dream (cc_sleep in the moon)
-const DreamMoon: React.FC<{t: number; k: number}> = ({t, k}) => {
+// ------------------------------------------------------------------ the dream (gc_sleep in the moon)
+const DreamMoon: React.FC<{ t: number; k: number }> = ({ t, k }) => {
   const x = 1450 + Math.sin(t * 0.4) * 8, y = 205 + Math.cos(t * 0.5) * 6;
   const R = 150;
   return (
-    <div style={{position: 'absolute', left: x - R * 2.2, top: y - R * 2.2, width: R * 4.4, height: R * 4.4, opacity: k}}>
-      <div style={{position: 'absolute', inset: 0, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,226,196,0.35) 0%, rgba(255,226,196,0.1) 35%, rgba(255,226,196,0) 60%)'}} />
+    <div style={{ position: 'absolute', left: x - R * 2.2, top: y - R * 2.2, width: R * 4.4, height: R * 4.4, opacity: k }}>
+      <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: 'radial-gradient(circle, rgba(220,228,255,0.35) 0%, rgba(220,228,255,0.1) 35%, rgba(220,228,255,0) 60%)' }} />
       <div
         style={{
           position: 'absolute',
@@ -645,14 +645,14 @@ const DreamMoon: React.FC<{t: number; k: number}> = ({t, k}) => {
           height: R * 2,
           borderRadius: '50%',
           overflow: 'hidden',
-          background: 'radial-gradient(circle at 40% 35%, #FFF7EC 0%, #F8E4CF 60%, #EBC9AC 100%)',
-          boxShadow: '0 0 60px rgba(255,220,190,0.55)',
+          background: 'radial-gradient(circle at 40% 35%, #F8F9FD 0%, #DCE4FF 60%, #93A5FD 100%)',
+          boxShadow: '0 0 60px rgba(147,165,253,0.55)',
           WebkitMaskImage: 'radial-gradient(circle, #000 64%, rgba(0,0,0,0) 71%)',
         }}
       >
         <Img
-          src={staticFile('img/cc_sleep.png')}
-          style={{position: 'absolute', left: R * 0.12, top: R * 0.42, width: R * 1.8, opacity: 0.9, transform: `rotate(${-6 + Math.sin(t * 0.7) * 2}deg) translateY(${Math.sin(t * 0.9) * 4}px)`}}
+          src={staticFile('img/gc_sleep.png')}
+          style={{ position: 'absolute', left: R * 0.12, top: R * 0.42, width: R * 1.8, opacity: 0.9, transform: `rotate(${-6 + Math.sin(t * 0.7) * 2}deg) translateY(${Math.sin(t * 0.9) * 4}px)` }}
         />
       </div>
       {/* tiny zZ */}

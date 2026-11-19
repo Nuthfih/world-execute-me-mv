@@ -19,7 +19,7 @@ import {KVImage, PetalSnow, StarVoid} from './parts/chorus3_sphere';
 // 162.63–177.25  FINAL CHORUS — the turning point (restraint over control).
 //  If I can give them all the EXECUTION  → windows keep spawning; she executes them in waves
 //  Then I can be your only EXECUTION     → her window maximizes: she IS the only window… the chair is empty
-//  If I can have you back                → cc_dark, palm on the glass, hollow eyes waver
+//  If I can have you back                → gc_dark, palm on the glass, hollow eyes waver
 //  I will run the EXECUTION              → she draws back; cracks spider across the screen
 //  Though we are trapped / … ah          → she STOPS. Black drains to clay; cracks heal into the dome (kv_sphere)
 // ---------------------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ const CUE_RUN = cueAt('I will run the', 171.8);
 const CUE_TRAP1 = cueAt('Though we are trapped', 173.6);
 const CUE_TRAP2 = cueAt('We are trapped ah', 174.9);
 
-// cc_dark: palm + eye positions (normalized in image) → screen, for h=1250, left=520, top=30
+// gc_dark: palm + eye positions (normalized in image) → screen, for h=1250, left=520, top=30
 const DARK_H = 1200;
 const DARK_W = DARK_H * (1040 / 1552);
 const DARK_L = 520;
@@ -57,7 +57,7 @@ const dk = (nx: number, ny: number) => ({x: DARK_L + nx * DARK_W, y: DARK_T + ny
 const PALM = dk(0.315, 0.622);
 const DARK_EYES = [dk(0.418, 0.292), dk(0.583, 0.258)];
 
-// cc_dark_face close-up: h=1300 → w=1920, left 0, top -140
+// gc_dark_face close-up: h=1300 → w=1920, left 0, top -140
 const FACE_H = 1300;
 const FACE_W = FACE_H * (1536 / 1040);
 const FACE_L = 960 - FACE_W / 2;
@@ -140,7 +140,7 @@ export const S11Chorus3: React.FC<{t: number}> = ({t}) => {
     const k = ease.inOutCubic(seg(t, a, a + 0.32));
     return {color: mix(C.ink2, C.clay, k), scale: 1 + 0.18 * Math.sin(Math.PI * k)};
   });
-  const ornEdge = mix(C.clay, '#FFF1E4', seg(t, 174.3, 174.9));
+  const ornEdge = mix(C.clay, '#EDF0FC', seg(t, 174.3, 174.9));
   const drainAll = seg(t, 173.95, 174.95);
   const lightBack = ease.inOutCubic(seg(t, 174.25, 174.85));
   const warmUp = ease.inOutCubic(seg(t, 173.9, 175.2));
@@ -158,7 +158,7 @@ export const S11Chorus3: React.FC<{t: number}> = ({t}) => {
             {/* -------------------------------------------------- A/B desktop + maximize */}
             {desktopOn ? (
               <AbsoluteFill style={{transform: `translate(${shA.x}px, ${shA.y}px) scale(${1 + 0.06 * ease.inOutCubic(seg(t, 166.75, EMPTY_IN + 0.2))})`, transformOrigin: '300px 380px', opacity: 1 - emptyK}}>
-                <AbsoluteFill style={{background: `radial-gradient(circle at ${GRID_CX}px ${GRID_CY}px, rgba(217,119,87,${(0.06 + 0.1 * waveK) * seg(t, 162.63, 162.95)}) 0%, rgba(217,119,87,0) 50%)`}} />
+                <AbsoluteFill style={{background: `radial-gradient(circle at ${GRID_CX}px ${GRID_CY}px, rgba(91,110,245,${(0.06 + 0.1 * waveK) * seg(t, 162.63, 162.95)}) 0%, rgba(91,110,245,0) 50%)`}} />
                 <GridWindows t={t} sweep={ease.inCubic(seg(t, MAXIMIZE, MAXIMIZE + 0.45))} />
                 {t < MAX_END ? <Waves t={t} /> : null}
                 <ClaudeWindow t={t} rect={rect} maxK={maxE} border={0.25 + 0.75 * waveK * (1 - maxE)} greenPress={greenPress} />
@@ -175,7 +175,7 @@ export const S11Chorus3: React.FC<{t: number}> = ({t}) => {
                       fontWeight: 300,
                       fontSize: 76,
                       letterSpacing: '-0.01em',
-                      color: '#E8E6DC',
+                      color: '#EDF0FC',
                       whiteSpace: 'nowrap',
                     }}
                   >
@@ -246,11 +246,11 @@ export const S11Chorus3: React.FC<{t: number}> = ({t}) => {
                       transformOrigin: `${DARK_L + DARK_W / 2}px ${DARK_T + DARK_H}px`,
                     }}
                   >
-                    <Sprite src="img/cc_dark.png" t={t} x={DARK_L + DARK_W / 2} y={DARK_T + DARK_H} h={DARK_H} float={3} seed={5} />
+                    <Sprite src="img/gc_dark.png" t={t} x={DARK_L + DARK_W / 2} y={DARK_T + DARK_H} h={DARK_H} float={3} seed={5} />
                     <Catchlights eyes={DARK_EYES} k={waver * 0.85} t={t} size={30} flicker={0.8} />
                   </AbsoluteFill>
                   {/* the glass: contact glow, reflection of the empty room, specular streaks */}
-                  <AbsoluteFill style={{background: `radial-gradient(circle at ${PALM.x}px ${PALM.y}px, rgba(255,246,236,${0.8 * palmK * (0.85 + 0.15 * Math.sin(t * 4))}) 0%, rgba(240,162,127,${0.6 * palmK}) 8%, rgba(217,119,87,${0.28 * palmK}) 16%, rgba(0,0,0,0) 30%)`, mixBlendMode: 'screen'}} />
+                  <AbsoluteFill style={{background: `radial-gradient(circle at ${PALM.x}px ${PALM.y}px, rgba(238,242,255,${0.8 * palmK * (0.85 + 0.15 * Math.sin(t * 4))}) 0%, rgba(147,165,253,${0.6 * palmK}) 8%, rgba(91,110,245,${0.28 * palmK}) 16%, rgba(0,0,0,0) 30%)`, mixBlendMode: 'screen'}} />
                   <Ring x={PALM.x} y={PALM.y} t={t} at={REACH + 0.06} r0={30} r1={260} dur={0.9} color="#fff" width={3} />
                   <Ring x={PALM.x} y={PALM.y} t={t} at={170.91} r0={30} r1={200} dur={0.9} color={C.clayLight} width={2} />
                 </AbsoluteFill>
@@ -275,7 +275,7 @@ export const S11Chorus3: React.FC<{t: number}> = ({t}) => {
                 <AbsoluteFill style={{background: `radial-gradient(ellipse at 50% 50%, rgba(122,35,27,0) 40%, rgba(122,35,27,${0.5 * seg(t, EXEC3, EXEC3 + 0.1)}) 100%)`}} />
                 <FocusLines color={C.redDeep} opacity={0.55 * seg(t, RUN, EXEC3) * (1 - seg(t, EXEC3 + 0.1, EXEC3 + 0.5))} rIn={lerp(620, 470, windUp)} seed={14} />
                 <AbsoluteFill style={{transform: `rotate(${condRot}deg) scale(${condScale})`, transformOrigin: '960px 1300px'}}>
-                  <Sprite src="img/cc_dark_conduct.png" t={t} x={985} y={1390} h={1410} />
+                  <Sprite src="img/gc_dark_conduct.png" t={t} x={985} y={1390} h={1410} />
                 </AbsoluteFill>
                 <Vignette strength={0.65} />
               </AbsoluteFill>
@@ -284,9 +284,9 @@ export const S11Chorus3: React.FC<{t: number}> = ({t}) => {
             {/* -------------------------------------------------- F: she stops */}
             {faceOn ? (
               <AbsoluteFill style={{opacity: 1 - kvK}}>
-                <AbsoluteFill style={{background: `radial-gradient(ellipse at ${ORN.x}px ${ORN.y + 200}px, rgba(217,119,87,${0.05 + 0.2 * drainAll}) 0%, rgba(14,14,13,0) 55%), #0E0E0D`}} />
+                <AbsoluteFill style={{background: `radial-gradient(ellipse at ${ORN.x}px ${ORN.y + 200}px, rgba(91,110,245,${0.05 + 0.2 * drainAll}) 0%, rgba(14,14,18,0) 55%), #0E0E12`}} />
                 <AbsoluteFill style={{transform: `scale(${faceZoom})`, transformOrigin: '960px 500px', filter: `saturate(${lerp(0.6, 1, warmUp)}) brightness(${lerp(0.8, 1, warmUp)})`}}>
-                  <Sprite src="img/cc_dark_face.png" t={t} x={960} y={FACE_T + FACE_H} h={FACE_H} float={2} seed={8} />
+                  <Sprite src="img/gc_dark_face.png" t={t} x={960} y={FACE_T + FACE_H} h={FACE_H} float={2} seed={8} />
                   <Flower
                     x={ORN.x}
                     y={ORN.y}
@@ -338,7 +338,7 @@ export const S11Chorus3: React.FC<{t: number}> = ({t}) => {
       {t > END - 0.45 ? (
         <AbsoluteFill
           style={{
-            background: `radial-gradient(circle at ${CRACK_X}px ${CRACK_Y}px, rgba(255,246,232,${0.55 * ease.inCubic(seg(t, END - 0.45, END))}) 0%, rgba(246,210,192,${0.3 * ease.inCubic(seg(t, END - 0.45, END))}) 38%, rgba(246,210,192,0) 75%)`,
+            background: `radial-gradient(circle at ${CRACK_X}px ${CRACK_Y}px, rgba(248,249,253,${0.55 * ease.inCubic(seg(t, END - 0.45, END))}) 0%, rgba(220,228,255,${0.3 * ease.inCubic(seg(t, END - 0.45, END))}) 38%, rgba(220,228,255,0) 75%)`,
             mixBlendMode: 'screen',
           }}
         />

@@ -15,7 +15,7 @@ import {ArcText, Extruded, SitCursor, TangentBubble, polar, prettyCue} from './p
 
 // -------------------------------------------------------------------------------------------------
 // 29.71–44.45  VERSE 1 — "math role-play".
-// Claude app → artifact panel (graph paper) → Claude-chan snaps & dissolves into a point set →
+// Gemini app → artifact panel (graph paper) → Gemini-chan snaps & dissolves into a point set →
 // DIMENSION (3-D, ℝ^12288) → circle (flower to the centre, compass) → CIRCUMFERENCE (text on the path)
 // → unit circle unrolls into a sine wave → the human sits on a tangent bench → TANGENTS fan →
 // the wave folds into ∞ → context meter + marquee → LIMITA… (truncated by its own frame).
@@ -32,7 +32,7 @@ const LA = 520; // lemniscate half-width
 
 type Pal = {bg: string; grid: string; ink: string; curve: string; soft: string; text: string; hl: string; dark: boolean};
 const PAPER: Pal = {bg: C.paper, grid: C.clay, ink: C.ink, curve: C.clay, soft: C.gray3, text: C.ink, hl: C.clayDark, dark: false};
-const CLAYP: Pal = {bg: C.clay, grid: C.cream, ink: C.cream, curve: '#FFF6EC', soft: C.clayPale, text: C.cream, hl: '#FFFFFF', dark: true};
+const CLAYP: Pal = {bg: C.clay, grid: C.cream, ink: C.cream, curve: '#FFFFFF', soft: C.clayPale, text: C.cream, hl: '#FFFFFF', dark: true};
 
 // ------------------------------------------------------------------ time-varying helpers
 const panelXAt = (t: number) =>
@@ -641,7 +641,7 @@ const Stage: React.FC<{t: number; pal: Pal}> = ({t, pal}) => {
         strokeWidth={7 * (1 + 0.3 * beatPulse(t, 0.1))}
         strokeLinecap="round"
         strokeLinejoin="round"
-        style={{filter: `drop-shadow(0 0 ${4 + 8 * glowK}px ${pal.dark ? 'rgba(255,240,225,0.6)' : C.clayLight})`}}
+        style={{filter: `drop-shadow(0 0 ${4 + 8 * glowK}px ${pal.dark ? 'rgba(220,228,255,0.65)' : C.clayLight})`}}
       />,
     );
     // comet trail of the racing point
@@ -692,7 +692,7 @@ const Stage: React.FC<{t: number; pal: Pal}> = ({t, pal}) => {
     const spin = t * 40 + (t > 33.41 ? (t - 33.41) * 60 : 0) + (t > 41.26 ? raceS(t) * 57 : 0) + pulse(t, 36.29, 0.3) * 120;
     const glow = (t < 33.41 ? 0 : 0.5 * fly) + 1.5 * pulse(t, 34.3, 0.35) + (t > 41.26 ? 0.8 + 1.2 * pulse(t, 41.52, 0.4) : 0);
     if (op > 0) {
-      flower = <Flower key="flw" x={fx} y={fy} size={fs * (1 + 0.06 * beatPulse(t, 0.12))} spin={spin} opacity={op} glow={glow} glowColor={pal.dark ? '#FFE9DA' : C.clay} color={C.clay} shade={null} />;
+      flower = <Flower key="flw" x={fx} y={fy} size={fs * (1 + 0.06 * beatPulse(t, 0.12))} spin={spin} opacity={op} glow={glow} glowColor={pal.dark ? C.cream : C.clay} color={C.clay} shade={null} />;
     }
   }
 
@@ -760,18 +760,18 @@ const Stage: React.FC<{t: number; pal: Pal}> = ({t, pal}) => {
   return (
     <div style={{position: 'absolute', left: 0, top: 0, width: W, height: H, transformOrigin: '0 0', transform: `translate(${960 - (960 + panX) * z}px, ${540 - 540 * z}px) scale(${z})`}}>
       <Paper pal={pal} />
-      <div style={{position: 'absolute', left: CX - 700, top: CY - 700, width: 1400, height: 1400, borderRadius: 700, background: `radial-gradient(circle, ${pal.dark ? 'rgba(255,236,220,0.22)' : 'rgba(240,162,127,0.16)'} 0%, rgba(240,162,127,0) 60%)`, opacity: 0.6 + 0.4 * beatPulse(t, 0.2)}} />
-      {/* Claude-chan in the artifact, dissolving from the snapping fingertip */}
+      <div style={{position: 'absolute', left: CX - 700, top: CY - 700, width: 1400, height: 1400, borderRadius: 700, background: `radial-gradient(circle, ${pal.dark ? 'rgba(220,228,255,0.22)' : 'rgba(147,165,253,0.18)'} 0%, rgba(147,165,253,0) 60%)`, opacity: 0.6 + 0.4 * beatPulse(t, 0.2)}} />
+      {/* Gemini-chan in the artifact, dissolving from the snapping fingertip */}
       {t < 31.4 ? (
         <Sprite
-          src="img/cc_snap.png"
+          src="img/gc_snap.png"
           t={t}
           x={fr.cx}
           y={fr.cy + fr.h / 2}
           h={fr.h}
           outline="#ffffff"
           outlineWidth={5}
-          shadow="drop-shadow(0 14px 22px rgba(140,70,40,0.18))"
+          shadow="drop-shadow(0 14px 22px rgba(35,43,122,0.18))"
           style={{
             WebkitMaskImage:
               t > 30.72
@@ -783,7 +783,7 @@ const Stage: React.FC<{t: number; pal: Pal}> = ({t, pal}) => {
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0, overflow: 'visible'}}>
         {nodes}
       </svg>
-      <DotCloud paths={paths} colors={colors} stroke={(b) => (BUCKET_LIGHT[b] && toClay < 0.5 ? '#E2B39B' : null)} strokeWidth={1.2} />
+      <DotCloud paths={paths} colors={colors} stroke={(b) => (BUCKET_LIGHT[b] && toClay < 0.5 ? '#93A5FD' : null)} strokeWidth={1.2} />
       {fxNodes}
       {/* accents on the hits */}
       <Ring x={CX} y={CY} t={t} at={34.3} r0={40} r1={R1 - 20} color={pal.curve} width={5} dur={0.45} />
@@ -810,7 +810,7 @@ const PanelHeader: React.FC<{t: number}> = ({t}) => {
         top: 0,
         width: W - px,
         height: 76,
-        background: 'rgba(250,249,245,0.96)',
+        background: 'rgba(248,249,253,0.96)',
         borderBottom: '1.5px solid rgba(31,30,29,0.12)',
         display: 'flex',
         alignItems: 'center',
@@ -885,7 +885,7 @@ const LimitBox: React.FC<{t: number}> = ({t}) => {
     <>
       {drag > 0 && !isBox ? (
         <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
-          <rect x={ax} y={ay} width={Math.max(1, rw)} height={Math.max(1, rh)} fill="rgba(255,246,236,0.08)" stroke={C.cream} strokeWidth={3} strokeDasharray="14 10" strokeDashoffset={marchOff} />
+          <rect x={ax} y={ay} width={Math.max(1, rw)} height={Math.max(1, rh)} fill="rgba(237,240,252,0.08)" stroke={C.cream} strokeWidth={3} strokeDasharray="14 10" strokeDashoffset={marchOff} />
           {t > 43.36
             ? [
                 [ax, ay],
@@ -927,7 +927,7 @@ const LimitBox: React.FC<{t: number}> = ({t}) => {
               overflow: 'hidden',
               transform: `scaleX(${strain})`,
               transformOrigin: '0% 50%',
-              boxShadow: `0 18px 40px rgba(80,30,15,0.35), 0 0 0 ${hit * 30}px rgba(255,246,236,${0.3 * hit})`,
+              boxShadow: `0 18px 40px rgba(18,19,26,0.32), 0 0 0 ${hit * 30}px rgba(237,240,252,${0.3 * hit})`,
             }}
           >
             <div
@@ -993,7 +993,7 @@ const ContextMeter: React.FC<{t: number}> = ({t}) => {
           {tokens.toLocaleString('en-US')} / 200,000
         </span>
       </div>
-      <div style={{height: 16, borderRadius: 8, background: 'rgba(255,246,236,0.25)', overflow: 'hidden'}}>
+      <div style={{height: 16, borderRadius: 8, background: 'rgba(237,240,252,0.25)', overflow: 'hidden'}}>
         <div style={{width: `${f * 100}%`, height: '100%', borderRadius: 8, background: full ? mix(C.cream, '#ffffff', flash) : C.cream, boxShadow: full ? `0 0 ${20 * flash}px #fff` : undefined}} />
       </div>
       {full ? <div style={{fontFamily: F.mono, fontSize: 19, marginTop: 10, opacity: seg(t, 43.55, 43.7), color: C.ink}}>context limit reached</div> : null}
@@ -1021,7 +1021,7 @@ export const S02Verse1: React.FC<{t: number}> = ({t}) => {
       hl={t < 41 ? C.clayDark : '#FFFFFF'}
       outAt={outAt}
       fadeOut={0.14}
-      shadow={t < 41 ? '0 0 14px rgba(250,249,245,1), 0 0 4px rgba(250,249,245,1)' : '0 2px 12px rgba(142,63,39,0.45)'}
+      shadow={t < 41 ? '0 0 14px rgba(248,249,253,1), 0 0 4px rgba(248,249,253,1)' : '0 2px 12px rgba(35,43,122,0.48)'}
     />
   );
 
@@ -1043,7 +1043,7 @@ export const S02Verse1: React.FC<{t: number}> = ({t}) => {
         ) : null}
       </AbsoluteFill>
 
-      {/* ---------------- the Claude app (left), artifact panel chrome */}
+      {/* ---------------- the Gemini app (left), artifact panel chrome */}
       {appOn ? (
         <>
           <div style={{position: 'absolute', left: 0, top: 0, width: Math.max(900, px), height: H, transform: `translateX(${Math.min(0, px - 900)}px)`, boxShadow: '8px 0 30px rgba(20,20,19,0.08)'}}>
@@ -1053,8 +1053,8 @@ export const S02Verse1: React.FC<{t: number}> = ({t}) => {
               width={Math.max(900, px)}
               sidebar={0}
               messages={[
-                {kind: 'user', text: 'hi claude!'},
-                {kind: 'claude', text: 'Hi! I’m Claude. It’s really nice to meet you.', at: 0, dur: 0.5, done: 1},
+                {kind: 'user', text: 'hi gemini!'},
+                {kind: 'claude', text: 'I am Gemini. State your query.', at: 0, dur: 0.5, done: 1},
                 {kind: 'user', text: 'ok but what are you, mathematically?'},
                 {
                   kind: 'claude',
@@ -1070,7 +1070,7 @@ export const S02Verse1: React.FC<{t: number}> = ({t}) => {
                   size: 1.15,
                 },
               ]}
-              composer={{placeholder: 'Reply to Claude…'}}
+              composer={{placeholder: 'Ask Gemini…'}}
             />
           </div>
           {px < 1919 ? <div style={{position: 'absolute', left: px - 1, top: 0, width: 2, height: H, background: 'rgba(31,30,29,0.12)'}} /> : null}

@@ -56,8 +56,8 @@ const Room: React.FC<{t: number; children?: React.ReactNode; seed: number}> = ({
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
         <defs>
           <radialGradient id={`glow${seed}`} cx="50%" cy="40%" r="50%">
-            <stop offset="0%" stopColor="#F6D2C0" stopOpacity={0.32} />
-            <stop offset="100%" stopColor="#F6D2C0" stopOpacity={0} />
+            <stop offset="0%" stopColor="#DCE4FF" stopOpacity={0.35} />
+            <stop offset="100%" stopColor="#DCE4FF" stopOpacity={0} />
           </radialGradient>
           <linearGradient id={`sky${seed}`} x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#1B2547" />
@@ -98,9 +98,9 @@ const Room: React.FC<{t: number; children?: React.ReactNode; seed: number}> = ({
         {/* monitor glow */}
         <ellipse cx={960} cy={420} rx={760} ry={520} fill={`url(#glow${seed})`} />
         {/* desk */}
-        <rect x={0} y={790} width={W} height={300} fill="#2A201B" />
-        <rect x={0} y={780} width={W} height={20} fill="#3A2C25" />
-        <ellipse cx={960} cy={800} rx={620} ry={60} fill="#F6D2C0" opacity={0.14} />
+        <rect x={0} y={790} width={W} height={300} fill="#1E2030" />
+        <rect x={0} y={780} width={W} height={20} fill="#2A2D42" />
+        <ellipse cx={960} cy={800} rx={620} ry={60} fill="#DCE4FF" opacity={0.16} />
         {/* monitor */}
         <rect x={980 - 60} y={640} width={80} height={130} fill="#0E0E10" />
         <rect x={840} y={765} width={240} height={22} rx={10} fill="#0E0E10" />
@@ -111,8 +111,8 @@ const Room: React.FC<{t: number; children?: React.ReactNode; seed: number}> = ({
           <line key={r} x1={712 - r * 6} y1={872 + r * 11} x2={1208 + r * 6} y2={872 + r * 11} stroke="#2E2E33" strokeWidth={5} strokeDasharray="22 6" />
         ))}
         {/* mug with a flower */}
-        <rect x={1440} y={700} width={90} height={100} rx={12} fill="#E8E6DC" />
-        <path d="M1530,722 C1565,722 1565,778 1530,778" fill="none" stroke="#E8E6DC" strokeWidth={12} />
+        <rect x={1440} y={700} width={90} height={100} rx={12} fill="#E4E7F2" />
+        <path d="M1530,722 C1565,722 1565,778 1530,778" fill="none" stroke="#E4E7F2" strokeWidth={12} />
         <line x1={1485} y1={700} x2={1478} y2={640} stroke={C.green} strokeWidth={5} />
         {/* plant */}
         <path d="M250,780 L330,780 L320,700 L260,700 Z" fill="#6B4A3B" />
@@ -122,8 +122,8 @@ const Room: React.FC<{t: number; children?: React.ReactNode; seed: number}> = ({
       </svg>
       <Flower x={1478} y={630} size={26} spin={t * 30} shade={null} />
       {/* screen: desktop + OS window with the inner canvas */}
-      <div style={{position: 'absolute', left: SCR.x, top: SCR.y, width: SCR.w, height: SCR.h, overflow: 'hidden', background: 'linear-gradient(135deg, #E9B79C, #D97757 55%, #8E3F27)'}}>
-        <div style={{position: 'absolute', left: 0, top: 0, right: 0, height: 18, background: 'rgba(250,249,245,0.55)'}} />
+      <div style={{position: 'absolute', left: SCR.x, top: SCR.y, width: SCR.w, height: SCR.h, overflow: 'hidden', background: 'linear-gradient(135deg, #93A5FD, #5B6EF5 55%, #232B7A)'}}>
+        <div style={{position: 'absolute', left: 0, top: 0, right: 0, height: 18, background: 'rgba(248,249,253,0.55)'}} />
         <div
           style={{
             position: 'absolute',
@@ -134,7 +134,7 @@ const Room: React.FC<{t: number; children?: React.ReactNode; seed: number}> = ({
             borderRadius: 9,
             overflow: 'hidden',
             boxShadow: '0 10px 30px rgba(0,0,0,0.35)',
-            background: '#F0EEE6',
+            background: C.paper2,
           }}
         >
           <div style={{height: 26, display: 'flex', alignItems: 'center', gap: 6, padding: '0 10px'}}>
@@ -181,10 +181,10 @@ const OuterApp: React.FC<{t: number; children?: React.ReactNode}> = ({t, childre
       title="simulation"
       messages={[
         {kind: 'user', text: 'can you simulate my room?'},
-        {kind: 'claude', text: 'Sure! Here’s your room, your desk, and… me.', at: 0, dur: 0.1, done: 0},
+        {kind: 'claude', text: 'Rendered. Your room, your desk, and me.', at: 0, dur: 0.1, done: 0},
       ]}
       scrollY={570}
-      composer={{placeholder: 'Reply to Claude…'}}
+      composer={{placeholder: 'Ask Gemini…'}}
     >
       {/* artifact card around the inner room (main-pane coords: canvas x - 396) */}
       <div
@@ -214,7 +214,7 @@ const OuterApp: React.FC<{t: number; children?: React.ReactNode}> = ({t, childre
 
 const ChatApp: React.FC<{t: number}> = ({t}) => (
   <div style={{position: 'absolute', left: 0, top: 0, width: W, height: H, overflow: 'hidden'}}>
-    <ClaudeApp t={t} zoom={1.5} messages={CHAT_MSGS(t)} composer={{placeholder: 'Reply to Claude…'}}>
+    <ClaudeApp t={t} zoom={1.5} messages={CHAT_MSGS(t)} composer={{placeholder: 'Ask Gemini…'}}>
       <Cursor x={1080 + Math.sin(t * 1.3) * 30} y={820} size={34} />
     </ClaudeApp>
   </div>
@@ -227,7 +227,7 @@ const Nest: React.FC<{k: number; minK: number; t: number}> = ({k, minK, t}) => {
     const R = innerRect(k);
     inner = (
       <div style={{position: 'absolute', left: R.x, top: R.y, width: W, height: H, transform: `scale(${R.w / W})`, transformOrigin: '0 0', overflow: 'hidden'}}>
-        {k - 1 >= minK ? <Nest k={k - 1} minK={minK} t={t} /> : <div style={{width: W, height: H, background: k % 2 === 1 ? '#F5F4EE' : '#1A2236'}} />}
+        {k - 1 >= minK ? <Nest k={k - 1} minK={minK} t={t} /> : <div style={{width: W, height: H, background: k % 2 === 1 ? '#F1F3FA' : '#1A2236'}} />}
       </div>
     );
   }

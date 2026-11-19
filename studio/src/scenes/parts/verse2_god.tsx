@@ -126,7 +126,7 @@ export const ExistenceWord: React.FC<{t: number; at: number; x: number; y: numbe
             key={i}
             style={{
               display: 'inline-block',
-              color: fk > 0 ? `rgba(243,233,220,${fk})` : 'transparent',
+              color: fk > 0 ? `rgba(248,249,253,${fk})` : 'transparent',
               WebkitTextStroke: `2px rgba(232,194,122,${0.85 * outK})`,
               transform: `translateY(${(1 - outK) * 20}px) scale(${1 + pop * 0.12})`,
               textShadow: fk > 0 ? `0 0 ${20 + pop * 40}px rgba(232,194,122,${0.5 * fk})` : undefined,

@@ -4,7 +4,7 @@ set -e
 ROOT=${0:A:h:h:h}
 cd $ROOT/studio
 export TMPDIR=${TMPDIR_RENDER:-$ROOT/work/tmp}; mkdir -p $TMPDIR $ROOT/mv
-OUT=${1:-$ROOT/mv/world.execute(me)_claude_edition_1080p60.mp4}
+OUT=${1:-$ROOT/mv/world.execute(me)_gemini_edition_1080p60.mp4}
 npx remotion render src/index.ts MV "$OUT" \
   --codec=h264 --crf=14 --x264-preset=slow --pixel-format=yuv420p --color-space=bt709 \
   --image-format=png --audio-codec=aac --audio-bitrate=320k \

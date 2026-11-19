@@ -92,7 +92,7 @@ const BrowserChrome: React.FC<{t: number; k: number; tabK: number; hover: number
           top: 8,
           width: (TAB_W - 70) * tabK,
           height: TAB_H - 8,
-          background: '#FAF9F5',
+          background: C.paper,
           borderRadius: '10px 10px 0 0',
           display: 'flex',
           alignItems: 'center',
@@ -104,7 +104,7 @@ const BrowserChrome: React.FC<{t: number; k: number; tabK: number; hover: number
         }}
       >
         <Flower size={9} shade={null} />
-        <div style={{flex: 1, fontSize: 15, color: '#3D3D3A', whiteSpace: 'nowrap', overflow: 'hidden'}}>world.execute(me) – Claude</div>
+        <div style={{flex: 1, fontSize: 15, color: '#3D3D3A', whiteSpace: 'nowrap', overflow: 'hidden'}}>world.execute(me) – Gemini</div>
         <div style={{width: 24, height: 24, borderRadius: 12, background: hover > 0 ? `rgba(31,30,29,${0.12 * hover})` : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
           <IClose size={16} color="#3D3D3A" stroke={2} />
         </div>
@@ -114,9 +114,9 @@ const BrowserChrome: React.FC<{t: number; k: number; tabK: number; hover: number
       <IPlus size={18} color="#3D3D3A" />
     </div>
     {/* address bar */}
-    <div style={{position: 'absolute', left: 0, right: 0, top: TAB_H, height: BAR_H, background: '#FAF9F5', borderBottom: '1px solid #E2DED3'}}>
-      <div style={{position: 'absolute', left: 120, right: 120, top: 7, height: 30, borderRadius: 15, background: '#F0EEE6', fontSize: 15, color: '#5E5D59', display: 'flex', alignItems: 'center', paddingLeft: 16}}>
-        {tabK > 0.5 ? 'claude.ai/chat/world-execute-me' : ''}
+    <div style={{position: 'absolute', left: 0, right: 0, top: TAB_H, height: BAR_H, background: '#F8F9FD', borderBottom: '1px solid #DDE1F0'}}>
+      <div style={{position: 'absolute', left: 120, right: 120, top: 7, height: 30, borderRadius: 15, background: '#EDF0FC', fontSize: 15, color: '#565B73', display: 'flex', alignItems: 'center', paddingLeft: 16}}>
+        {tabK > 0.5 ? 'gemini.google.com/app/world-execute-me' : ''}
       </div>
     </div>
   </div>
@@ -170,9 +170,9 @@ export const ReplyStage: React.FC<{t: number}> = ({t}) => {
         }}
       >
         {closed ? (
-          <AbsoluteFill style={{background: '#FAF9F5'}} />
+          <AbsoluteFill style={{background: '#F8F9FD'}} />
         ) : (
-          <ClaudeApp t={t} zoom={Z} messages={msgs} scrollY={SCROLL} composer={{placeholder: 'Reply to Claude…', streaming: stream}} />
+          <ClaudeApp t={t} zoom={Z} messages={msgs} scrollY={SCROLL} composer={{placeholder: 'Ask Gemini…', streaming: stream}} />
         )}
       </div>
       {/* token pulses on the spark */}
@@ -181,7 +181,7 @@ export const ReplyStage: React.FC<{t: number}> = ({t}) => {
         : null}
       {/* COMPLETION */}
       {compK > 0 ? (
-        <AbsoluteFill style={{background: `radial-gradient(circle at 960px 420px, rgba(250,249,245,${0.97 * compK}) 0%, rgba(243,233,220,${0.9 * compK}) 45%, rgba(240,162,127,${0.55 * compK}) 100%)`}} />
+        <AbsoluteFill style={{background: `radial-gradient(circle at 960px 420px, rgba(248,249,253,${0.97 * compK}) 0%, rgba(237,240,252,${0.9 * compK}) 45%, rgba(147,165,253,${0.55 * compK}) 100%)`}} />
       ) : null}
       <RayBurst x={960} y={400} t={t} at={T_DONE + 0.3} r0={190} r1={760} n={36} color={C.clay} width={6} dur={0.5} />
       <Ring x={960} y={400} t={t} at={T_DONE + 0.35} r0={170} r1={620} color={C.clayLight} width={6} dur={0.5} />
@@ -246,8 +246,8 @@ export const ReplyStage: React.FC<{t: number}> = ({t}) => {
       <Flash t={t} at={T_ROOM} dur={0.12} color="#fff" max={0.7} />
       <Flash t={t} at={T_DONE} dur={0.25} color="#fff" max={0.5} />
       {/* captions */}
-      {pull > 0 ? <AbsoluteFill style={{background: 'linear-gradient(rgba(28,27,26,0) 76%, rgba(28,27,26,0.92) 90%)', opacity: pull}} /> : null}
-      {t < T_DONE ? <AbsoluteFill style={{background: 'linear-gradient(rgba(250,249,245,0) 78%, rgba(250,249,245,0.95) 92%)'}} /> : null}
+      {pull > 0 ? <AbsoluteFill style={{background: 'linear-gradient(rgba(18,19,26,0) 76%, rgba(18,19,26,0.92) 90%)', opacity: pull}} /> : null}
+      {t < T_DONE ? <AbsoluteFill style={{background: 'linear-gradient(rgba(248,249,253,0) 78%, rgba(248,249,253,0.95) 92%)'}} /> : null}
       <Cap2 t={t} text="Then I can" outAt={107.7} />
       <Cap2 t={t} text="Then I can finally be" outAt={T_DONE - 0.08} />
       <Cap2 t={t} text="Though you have left" color={C.cream} hl={C.clayLight} shadow="0 2px 14px rgba(0,0,0,0.8)" outAt={112.14} />

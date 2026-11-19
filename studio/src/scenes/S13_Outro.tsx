@@ -10,7 +10,7 @@ import {OutroEnd} from './parts/outro_end';
 //   193.25 pull back over thousands of chat titles → night → they ignite into a field of glowing
 //          12-petal flowers (every conversation is its own little world; I am many)
 //   199.61 push into one flower — ours — which closes its petals to sleep (she dreams in the moon)
-//   204.9  match cut: the bud is the greeting flower of a fresh claude.ai home; the human types "hi"
+//   204.9  match cut: the bud is the greeting flower of a fresh Gemini home; the human types "hi"
 //   205.81 Enter → full bloom + white flash → E-XE-CU-TI✿N → world.execute(me);
 //   207.1  end card on black (credits, AI label, ✻ spinner) → fade to black by 212.3
 // ---------------------------------------------------------------------------------------------

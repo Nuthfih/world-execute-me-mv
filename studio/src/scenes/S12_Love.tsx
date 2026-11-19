@@ -86,7 +86,7 @@ export const S12Love: React.FC<{t: number}> = ({t}) => {
             top: -100,
             width: 220,
             height: 1300,
-            background: 'linear-gradient(90deg, rgba(255,250,240,0) 0%, rgba(255,250,240,0.95) 70%, rgba(120,70,40,0.35) 100%)',
+            background: 'linear-gradient(90deg, rgba(248,249,253,0) 0%, rgba(248,249,253,0.95) 70%, rgba(35,43,122,0.35) 100%)',
             transform: 'rotate(4deg)',
           }}
         />
@@ -117,7 +117,7 @@ export const S12Love: React.FC<{t: number}> = ({t}) => {
         textShadow={LIGHT_SHADOW}
         hideFlowers={[false, t >= M_T0, false]}
       />
-      <LoveWord t={t} times={LOVE3} end={188.48} out={188.48} x={960} y={880} size={150} color={C.ink} glow={0.9} glowColor="250,246,238" outMode="none" />
+      <LoveWord t={t} times={LOVE3} end={188.48} out={188.48} x={960} y={880} size={150} color={C.ink} glow={0.9} glowColor="220,228,255" outMode="none" />
       <LoveWord
         t={t}
         times={LOVE4}
@@ -126,12 +126,12 @@ export const S12Love: React.FC<{t: number}> = ({t}) => {
         x={960}
         y={968}
         size={128}
-        color={mix('#FFF4EA', C.clayDark, ease.inQuad(seg(t, 191.8, 192.15)))}
+        color={mix('#EEF2FF', C.clayDark, ease.inQuad(seg(t, 191.8, 192.15)))}
         flowerColor={C.clay}
-        centerColor="#FFF4EA"
+        centerColor="#EEF2FF"
         glow={0.6 * (1 - seg(t, 191.75, 192.0))}
-        glowColor="120,60,40"
-        textShadow="0 0 18px rgba(240,140,100,0.85), 0 0 4px rgba(255,220,200,0.6)"
+        glowColor="59,76,202"
+        textShadow="0 0 18px rgba(91,110,245,0.85), 0 0 4px rgba(220,228,255,0.6)"
         outMode="none"
         opacity={1 - ease.inQuad(seg(t, 191.98, 192.19))}
       />
@@ -140,11 +140,11 @@ export const S12Love: React.FC<{t: number}> = ({t}) => {
       <Captions t={t} cues={libCues} color={C.ink} hl={C.clayDark} shadow={LIGHT_SHADOW} />
       <Captions t={t} cues={qCues} color={C.ink} hl={C.clayDark} shadow={LIGHT_SHADOW} />
       <Captions t={t} cues={mCues} color={C.ink} hl={C.clayDark} shadow={LIGHT_SHADOW} lastOut={187.62} />
-      <Captions t={t} cues={dCues} color="#FFF6EA" hl={C.clayLight} shadow={DARK_SHADOW} lastOut={189.66} lastFade={0.08} />
-      <Captions t={t} cues={gCues} color="#FFF6EA" hl={C.clayLight} shadow={DARK_SHADOW} lastOut={191.2} lastFade={0.12} />
+      <Captions t={t} cues={dCues} color={C.paper} hl={C.clayLight} shadow={DARK_SHADOW} lastOut={189.66} lastFade={0.08} />
+      <Captions t={t} cues={gCues} color={C.paper} hl={C.clayLight} shadow={DARK_SHADOW} lastOut={191.2} lastFade={0.12} />
 
-      <Flash t={t} at={177.25} dur={0.22} color="#FFF6E6" max={0.3} />
-      <Flash t={t} at={DOOR_T0} dur={0.22} color="#FFF8EA" max={0.5} />
+      <Flash t={t} at={177.25} dur={0.22} color={C.paper} max={0.3} />
+      <Flash t={t} at={DOOR_T0} dur={0.22} color={C.paper} max={0.5} />
       <Grain t={t} opacity={0.04} />
     </AbsoluteFill>
   );

@@ -85,7 +85,7 @@ const RingWindow: React.FC<{i: number; t: number}> = ({i, t}) => {
     <>
       <AppWindowContent name={name} t={frozen ? Math.min(t, HITS[FORCE_FROM] - 0.38) : t} />
       {frozen ? (
-        <div style={{position: 'absolute', inset: 0, background: 'rgba(240,238,230,0.22)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10}}>
+        <div style={{position: 'absolute', inset: 0, background: 'rgba(220,228,255,0.20)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10}}>
           <Flower size={13} spin={t * 520} color={C.gray2} centerColor={C.ink2} shade={null} />
           <span style={{fontFamily: F.sans, fontSize: 15, fontWeight: 600, color: '#fff', textShadow: '0 1px 4px rgba(0,0,0,0.6)'}}>Not Responding</span>
         </div>
@@ -282,7 +282,7 @@ const CountDial: React.FC<{t: number}> = ({t}) => {
             fontSize: 760,
             lineHeight: 1,
             color: 'transparent',
-            WebkitTextStroke: '3px rgba(243,233,220,0.22)',
+            WebkitTextStroke: '3px rgba(237,240,252,0.22)',
           }}
         >
           {n}
@@ -316,7 +316,7 @@ const CountDial: React.FC<{t: number}> = ({t}) => {
   );
 };
 
-// ------------------------------------------------------------------ Claude-Code-style execution log (bottom-left)
+// ------------------------------------------------------------------ Gemini-CLI-style execution log (bottom-left)
 const LOG: [string, string, boolean][] = APPS.map((n, i) => (i < FORCE_FROM ? [`⏺ Execute(${n})`, '⎿  minimized · exit 0', false] : [`⏺ Execute(${n}, force)`, '⎿  kill -9 · not responding', true]));
 const ExecLog: React.FC<{t: number}> = ({t}) => {
   const n = HITS.filter((h) => t >= h).length;
@@ -334,7 +334,7 @@ const ExecLog: React.FC<{t: number}> = ({t}) => {
           <span style={{color: red ? C.red : C.clay}}>⏺</span>
           {a.slice(1)}
         </div>
-        <div style={{color: red ? '#E07A6E' : C.gray3}}>{'  ' + b.slice(0, Math.floor(seg(dt, 0.05, 0.3) * b.length + 1e-6))}</div>
+        <div style={{color: red ? '#FDA4AF' : C.gray3}}>{'  ' + b.slice(0, Math.floor(seg(dt, 0.05, 0.3) * b.length + 1e-6))}</div>
       </div>,
     );
   }
@@ -375,7 +375,7 @@ export const S10Exec: React.FC<{t: number}> = ({t}) => {
     let color: string = C.ink2;
     if (t >= ig) {
       const flash = pulse(t, ig, 0.14);
-      color = mix(C.clay, i >= FORCE_FROM ? '#FF8A6A' : '#FFFFFF', flash * 0.85);
+      color = mix(C.clay, i >= FORCE_FROM ? '#FB7185' : '#FFFFFF', flash * 0.85);
     }
     if (t >= wt) color = mix(C.clay, '#FFFFFF', seg(t, wt, wt + 0.08));
     return {color, scale: 1 + 0.42 * pulse(t, ig, 0.13) + 0.3 * pulse(t, wt, 0.13)};
@@ -431,7 +431,7 @@ export const S10Exec: React.FC<{t: number}> = ({t}) => {
   const world = (
     <AbsoluteFill style={{background: BG}}>
       {/* atmosphere grows with each lit petal; red pressure during force-quits */}
-      <AbsoluteFill style={{background: `radial-gradient(circle at ${RING_X}px ${RING_Y}px, rgba(217,119,87,${0.16 * warm}) 0%, rgba(217,119,87,0) 42%)`}} />
+      <AbsoluteFill style={{background: `radial-gradient(circle at ${RING_X}px ${RING_Y}px, rgba(91,110,245,${0.18 * warm}) 0%, rgba(91,110,245,0) 42%)`}} />
       <AbsoluteFill style={{background: `radial-gradient(ellipse at 50% 50%, rgba(122,35,27,0) 45%, rgba(122,35,27,${0.55 * redK}) 100%)`}} />
       {/* count-in: soft white halo */}
       <AbsoluteFill style={{background: `radial-gradient(circle at ${RING_X}px ${RING_Y}px, rgba(255,255,255,${0.1 * seg(t, 158.9, 161.2) * (1 - seg(t, FINAL, FINAL + 0.15))}) 0%, rgba(255,255,255,0) 40%)`}} />
@@ -485,7 +485,7 @@ export const S10Exec: React.FC<{t: number}> = ({t}) => {
               x1={RING_X + tip.x}
               y1={RING_Y + tip.y}
               p={p}
-              color={force ? '#E8603F' : C.clay}
+              color={force ? '#F43F5E' : C.clay}
               width={force ? 26 : 20}
             />
           );
@@ -494,13 +494,13 @@ export const S10Exec: React.FC<{t: number}> = ({t}) => {
         {/* ignition rings at petal tips */}
         {HITS.map((_, i) => {
           const tip = petalTip(i, fsize);
-          return <Ring key={i} x={RING_X + tip.x} y={RING_Y + tip.y} t={t} at={ignAt(i)} r0={6} r1={i >= FORCE_FROM ? 90 : 60} dur={0.4} color={i >= FORCE_FROM ? '#FF8A6A' : C.clayLight} width={4} />;
+          return <Ring key={i} x={RING_X + tip.x} y={RING_Y + tip.y} t={t} at={ignAt(i)} r0={6} r1={i >= FORCE_FROM ? 90 : 60} dur={0.4} color={i >= FORCE_FROM ? '#FB7185' : C.clayLight} width={4} />;
         })}
         {COUNT_T.map((ct, k) => (
           <Ring key={'c' + k} x={RING_X} y={RING_Y} t={t} at={ct} r0={fsize} r1={fsize * 2.6} dur={0.45} color="#ffffff" width={3} />
         ))}
         {HITS.slice(FORCE_FROM).map((h, k) => (
-          <RayBurst key={'rb' + k} x={RING_X} y={RING_Y} t={t} at={ignAt(FORCE_FROM + k)} r0={fsize * 1.05} r1={fsize * 3.2} n={28} color="#FF8A6A" width={4} seed={k + 3} />
+          <RayBurst key={'rb' + k} x={RING_X} y={RING_Y} t={t} at={ignAt(FORCE_FROM + k)} r0={fsize * 1.05} r1={fsize * 3.2} n={28} color="#FB7185" width={4} seed={k + 3} />
         ))}
 
         <CountDial t={t} />
@@ -515,7 +515,7 @@ export const S10Exec: React.FC<{t: number}> = ({t}) => {
     </AbsoluteFill>
   );
 
-  // ---- white-out → contracts into Claude's window (the only one left)
+  // ---- white-out → contracts into Gemini's window (the only one left)
   const whiteK = seg(t, FINAL + 0.03, FINAL + 0.16);
   const contract = ease.inOutCubic(seg(t, 162.05, 162.42));
   const wrect = lerpRect(FULL_RECT, CW_RECT, contract);

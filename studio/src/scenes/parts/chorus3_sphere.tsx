@@ -5,7 +5,7 @@ import {lerp, rand} from '../../lib/anim';
 import {CRACK_X, CRACK_Y, DOME_R} from './chorus3_cracks';
 
 // ------------------------------------------------------------------------------------------------
-// Final shot: kv_sphere (Claude-chan inside the glass sphere in a starry void), placed so that its
+// Final shot: kv_sphere (Gemini-chan inside the glass sphere in a starry void), placed so that its
 // sphere coincides with the healed dome circle (CRACK_X, CRACK_Y, DOME_R).
 // ------------------------------------------------------------------------------------------------
 
@@ -56,29 +56,30 @@ export const KVImage: React.FC<{opacity?: number}> = ({opacity = 1}) => (
   </div>
 );
 
-/** soft falling petals ("like snow"), back layer + a few large blurred foreground petals */
+/** soft drifting 4-point Gemini stardust ("like snow"), back layer + blurred foreground stars */
 export const PetalSnow: React.FC<{t: number; opacity?: number; front?: boolean}> = ({t, opacity = 1, front = false}) => {
   const n = front ? 7 : 42;
   const seed = front ? 61 : 60;
   return (
-    <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0, opacity, filter: front ? 'blur(5px)' : undefined, pointerEvents: 'none'}}>
+    <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0, opacity, filter: front ? 'blur(4px)' : undefined, pointerEvents: 'none'}}>
       {Array.from({length: n}, (_, i) => {
-        const s = front ? lerp(26, 42, rand(seed, i)) : lerp(7, 17, rand(seed, i));
+        const s = (front ? lerp(22, 36, rand(seed, i)) : lerp(7, 15, rand(seed, i))) * 0.9;
+        const c = s * 0.19;
         const v = (front ? 85 : 42) * lerp(0.6, 1.3, rand(seed + 1, i));
         const x0 = rand(seed + 2, i) * (W + 200) - 100;
         const span = H + 240;
         const y = ((rand(seed + 3, i) * span + t * v) % span) - 120;
         const x = x0 + Math.sin(t * lerp(0.5, 1.1, rand(seed + 4, i)) + i * 1.7) * 46 + t * 12;
-        const r = t * lerp(-70, 70, rand(seed + 5, i)) + i * 41;
-        const flip = 0.35 + 0.65 * Math.abs(Math.cos(t * lerp(0.8, 1.8, rand(seed + 6, i)) + i));
-        const col = rand(seed + 7, i) > 0.75 ? C.clayLight : C.clay;
+        const r = t * lerp(-40, 40, rand(seed + 5, i)) + i * 41;
+        const tw = 0.55 + 0.45 * Math.abs(Math.cos(t * lerp(0.9, 1.8, rand(seed + 6, i)) + i));
+        const col = rand(seed + 7, i) > 0.72 ? C.clayLight : C.clay;
         return (
           <path
             key={i}
-            d={`M0,${-s} C${s * 0.55},${-s * 0.6} ${s * 0.5},${s * 0.4} 0,${s * 0.55} C${-s * 0.5},${s * 0.4} ${-s * 0.55},${-s * 0.6} 0,${-s} Z`}
+            d={`M0,${-s} Q${c},${-c} ${s},0 Q${c},${c} 0,${s} Q${-c},${c} ${-s},0 Q${-c},${-c} 0,${-s} Z`}
             fill={col}
-            transform={`translate(${((x % (W + 200)) + W + 200) % (W + 200) - 100} ${y}) rotate(${r}) scale(1 ${flip})`}
-            opacity={front ? 0.55 : 0.85}
+            transform={`translate(${((x % (W + 200)) + W + 200) % (W + 200) - 100} ${y}) rotate(${r}) scale(${tw})`}
+            opacity={(front ? 0.58 : 0.88) * tw}
           />
         );
       })}

@@ -16,11 +16,11 @@ import {DOT_P, ExistenceWord, Godrays, SacredGeometry, TypingIndicator, dotPulse
 
 // ------------------------------------------------------------------------------------------------
 // 74.05–88.59  VERSE 2 "cosplay round" (bass drops out → lighter).
-//  74.05  the human asks a random question; Claude's reply streams "If I'm an eggplant"
-//  75.11  petal poof → cc_eggplant; eggplant.svg draws itself → chopped → Nutrition Facts → NUTRIENTS
-//  78.75  poof → cc_tomato; tomato.svg sliced: 12 locules = the flower; lycopene drawn → ANTIOXIDANTS
-//  82.46  tabby-stripe wipe → cc_cat → cc_cat_purr petted by the blue cursor; purr.wav → ENJOYMENT
-//  85.08  lights out: cc_god + 12-fold geometry; far below, the human's typing "• • •" → EXISTENCE
+//  74.05  the human asks a random question; Gemini's reply streams "If I'm an eggplant"
+//  75.11  petal poof → gc_eggplant; eggplant.svg draws itself → chopped → Nutrition Facts → NUTRIENTS
+//  78.75  poof → gc_tomato; tomato.svg sliced: 12 locules = the flower; lycopene drawn → ANTIOXIDANTS
+//  82.46  tabby-stripe wipe → gc_cat → gc_cat_purr petted by the blue cursor; purr.wav → ENJOYMENT
+//  85.08  lights out: gc_god + 12-fold geometry; far below, the human's typing "• • •" → EXISTENCE
 // ------------------------------------------------------------------------------------------------
 
 const T0 = 74.05;
@@ -105,11 +105,11 @@ const Opening: React.FC<{t: number}> = ({t}) => {
         header={0}
         messages={[
           {kind: 'user', text: 'haha thank you!! :)'},
-          {kind: 'claude', text: 'Anytime! ✻', at: 0, dur: 0.1, done: 0},
+          {kind: 'claude', text: 'Proceed. ✦', at: 0, dur: 0.1, done: 0},
           {kind: 'user', text: 'random q: if you were a food, an animal, a god…?', at: T0 - 0.02},
           {kind: 'claude', words: B_EGG1.map((w) => ({w: w.w, s: w.s + (w.s === T0 ? 0.12 : 0)})), size: 1.35, done: 75.6},
         ]}
-        composer={{placeholder: 'Reply to Claude…'}}
+        composer={{placeholder: 'Ask Gemini…'}}
       >
         <Cursor x={1110 + Math.sin(t * 1.4) * 14} y={860} size={34} />
       </ClaudeApp>
@@ -120,7 +120,7 @@ const Opening: React.FC<{t: number}> = ({t}) => {
 // ======================================================================= costume stage
 type Costume = 'egg' | 'tom' | 'cat' | 'purr';
 const costumeAt = (t: number): Costume => (t < TOMATO ? 'egg' : t < (WIPE_A + WIPE_B) / 2 ? 'tom' : t < PURR_SWAP ? 'cat' : 'purr');
-const SRC: Record<Costume, string> = {egg: 'img/cc_eggplant.png', tom: 'img/cc_tomato.png', cat: 'img/cc_cat.png', purr: 'img/cc_cat_purr.png'};
+const SRC: Record<Costume, string> = {egg: 'img/gc_eggplant.png', tom: 'img/gc_tomato.png', cat: 'img/gc_cat.png', purr: 'img/gc_cat_purr.png'};
 
 const stageColors = (t: number) => {
   const egg = ['#F1EAF6', '#E6D9F0'];
@@ -147,9 +147,9 @@ const Stage: React.FC<{t: number}> = ({t}) => {
   // character transform
   const bounce = -8 * bp;
   const sprite = isPurr ? (
-    <Sprite src={SRC.purr} t={t} x={520} y={1095} h={900} outline="#fff" outlineWidth={6} shadow="drop-shadow(0 20px 30px rgba(120,60,30,0.22))" breathe={0.004} seed={3} />
+    <Sprite src={SRC.purr} t={t} x={520} y={1095} h={900} outline="#fff" outlineWidth={6} shadow="drop-shadow(0 20px 30px rgba(35,43,122,0.20))" breathe={0.004} seed={3} />
   ) : (
-    <Sprite src={SRC[costume]} t={t} x={CX} y={CY + bounce - tw.lift} h={CH} scale={lerp(0.85, 1, popK)} outline="#fff" outlineWidth={6} shadow="drop-shadow(0 20px 30px rgba(120,60,30,0.22))" sway={1.4} float={4} seed={5} />
+    <Sprite src={SRC[costume]} t={t} x={CX} y={CY + bounce - tw.lift} h={CH} scale={lerp(0.85, 1, popK)} outline="#fff" outlineWidth={6} shadow="drop-shadow(0 20px 30px rgba(35,43,122,0.20))" sway={1.4} float={4} seed={5} />
   );
   // pet hand
   const head = {x: 452, y: 300};
@@ -272,7 +272,7 @@ const Stamp: React.FC<{t: number; at: number; out: number; text: string; x: numb
           border: `7px solid ${color}`,
           borderRadius: 14,
           background: 'rgba(255,255,255,0.92)',
-          boxShadow: '0 10px 30px rgba(120,60,30,0.18)',
+          boxShadow: '0 10px 30px rgba(35,43,122,0.18)',
           whiteSpace: 'nowrap',
           lineHeight: 1.1,
         }}
@@ -326,7 +326,7 @@ const GodScene: React.FC<{t: number}> = ({t}) => {
         {/* halo flare on "god" (behind her) */}
         <Flower x={halo.x} y={halo.y + 10} size={lerp(120, 330, ease.outCubic(seg(t, GODWORD, GODWORD + 0.45)))} opacity={flash * 0.9} color="#F4D9A0" centerColor="#FFF6E0" shade={null} glow={2} glowColor="#E8C27A" spin={t * 30} />
         <Sprite
-          src="img/cc_god.png"
+          src="img/gc_god.png"
           t={t}
           x={960}
           y={godTop + godH + (1 - rise) * 220}

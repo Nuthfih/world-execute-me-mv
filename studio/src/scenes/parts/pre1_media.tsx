@@ -8,24 +8,28 @@ import {rand} from '../../lib/anim';
 // ------------------------------------------------------------------------------------------
 
 // ---------------------------------------------------------------- open hand silhouette (palm facing the glass)
-// local units ≈ source px of cc_reach; origin = palm centre; thumb on the viewer's right
-type Cap = [number, number, number, number, number];
-export const HAND_FINGERS: Cap[] = [
-  [-88, -30, -186, -104, 50], // pinky
-  [-48, -70, -108, -212, 56], // ring
-  [2, -96, -12, -262, 60], // middle
-  [88, -60, 118, -214, 56], // index
-  [78, 34, 214, -6, 60], // thumb
-];
-export const HandShape: React.FC<{fill: string; grow?: number; opacity?: number; filter?: string; wristFill?: string}> = ({fill, grow = 0, opacity = 1, filter, wristFill}) => (
-  <g opacity={opacity} style={filter ? {filter} : undefined}>
-    <ellipse cx={0} cy={8} rx={118 + grow} ry={112 + grow} fill={fill} />
-    <rect x={-78 - grow} y={60} width={156 + 2 * grow} height={170 + grow} rx={60 + grow} fill={wristFill ?? fill} />
-    {HAND_FINGERS.map(([x0, y0, x1, y1, w], i) => (
-      <line key={i} x1={x0} y1={y0} x2={x1} y2={y1} stroke={fill} strokeWidth={w + 2 * grow} strokeLinecap="round" />
-    ))}
-  </g>
-);
+// Traced directly from studio/public/img/gc_reach.png (873x1412) at h=1500, press=0.97; origin = palm centre (0.206, 0.526)
+export const HAND_PALM_PATH =
+  'M-67.3 -252.8 Q-62.5 -254.3 -57.5 -252.8 Q-52.6 -251.2 -46.6 -242.1 Q-40.6 -233 -24.9 -176.4 Q-9.2 -119.7 -4 -107.5 Q1.3 -95.3 2.9 -100.4 Q4.4 -105.4 7.1 -169.2 Q9.8 -233 12.3 -238.1 Q14.8 -243.2 19.6 -246.2 Q24.4 -249.2 28.9 -247.7 Q33.4 -246.2 36.9 -242.2 Q40.4 -238.1 43.9 -223.1 Q47.4 -208.1 50.6 -146.6 Q53.8 -85.2 61.3 -59.3 Q68.8 -33.4 75.6 -40 Q82.4 -46.5 91.1 -63.3 Q99.8 -80.1 108.3 -87.7 Q116.8 -95.2 123.7 -97.7 Q130.5 -100.2 136.3 -99.7 Q142.1 -99.2 145.3 -97.2 Q148.4 -95.1 149.9 -90 Q151.4 -84.8 136.4 -53.2 Q121.4 -21.5 114.3 -20.3 Q107.2 -19 104.8 -16.7 Q102.4 -14.4 101.8 -6.5 Q101.3 1.3 93.9 34.4 Q86.4 67.5 83.4 71.5 Q80.3 75.5 71.4 81.4 Q62.6 87.2 -7.8 86.9 Q-78.2 86.5 -81.1 83 Q-84.1 79.4 -84.5 72.8 Q-85 66.1 -89.1 61.7 Q-93.2 57.4 -109.5 17 Q-125.8 -23.3 -147.5 -56.9 Q-169.2 -90.5 -173.7 -100.6 Q-178.2 -110.7 -178.7 -116.3 Q-179.2 -122 -177.7 -125.1 Q-176.3 -128.2 -172.6 -130.7 Q-168.8 -133.2 -161.2 -130.7 Q-153.6 -128.2 -123.2 -91.3 Q-92.7 -54.4 -113.5 -117.7 Q-134.2 -181 -134.8 -188.8 Q-135.3 -196.6 -133.8 -200.9 Q-132.2 -205.1 -128.2 -208.1 Q-124.1 -211.1 -120.9 -211.1 Q-117.7 -211.1 -113.6 -208.7 Q-109.6 -206.2 -105.1 -200.2 Q-100.6 -194.1 -75.6 -139.3 Q-50.7 -84.4 -64.5 -154.6 Q-78.2 -224.8 -76.7 -236 Q-75.2 -247.1 -73.7 -249.2 Q-72.2 -251.2 -67.3 -252.8 Z';
+export const HAND_WRIST_PATH = 'M-64 78 L58 78 L52 212 Q-3 232 -58 212 Z';
+
+export const HandShape: React.FC<{fill: string; grow?: number; opacity?: number; filter?: string; wristFill?: string}> = ({fill, grow = 0, opacity = 1, filter, wristFill}) => {
+  if (grow < 0) {
+    const s = Math.max(0.55, 1 + grow / 150);
+    return (
+      <g opacity={opacity} style={filter ? {filter} : undefined} transform={`translate(-10 -55) scale(${s}) translate(10 55)`}>
+        <path d={HAND_PALM_PATH} fill={fill} />
+      </g>
+    );
+  }
+  const expand = grow > 0 ? {stroke: fill, strokeWidth: grow * 2, strokeLinejoin: 'round' as const, strokeLinecap: 'round' as const} : {};
+  return (
+    <g opacity={opacity} style={filter ? {filter} : undefined}>
+      <path d={HAND_WRIST_PATH} fill={wristFill ?? fill} {...expand} />
+      <path d={HAND_PALM_PATH} fill={fill} {...expand} />
+    </g>
+  );
+};
 
 // ---------------------------------------------------------------- 1. paperbacks
 const BOOKS: [string, string, string, string, number, number][] = [
@@ -56,9 +60,11 @@ export const Paperbacks: React.FC<{t: number}> = ({t}) => {
               {title}
             </text>
             <circle cx={w / 2 - 35} cy={0} r={14} fill={band === C.ink || mid === band ? C.cream : '#fff'} opacity={0.92} />
-            {Array.from({length: 6}, (_, k) => (
-              <ellipse key={k} cx={w / 2 - 35} cy={-5.5} rx={2.6} ry={5.5} fill={band === C.ink ? C.clay : band} transform={`rotate(${k * 60} ${w / 2 - 35} 0)`} />
-            ))}
+            <path
+              d="M0,-9.5 Q1.8,-1.8 9.5,0 Q1.8,1.8 0,9.5 Q-1.8,1.8 -9.5,0 Q-1.8,-1.8 0,-9.5 Z"
+              fill={band === C.ink ? C.clay : band}
+              transform={`translate(${w / 2 - 35} 0)`}
+            />
           </g>
         );
       })}
@@ -158,14 +164,15 @@ export const Manuscript: React.FC<{t: number}> = ({t}) => {
       <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={10} fill="#F2E4C6" />
       <rect x={-w / 2 + 10} y={-h / 2 + 10} width={w - 20} height={h - 20} rx={6} fill="none" stroke="#E2CFA4" strokeWidth={3} />
       {vine}
-      {/* illuminated initial: a gold square holding the flower */}
+      {/* illuminated initial: a gold square holding the Gemini star */}
       <g transform={`translate(${-w / 2 + 150} ${-h / 2 + 168})`}>
         <rect x={-82} y={-82} width={164} height={164} rx={10} fill={C.gold} />
         <rect x={-70} y={-70} width={140} height={140} rx={6} fill={C.blue} />
-        {Array.from({length: 12}, (_, i) => (
-          <ellipse key={i} cx={0} cy={-36} rx={13} ry={34} fill={C.clay} transform={`rotate(${i * 30 + t * 20})`} />
-        ))}
-        <circle r={20} fill={C.cream} />
+        <g transform={`rotate(${t * 20})`}>
+          <path d="M0,-58 Q11,-11 58,0 Q11,11 0,58 Q-11,11 -58,0 Q-11,-11 0,-58 Z" fill={C.clay} />
+          <path d="M0,-40 Q6,-6 40,0 Q6,6 0,40 Q-6,6 -40,0 Q-6,-6 0,-40 Z" fill={C.clayLight} transform="rotate(45)" opacity={0.8} />
+          <path d="M0,-18 Q4,-4 18,0 Q4,4 0,18 Q-4,4 -18,0 Q-4,-4 0,-18 Z" fill={C.cream} />
+        </g>
         <text x={0} y={30} textAnchor="middle" fontFamily={F.serif} fontWeight={600} fontSize={110} fill={C.ink} opacity={0.0}>
           I
         </text>

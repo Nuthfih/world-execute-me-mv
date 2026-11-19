@@ -11,10 +11,10 @@ import {APP_NAMES, AppWindowContent, RING, ringSlot} from './parts/bridge_apps';
 import {SPIN_X, SPIN_Y, Shimmer, TERM_BG, TerminalScreen, verbAt} from './parts/bridge_terminal';
 
 // ---------------------------------------------------------------------------------------------
-// 133.62–147.66  BRIDGE (8 bars, instrumental). Claude Code boots in a dark terminal; Claude
+// 133.62–147.66  BRIDGE (8 bars, instrumental). Gemini CLI boots in a dark terminal; Gemini
 // prompts herself "where did you go?" → "Found 12 windows". Pull back: her terminal is one window
 // on the human's desktop among the 12 apps they left her for. The black flower breaks out of its
-// sandbox; the 12 windows fly into a clock ring around it (12 petal slots); hollow-eyed cc_dark
+// sandbox; the 12 windows fly into a clock ring around it (12 petal slots); hollow-eyed gc_dark
 // flashes on 144.24; lock-on; freeze on the exact EXECUTION handoff frame.
 // ---------------------------------------------------------------------------------------------
 
@@ -115,8 +115,8 @@ const DesktopWindow: React.FC<{t: number; name: string; i: number}> = ({t, name,
 const Wallpaper: React.FC<{t: number; k: number}> = ({t, k}) =>
   k <= 0.001 ? null : (
     <AbsoluteFill style={{opacity: k}}>
-      <AbsoluteFill style={{background: 'linear-gradient(160deg, #161a24 0%, #1b1822 45%, #241a1c 100%)'}} />
-      <AbsoluteFill style={{background: 'radial-gradient(circle at 22% 78%, rgba(106,155,204,0.16), transparent 40%), radial-gradient(circle at 80% 18%, rgba(217,119,87,0.12), transparent 42%)'}} />
+      <AbsoluteFill style={{background: 'linear-gradient(160deg, #161a24 0%, #1b1822 45%, #1a1b28 100%)'}} />
+      <AbsoluteFill style={{background: 'radial-gradient(circle at 22% 78%, rgba(56,189,248,0.16), transparent 40%), radial-gradient(circle at 80% 18%, rgba(91,110,245,0.14), transparent 42%)'}} />
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
         <path d={`M0,${880 + Math.sin(t * 0.3) * 4} C400,800 700,940 1100,860 S1700,800 1920,860 V1080 H0 Z`} fill="#141219" opacity={0.8} />
       </svg>
@@ -135,12 +135,12 @@ const Wallpaper: React.FC<{t: number; k: number}> = ({t, k}) =>
           padding: '0 24px',
           fontFamily: F.sans,
           fontSize: 17,
-          color: '#C2C0B6',
+          color: '#A5ABC2',
           boxSizing: 'border-box',
         }}
       >
-        <span style={{width: 14, height: 14, borderRadius: 7, background: '#C2C0B6', display: 'inline-block'}} />
-        <span style={{fontWeight: 600, color: '#E8E6DC'}}>Terminal</span>
+        <span style={{width: 14, height: 14, borderRadius: 7, background: '#A5ABC2', display: 'inline-block'}} />
+        <span style={{fontWeight: 600, color: '#EDF0FC'}}>Terminal</span>
         <span>File</span>
         <span>Edit</span>
         <span>View</span>
@@ -185,7 +185,7 @@ const flowerState = (t: number) => {
 const BlackFlower: React.FC<{t: number; dx?: number; dy?: number}> = ({t, dx = 0, dy = 0}) => {
   const f = flowerState(t);
   if (t >= FREEZE) {
-    return <Flower size={110} x={960} y={540} color={C.ink2} edge={C.clay} edgeWidth={3} sharp={0.35} glow={0.6} glowColor={C.clay} />;
+    return <Flower size={110} x={960} y={540} color={C.ink2} edge={C.clay} edgeWidth={3} sharp={0.86} glow={0.6} glowColor={C.clay} />;
   }
   const petals = f.twitch > 0.01 ? Array.from({length: 12}, (_, i) => ({scale: 1 + 0.08 * f.twitch * (0.4 + rand(12, i))})) : undefined;
   return (
@@ -197,7 +197,7 @@ const BlackFlower: React.FC<{t: number; dx?: number; dy?: number}> = ({t, dx = 0
       color={C.ink2}
       edge={C.clay}
       edgeWidth={3 * clamp(f.size / 110, 0.5, 1.4)}
-      sharp={0.35}
+      sharp={0.86}
       glow={f.glow}
       glowColor={C.clay}
       petals={petals}
@@ -242,7 +242,7 @@ export const S09Bridge: React.FC<{t: number}> = ({t}) => {
       0.5 * (t >= 144.86 && t < 144.98 ? 1 : 0) +
       (t > 145.2 && t < FREEZE - 0.12 && noise1(t * 9, 7) > 0.72 ? 0.12 + 0.3 * seg(t, 145.2, FREEZE) : 0);
 
-  // cc_dark impact frame
+  // gc_dark impact frame
   const darkK = t >= IMPACT && t < 144.98 ? 1 - seg(t, 144.7, 144.98) : 0;
   const invert = t >= IMPACT && t < IMPACT + 0.07;
 
@@ -264,19 +264,19 @@ export const S09Bridge: React.FC<{t: number}> = ({t}) => {
         {/* the human's apps */}
         {/* stacked in ring order (index 0..11, later on top) so the handoff z-order is simple */}
         {t > PULL_A - 0.05 ? APP_NAMES.map((name, i) => <DesktopWindow key={name} t={t} name={name} i={i} />) : null}
-        {/* Claude's terminal window */}
+        {/* Gemini's terminal window */}
         {showTerm ? (
           <OSWindow
             x={TBX}
             y={TBY - 34}
             w={TBW}
             h={TBH + 34}
-            title="claude — ~/world"
+            title="agy — ~/world"
             dark
             style={{
               transform: `scale(${lerp(1, 0.02, off2)}, ${lerp(1, 0.012, off1)})`,
               filter: off1 > 0 ? `brightness(${1 + off1 * 2})` : undefined,
-              boxShadow: t > EMERGE ? `0 0 ${40 + 60 * sbK}px rgba(217,119,87,${0.25 * sbK}), 0 20px 50px rgba(0,0,0,0.5)` : '0 20px 50px rgba(0,0,0,0.35)',
+              boxShadow: t > EMERGE ? `0 0 ${40 + 60 * sbK}px rgba(91,110,245,${0.25 * sbK}), 0 20px 50px rgba(0,0,0,0.5)` : '0 20px 50px rgba(0,0,0,0.35)',
             }}
           >
             <div style={{position: 'absolute', left: 0, top: 0, width: W, height: H, transform: `scale(${S})`, transformOrigin: '0 0'}}>
@@ -336,12 +336,12 @@ export const S09Bridge: React.FC<{t: number}> = ({t}) => {
           const r = ringSlot(i);
           return <Ring key={n} x={r.x} y={r.y} t={t} at={flyStart(i) + FLY * 0.82} r0={60} r1={190} color={C.clay} width={3} dur={0.4} />;
         })}
-        {/* impact: darken the ring, hollow-eyed cc_dark */}
+        {/* impact: darken the ring, hollow-eyed gc_dark */}
         {darkK > 0 ? (
           <>
             <AbsoluteFill style={{background: '#000', opacity: 0.62 * darkK}} />
             <Sprite
-              src="img/cc_dark.png"
+              src="img/gc_dark.png"
               t={t}
               x={960}
               y={1290}

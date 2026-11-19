@@ -1,7 +1,7 @@
 #!/bin/zsh
 # One-shot build: install dependencies, prepare assets, render the MV.
-#   ./render.sh          -> mv/world.execute(me)_claude_edition_1080p60.mp4
-#   ./render.sh 4k       -> mv/world.execute(me)_claude_edition_4K60.mp4
+#   ./render.sh          -> mv/world.execute(me)_gemini_edition_1080p60.mp4
+#   ./render.sh 4k       -> mv/world.execute(me)_gemini_edition_4K60.mp4
 #   ./render.sh both
 # Needs: Node.js 20+, ImageMagick 7, and the song in source/ (see README).
 set -e

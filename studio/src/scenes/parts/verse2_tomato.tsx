@@ -6,7 +6,7 @@ import {PANEL} from './verse2_stage';
 
 // ------------------------------------------------------------------------------------------------
 // tomato.svg — a whole tomato is sliced; its transverse section has 12 locules arranged exactly like
-// Claude's flower (artistic license, footnoted). Then lycopene (C40H56) is drawn bond by bond and the
+// Gemini's flower (artistic license, footnoted). Then lycopene (C40H56) is drawn bond by bond and the
 // conjugated chain lights up on ANTIOXIDANTS.
 // ------------------------------------------------------------------------------------------------
 

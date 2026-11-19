@@ -194,43 +194,43 @@ export const FocusLines: React.FC<{color?: string; n?: number; seed?: number; rI
   );
 };
 
-/** SVG filter defs: 3-tone posterize (ink / clay / cream) for impact frames */
+/** SVG filter defs: 3-tone posterize (ink / Gemini royal blue / cream) for impact frames */
 export const DuotoneDefs: React.FC = () => (
   <svg width={0} height={0} style={{position: 'absolute'}}>
     <filter id="execTri" colorInterpolationFilters="sRGB">
       <feColorMatrix type="matrix" values="0.3 0.59 0.11 0 0  0.3 0.59 0.11 0 0  0.3 0.59 0.11 0 0  0 0 0 1 0" />
       <feComponentTransfer>
-        <feFuncR type="discrete" tableValues="0.055 0.851 0.953" />
-        <feFuncG type="discrete" tableValues="0.055 0.467 0.914" />
-        <feFuncB type="discrete" tableValues="0.051 0.341 0.863" />
+        <feFuncR type="discrete" tableValues="0.071 0.357 0.929" />
+        <feFuncG type="discrete" tableValues="0.075 0.431 0.941" />
+        <feFuncB type="discrete" tableValues="0.102 0.961 0.988" />
       </feComponentTransfer>
     </filter>
     <filter id="execTriInv" colorInterpolationFilters="sRGB">
       <feColorMatrix type="matrix" values="-0.3 -0.59 -0.11 0 1  -0.3 -0.59 -0.11 0 1  -0.3 -0.59 -0.11 0 1  0 0 0 1 0" />
       <feComponentTransfer>
-        <feFuncR type="discrete" tableValues="0.98 0.77 0.05" />
-        <feFuncG type="discrete" tableValues="0.96 0.28 0.05" />
-        <feFuncB type="discrete" tableValues="0.93 0.23 0.05" />
+        <feFuncR type="discrete" tableValues="0.973 0.957 0.071" />
+        <feFuncG type="discrete" tableValues="0.976 0.247 0.075" />
+        <feFuncB type="discrete" tableValues="0.992 0.369 0.102" />
       </feComponentTransfer>
     </filter>
   </svg>
 );
 
-/** 1–3 frame anime impact frame: posterized dark-Claude on a flat field with focus lines */
+/** 1–3 frame anime impact frame: posterized dark-Gemini on a flat field with focus lines */
 export const ImpactFrame: React.FC<{t: number; at: number; dur?: number; kind: 'face' | 'conduct' | 'faceInv'}> = ({t, at, dur = 0.05, kind}) => {
   if (t < at || t >= at + dur) return null;
   const dt = t - at;
   const z = 1 + dt * 1.6;
   const inv = kind === 'faceInv';
-  const bg = inv ? '#F7F2EA' : BG;
+  const bg = inv ? C.paper : BG;
   return (
     <AbsoluteFill style={{background: bg, zIndex: 50}}>
       <DuotoneDefs />
       <AbsoluteFill style={{transform: `scale(${z})`}}>
         {kind === 'conduct' ? (
-          <Sprite src="img/cc_dark_conduct.png" t={t} x={1010} y={1500} h={1700} filter="url(#execTri)" />
+          <Sprite src="img/gc_dark_conduct.png" t={t} x={1010} y={1500} h={1700} filter="url(#execTri)" />
         ) : (
-          <Sprite src="img/cc_dark_face.png" t={t} x={960} y={1150} h={1200} filter={inv ? 'url(#execTriInv)' : 'url(#execTri)'} />
+          <Sprite src="img/gc_dark_face.png" t={t} x={960} y={1150} h={1200} filter={inv ? 'url(#execTriInv)' : 'url(#execTri)'} />
         )}
       </AbsoluteFill>
       <FocusLines color={inv ? C.redDeep : '#000'} seed={kind === 'conduct' ? 9 : 4} rIn={kind === 'conduct' ? 520 : 470} />

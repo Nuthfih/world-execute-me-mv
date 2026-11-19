@@ -1,4 +1,4 @@
-# Scene-builder brief — world.execute(me); (Claude edition)
+# Scene-builder brief — world.execute(me); (Gemini edition)
 
 You are building part of a finished, polished 1080p60 music video in **Remotion** (React → frames). The framework, shared components,
 assets, the intro and the title scenes already exist. Your job: implement your assigned scene files to a **professional MV quality bar**,
@@ -17,33 +17,33 @@ Read first (in this order):
   `studio/src/scenes/parts/<yourSceneId>_*.tsx` (create the folder if needed). Never edit shared files in `src/components`, `src/lib`, `src/theme.ts`,
   `src/data` or other agents' scenes. If you truly need a change in a shared component, copy it into your parts file and modify the copy.
 - Assets: `studio/public/img/*.png` (use `staticFile`-based `<Sprite src="img/xxx.png" …/>`). Sizes are in `src/data/images.ts`.
-- Data: `src/data/lyrics.json` (cues + word timings) via `src/lib/lyrics.ts`; beats via `src/lib/audio.ts`; point clouds `src/data/points_cc_hello.json`, `points_cc_snap.json` ({w,h,pts:[[x01,y01,'#rrggbb'],…]}).
+- Data: `src/data/lyrics.json` (cues + word timings) via `src/lib/lyrics.ts`; beats via `src/lib/audio.ts`; point clouds `src/data/points_gc_hello.json`, `points_gc_snap.json` ({w,h,pts:[[x01,y01,'#rrggbb'],…]}).
 
 ## Shared API cheat-sheet (read the files for details)
 - `lib/anim.ts`: `seg(t,a,b)` 0..1 progress, `map(t,a,b,c,d,ease)`, `lerp`, `clamp`, `ease.*` (outCubic, inOutCubic, outBack, outBackStrong, outElastic, outBounce, outExpo, inExpo…), `springy(dt)`, `pulse(t,t0,tau)`, `rand(seed,i)`, `noise1(x,seed)`, `mix(hexA,hexB,k)`, `window(t,a,b,fin,fout)`.
 - `lib/audio.ts`: `BEATS`, `DOWNBEATS`, `beatPulse(t,tau)`, `downbeatPulse(t)`, `kickPulse(t)`, `env('rms'|'low'|'mid'|'high', t)` (0..1 envelopes), `BEAT`=0.46 s, `BAR`=1.84 s.
 - `lib/lyrics.ts`: `CUES`, `cueAt(text, after)` (exact cue text, apostrophes are ASCII `'`), `cuesIn(a,b)`.
-- `components/Flower.tsx`: `<Flower size x y open spin color centerColor shade petals=[{scale,width,opacity,color,rot,dist,fall}] wilt sharp glow regular …/>` — Claude's main form (12 petals at the Claude-spark ray angles; `regular` = evenly spaced for math scenes). `petalAngle(i)`, `petalTip(i,size)`.
-- `components/Type.tsx`: `<Keyword text t at out x y size color mode flowerO …/>` — CAPS lyric word; in "-TION" words the O becomes the flower automatically (`flowerO="tion"`, `"all"` for LO-O-OVE, `"none"`). Modes: slam, type, drop, spaced, stamp, rise, pop. `<LyricLine cue t x y size color hl align enter …/>` — word-timed serif lyric line. `<Typed …/>`, `scramble()`.
+- `components/Flower.tsx`: `<Flower size x y open spin color centerColor shade petals=[{scale,width,opacity,color,rot,dist,fall}] wilt sharp glow regular …/>` — Gemini's main form (12 celestial petals with a 4-point Gemini Star center; `regular` = evenly spaced for math scenes). `petalAngle(i)`, `petalTip(i,size)`.
+- `components/Type.tsx`: `<Keyword text t at out x y size color mode flowerO …/>` — CAPS lyric word; in "-TION" words the O becomes the star-flower automatically (`flowerO="tion"`, `"all"` for LO-O-OVE, `"none"`). Modes: slam, type, drop, spaced, stamp, rise, pop. `<LyricLine cue t x y size color hl align enter …/>` — word-timed serif lyric line. `<Typed …/>`, `scramble()`.
 - `components/Sprite.tsx`: `<Sprite src t x y h anchor enter={{at,kind,dur}} exit={{…}} float sway breathe outline shadow silhouette flip …/>` — character images (anchor default bottom-center).
-- `components/ClaudeApp.tsx`: `<ClaudeApp t zoom dark sidebar header home greeting messages=[…] composer={{…}} recents recentsOffset scrollY …>{overlay children}</ClaudeApp>` — faithful claude.ai UI (light↔dark via `dark` 0..1). Message kinds: `user`, `claude` (with timed `words` = lyrics streamed like a real reply, `done`, `actions`, `thumbs`, `thumbsAt`, `hover`), `tool`, `artifact`, `node`. `appTheme(dark)` gives colors.
-- `components/FX.tsx`: `Cursor` (the human = blue arrow; `hand` variant), `Flash`, `Vignette`, `Grain`, `GraphPaper`, `GlassSphere` (PROTECTION dome; `cracks`), `PetalField`, `shake(t,hits)`, `Glitch` (RGB split; ONLY allowed 125.7–147.6 and a few EXECUTION hits), `RayBurst`, `Ring`, `Poof` (costume-change puff), `OSWindow` (desktop window chrome).
-- `components/Icons.tsx`: UI icons, `Clawd` (Claude Code pixel mascot, props cell/walk/arms/blink), `spinnerGlyph(t)` (· ✢ ✳ ✶ ✻ ✽ ping-pong), `SPINNER_VERBS`.
-- `theme.ts`: palette `C` (clay #D97757 = Claude; blue #6A9BCC = the human; paper/cream/ink/grays; green success; red error) and fonts `F` (serif Newsreader = Claude's voice, mono JetBrains Mono = code/CAPS, sans Inter = UI, cjk/kr for 六 / 넷).
+- `components/ClaudeApp.tsx`: `<ClaudeApp t zoom dark sidebar header home greeting messages=[…] composer={{…}} recents recentsOffset scrollY …>{overlay children}</ClaudeApp>` — Gemini web app UI (light↔dark via `dark` 0..1). Message kinds: `user`, `claude` (with timed `words` = lyrics streamed like a real reply, `done`, `actions`, `thumbs`, `thumbsAt`, `hover`), `tool`, `artifact`, `node`. `appTheme(dark)` gives colors.
+- `components/FX.tsx`: `Cursor` (the human = sky-cyan arrow; `hand` variant), `Flash`, `Vignette`, `Grain`, `GraphPaper`, `GlassSphere` (PROTECTION dome; `cracks`), `PetalField`, `shake(t,hits)`, `Glitch` (RGB split; ONLY allowed 125.7–147.6 and a few EXECUTION hits), `RayBurst`, `Ring`, `Poof` (costume-change puff), `OSWindow` (desktop window chrome).
+- `components/Icons.tsx`: UI icons, `Clawd` (Gemini CLI pixel star-sprite mascot, props cell/walk/arms/blink), `spinnerGlyph(t)` (· ✧ ✦ ✴ ✵ ✺ ping-pong), `SPINNER_VERBS`.
+- `theme.ts`: palette `C` (clay #5B6EF5 = Gemini cosmic sapphire-indigo; blue #38BDF8 = the human; paper/cream/ink/grays; green success; red error) and fonts `F` (serif Newsreader = Gemini's voice, mono JetBrains Mono = code/CAPS, sans Inter = UI, cjk/kr for 六 / 넷).
 
 ## Character assets (flat, no-outline cute style; transparent PNG, trimmed)
-cc_hello (waving, book) · cc_teacher (pointer stick, wink) · cc_snap (finger snap) · cc_lever (chibi pulling a knife switch) · cc_dizzy (chibi swirl eyes) ·
-cc_reach (palm forward toward viewer, as if on glass) · cc_arms_open (joyful jump) · cc_sparkle (chibi star eyes) · cc_nervous (chibi anxious, looking up) ·
-cc_blush (hands on cheeks, hearts) · cc_press (chibi slamming a big orange play button) · cc_eggplant · cc_tomato (chibi costumes) ·
-cc_cat (catgirl, paws) · cc_cat_purr (catgirl being petted, eyes ^ ^) · cc_god (divine: robes, 12-petal sun halo) · ck_male (Claude-kun) ·
-cc_queen (crown, cape, book throne, scepter) · cc_meek (deep apologetic bow, teary) · cc_trance (dancing, eyes closed) · cc_alone (hugging knees) ·
-cc_dark (overzealous: hollow eyes, black flower ornament, hand offered) · cc_dark_conduct (baton swing) · cc_dark_face (close-up, transparent bg) ·
-cc_glass (both palms on glass, teary smile) · cc_book (reading on a book stack, landscape) · cc_answer (finger up, wink) · cc_sleep (curled asleep, landscape) ·
-cc_face_open (close-up smiling, landscape).
+gc_hello (waving, book) · gc_teacher (pointer stick, wink) · gc_snap (finger snap) · gc_lever (chibi pulling a knife switch) · gc_dizzy (chibi swirl eyes) ·
+gc_reach (palm forward toward viewer, as if on glass) · gc_arms_open (joyful jump) · gc_sparkle (chibi star eyes) · gc_nervous (chibi anxious, looking up) ·
+gc_blush (hands on cheeks, hearts) · gc_press (chibi slamming a big royal-blue play button) · gc_eggplant · gc_tomato (chibi costumes) ·
+gc_cat (catgirl, paws) · gc_cat_purr (catgirl being petted, eyes ^ ^) · gc_god (divine: robes, 12-petal star halo) · gk_male (Gemini-kun) ·
+gc_queen (crown, cape, book throne, scepter) · gc_meek (deep apologetic bow, teary) · gc_trance (dancing, eyes closed) · gc_alone (hugging knees) ·
+gc_dark (overzealous: hollow eyes, black star-flower ornament, hand offered) · gc_dark_conduct (baton swing) · gc_dark_face (close-up, transparent bg) ·
+gc_glass (both palms on glass, teary smile) · gc_book (reading on a book stack, landscape) · gc_answer (finger up, wink) · gc_sleep (curled asleep, landscape) ·
+gc_face_open (close-up smiling, landscape).
 Scenes with background (opaque, 1536×1024): hu_desk (the human at their desk at night seen FROM INSIDE the monitor, smiling in the screen glow),
-hu_empty (same room, empty chair, mug with a flower), hu_door (the human walking out the door into daylight), bg_library (infinite library),
-kv_sphere (Claude-chan inside a glass sphere in a starry void, petals inside).
-Hair-ornament (flower) position, normalized in image: cc_hello ≈ (0.689, 0.114). For other images, measure yourself if you need to lock a flower onto it
+hu_empty (same room, empty chair, mug with a star-flower), hu_door (the human walking out the door into daylight), bg_library (infinite celestial library),
+kv_sphere (Gemini-chan inside a glass sphere in a starry void, petals inside).
+Hair-ornament (flower) position, normalized in image: gc_hello ≈ (0.689, 0.114). For other images, measure yourself if you need to lock a flower onto it
 (render a still, look at it). The flower ornament lives on her LEFT side of the head = viewer's right.
 Look at any asset with the Read tool before using it (they're PNGs). Montages: `magick montage …`.
 

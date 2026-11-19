@@ -20,7 +20,7 @@ export const LineArt: React.FC<{
   opacity?: number;
   anchor?: [number, number];
   style?: React.CSSProperties;
-}> = ({data, x, y, h, draw = 1, fill = 1, stroke = '#B5583A', strokeWidth = 2, sweep = 0.6, opacity = 1, anchor = [0.5, 1], style}) => {
+}> = ({data, x, y, h, draw = 1, fill = 1, stroke = '#3B4CCA', strokeWidth = 2, sweep = 0.6, opacity = 1, anchor = [0.5, 1], style}) => {
   const s = h / data.h;
   const w = data.w * s;
   const n = data.paths.length;

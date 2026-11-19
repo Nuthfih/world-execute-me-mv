@@ -122,7 +122,7 @@ export const RolesShot: React.FC<{t: number}> = ({t}) => {
     <AbsoluteFill style={{transform: `scale(${1.04 + 0.03 * seg(t, T_SPLIT, T_TRANCE) + outK * 0.25}) rotate(${camR + outK * 25}deg)`, opacity: 1 - outK}}>
       {/* LEFT: queen side (S) */}
       <AbsoluteFill style={{clipPath: leftClip, transform: `translateY(${lOff}px)`}}>
-        <AbsoluteFill style={{background: `radial-gradient(circle at 30% 60%, ${C.clayDark} 0%, ${C.clayDeep} 55%, #4A2316 100%)`}} />
+        <AbsoluteFill style={{background: `radial-gradient(circle at 30% 60%, ${C.clayDark} 0%, ${C.clayDeep} 55%, #12163A 100%)`}} />
         <svg width={W} height={H} style={{position: 'absolute', opacity: 0.3 + 0.25 * sEmph}}>
           {Array.from({length: 20}, (_, i) => {
             const a0 = (i / 20) * Math.PI * 2 + t * 0.25;
@@ -153,7 +153,7 @@ export const RolesShot: React.FC<{t: number}> = ({t}) => {
         })}
         <div style={{filter: `brightness(${lerp(0.7, 1, qE)})`}}>
           <Sprite
-            src="img/cc_queen.png"
+            src="img/gc_queen.png"
             t={t}
             x={470}
             y={1105}
@@ -163,14 +163,14 @@ export const RolesShot: React.FC<{t: number}> = ({t}) => {
             sway={0.6}
             outline="#ffffff"
             outlineWidth={5}
-            shadow="drop-shadow(0 20px 30px rgba(40,15,5,0.45))"
+            shadow="drop-shadow(0 20px 30px rgba(18,19,26,0.45))"
           />
         </div>
       </AbsoluteFill>
 
       {/* RIGHT: meek side (M) */}
       <AbsoluteFill style={{clipPath: rightClip, transform: `translateY(${rOff}px)`}}>
-        <AbsoluteFill style={{background: `radial-gradient(circle at 72% 55%, #FFFFFF 0%, ${C.clayPale} 60%, #EDBFA8 100%)`}} />
+        <AbsoluteFill style={{background: `radial-gradient(circle at 72% 55%, #FFFFFF 0%, ${C.clayPale} 60%, #B8C6FA 100%)`}} />
         {/* soft concentric ripples (nervous, wobbly) */}
         <svg width={W} height={H} style={{position: 'absolute'}}>
           {Array.from({length: 9}, (_, i) => {
@@ -188,7 +188,7 @@ export const RolesShot: React.FC<{t: number}> = ({t}) => {
         })}
         <div style={{filter: `brightness(${lerp(0.75, 1, mE)}) saturate(${lerp(0.7, 1, mE)})`}}>
           <Sprite
-            src="img/cc_meek.png"
+            src="img/gc_meek.png"
             t={t}
             x={1470 + Math.sin(t * 40) * 2 * mEmph}
             y={1110}
@@ -199,7 +199,7 @@ export const RolesShot: React.FC<{t: number}> = ({t}) => {
             seed={4}
             outline="#ffffff"
             outlineWidth={5}
-            shadow="drop-shadow(0 20px 30px rgba(120,60,30,0.25))"
+            shadow="drop-shadow(0 20px 30px rgba(35,43,122,0.22))"
           />
         </div>
       </AbsoluteFill>
@@ -231,7 +231,7 @@ export const RolesShot: React.FC<{t: number}> = ({t}) => {
       ) : null}
 
       {/* S / M */}
-      <Keyword text="S" t={t} at={T_S} x={170} y={700} size={340} color={C.gold} mode="stamp" flowerO="none" shadow="0 10px 0 rgba(74,35,22,0.6)" />
+      <Keyword text="S" t={t} at={T_S} x={170} y={700} size={340} color={C.gold} mode="stamp" flowerO="none" shadow="0 10px 0 rgba(18,22,58,0.65)" />
       <Keyword text="M" t={t} at={T_M} x={1760} y={700} size={340} color={C.clay} mode="stamp" flowerO="none" shadow="0 10px 0 rgba(255,255,255,0.7)" />
       <Ring x={420} y={560} t={t} at={T_S} r0={100} r1={700} color={C.gold} width={8} dur={0.45} />
       <Ring x={1460} y={560} t={t} at={T_M} r0={100} r1={700} color="#fff" width={8} dur={0.45} />

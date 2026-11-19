@@ -36,7 +36,7 @@ UP=(-filter LanczosSharp -distort Resize 250% -unsharp 0x2+0.6+0.01 -define png:
 for f in assets/gen/*.png; do
   n=${f:t}
   [[ $n == sheet_* ]] && continue
-  if [[ $n == cc_* || $n == ck_* ]]; then
+  if [[ $n == gc_* || $n == gk_* ]]; then
     # transparent character art: trim to content + 8px margin, then upscale
     print -r -- "magick '$f' -trim +repage -bordercolor none -border 8 ${UP[*]} '$IMG/$n'"
   else

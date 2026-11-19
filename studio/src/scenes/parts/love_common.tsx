@@ -86,8 +86,8 @@ export const Captions: React.FC<{
   </>
 );
 
-export const LIGHT_SHADOW = '0 0 14px rgba(250,246,238,0.95), 0 0 4px rgba(250,246,238,0.95), 0 0 28px rgba(250,246,238,0.7)';
-export const DARK_SHADOW = '0 2px 12px rgba(10,8,6,0.85), 0 0 3px rgba(10,8,6,0.9), 0 0 30px rgba(10,8,6,0.5)';
+export const LIGHT_SHADOW = '0 0 14px rgba(248,249,253,0.95), 0 0 4px rgba(248,249,253,0.95), 0 0 28px rgba(248,249,253,0.7)';
+export const DARK_SHADOW = '0 2px 12px rgba(18,19,26,0.85), 0 0 3px rgba(18,19,26,0.9), 0 0 30px rgba(18,19,26,0.5)';
 
 /** A fluttering page (paper sheet with text lines). Pure function of its params. */
 export const Page: React.FC<{x: number; y: number; w: number; rot: number; flip: number; opacity?: number; blur?: number; seed?: number; tint?: string}> = ({
@@ -99,7 +99,7 @@ export const Page: React.FC<{x: number; y: number; w: number; rot: number; flip:
   opacity = 1,
   blur = 0,
   seed = 0,
-  tint = '#FBF6EC',
+  tint = '#F8F9FD',
 }) => {
   const h = w * 1.3;
   const lines = 7;
@@ -116,7 +116,7 @@ export const Page: React.FC<{x: number; y: number; w: number; rot: number; flip:
         transform: `rotate(${rot}deg) scaleX(${flip})`,
         opacity,
         filter: blur > 0.3 ? `blur(${blur}px)` : undefined,
-        boxShadow: `0 ${w * 0.06}px ${w * 0.14}px rgba(110,60,30,0.22)`,
+        boxShadow: `0 ${w * 0.06}px ${w * 0.14}px rgba(35,43,122,0.20)`,
         padding: `${w * 0.13}px ${w * 0.12}px`,
         boxSizing: 'border-box',
       }}
@@ -127,7 +127,7 @@ export const Page: React.FC<{x: number; y: number; w: number; rot: number; flip:
           style={{
             height: Math.max(1, w * 0.035),
             width: `${i === 0 ? 55 : lerp(60, 100, rand(seed + 3, i))}%`,
-            background: i === 0 ? 'rgba(181,88,58,0.55)' : 'rgba(94,93,89,0.32)',
+            background: i === 0 ? 'rgba(91,110,245,0.62)' : 'rgba(86,91,115,0.32)',
             borderRadius: 2,
             marginBottom: w * 0.075,
           }}
@@ -142,7 +142,7 @@ export const Motes: React.FC<{t: number; n?: number; seed?: number; color?: stri
   t,
   n = 40,
   seed = 3,
-  color = '#FFF4E0',
+  color = '#EDF0FC',
   area = [0, 0, W, H],
   size = [2, 5],
   speed = 18,

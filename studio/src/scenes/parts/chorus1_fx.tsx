@@ -5,32 +5,31 @@ import {clamp, ease, lerp, rand} from '../../lib/anim';
 import {PETAL_ANG, PETAL_LEN} from '../../components/Flower';
 
 // ------------------------------------------------------------------------------------------------
-// Shared FX for chorus1 / verse2: spark-shaped confetti, Claude-spark path, sunburst backdrop.
+// Shared FX for chorus1 / verse2: spark-shaped confetti, Gemini-spark path, sunburst backdrop.
 // Everything is a pure function of t.
 // ------------------------------------------------------------------------------------------------
 
-/** Claude-spark (12 thin rays at the spark angles) as a single path, radius = size */
+/** Gemini-spark (4 bold cardinal points + 8 slender cosmic needles) as a single path, radius = size */
 export const sparkPath = (size: number, sharp = 0.85) => {
-  const r0 = size * 0.12;
-  const w = size * lerp(0.33, 0.11, sharp);
-  const tipC = lerp(0.52, 0.08, sharp);
-  const tipY = lerp(0.14, 0.02, sharp);
-  const bodyC = lerp(0.62, 0.32, sharp);
+  const crisp = Math.max(0.5, sharp);
+  const r0 = size * 0.05;
+  const baseW = size * lerp(0.32, 0.14, crisp);
   let d = '';
   for (let i = 0; i < 12; i++) {
     const L = size * PETAL_LEN[i];
-    const m = r0 + (L - r0) * 0.22;
+    const w = baseW * (i % 3 === 0 ? 1.0 : 0.36);
+    const waistW = w * 0.16;
+    const waistY = r0 + (L - r0) * 0.3;
     const a = (PETAL_ANG[i] * Math.PI) / 180;
     const ca = Math.cos(a), sa = Math.sin(a);
-    // rotate point (px, py) by a (0 = up, clockwise)
     const P = (px: number, py: number) => `${(px * ca - py * sa).toFixed(2)},${(px * sa + py * ca).toFixed(2)}`;
-    d += `M${P(0, -r0)} C${P(w * bodyC, -m)} ${P(w * tipC, -L + w * tipY)} ${P(0, -L)} C${P(-w * tipC, -L + w * tipY)} ${P(-w * bodyC, -m)} ${P(0, -r0)} Z `;
+    d += `M${P(0, -r0)} C${P(w * 0.8, -r0 * 1.1)} ${P(waistW, -waistY)} ${P(0, -L)} C${P(-waistW, -waistY)} ${P(-w * 0.8, -r0 * 1.1)} ${P(0, -r0)} Z `;
   }
   return d;
 };
 
 const HEART = 'M0,6 C-9,-1 -9,-9 -4,-10 C-1.5,-10.5 0,-8.5 0,-7 C0,-8.5 1.5,-10.5 4,-10 C9,-9 9,-1 0,6 Z';
-const PETAL = 'M0,-10 C5.5,-6 5,4 0,5.5 C-5,4 -5.5,-6 0,-10 Z';
+const PETAL = 'M0,-10 Q1.8,-1.8 10,0 Q1.8,1.8 0,10 Q-1.8,1.8 -10,0 Q-1.8,-1.8 0,-10 Z';
 
 export type ConfettiKind = 'spark' | 'rect' | 'petal' | 'heart' | 'dot';
 

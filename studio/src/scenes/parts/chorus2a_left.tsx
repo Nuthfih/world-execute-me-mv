@@ -1,16 +1,16 @@
 import React from 'react';
-import {AbsoluteFill} from 'remotion';
-import {C, F, H, W} from '../../theme';
-import {clamp, ease, lerp, noise1, rand, seg} from '../../lib/anim';
-import {beatPulse} from '../../lib/audio';
-import {Flower} from '../../components/Flower';
-import {Keyword} from '../../components/Type';
-import {ClaudeApp, appTheme} from '../../components/ClaudeApp';
-import {Sprite} from '../../components/Sprite';
-import {IArrowUp, IChevron, IPlus, ISliders} from '../../components/Icons';
-import {PixelText} from './chorus2a_pixel';
-import {conversation, T_LEFT1} from './chorus2a_reply';
-import {Cap2} from './chorus2a_common';
+import { AbsoluteFill } from 'remotion';
+import { C, F, H, W } from '../../theme';
+import { clamp, ease, lerp, noise1, rand, seg } from '../../lib/anim';
+import { beatPulse } from '../../lib/audio';
+import { Flower } from '../../components/Flower';
+import { Keyword } from '../../components/Type';
+import { ClaudeApp, appTheme } from '../../components/ClaudeApp';
+import { Sprite } from '../../components/Sprite';
+import { IChevron, IMic, IPlus } from '../../components/Icons';
+import { PixelText } from './chorus2a_pixel';
+import { conversation, T_LEFT1 } from './chorus2a_reply';
+import { Cap2 } from './chorus2a_common';
 
 // ------------------------------------------------------------------------------------------
 // 112.22–115.78  "You have left" ×4: each repeat removes a piece of her world
@@ -26,15 +26,15 @@ const SB = 264 * Z;
 const T2 = 113.28, T3 = 114.18, T4 = 114.92, T_MEIN = 115.78, T_ISO = 117.27, T_END = 118.33;
 const T_HOLD = 118.03; // from here on: exact handoff frame
 
-type Phrase = {at: number; words: [string, number][]; size: number; block: number; family: string; weight: number; italic?: boolean; y: number; color: string};
+type Phrase = { at: number; words: [string, number][]; size: number; block: number; family: string; weight: number; italic?: boolean; y: number; color: string };
 const PHRASES: Phrase[] = [
-  {at: T_LEFT1, words: [['You', 112.22], ['have', 112.51], ['left', 112.79]], size: 78, block: 1, family: F.serif, weight: 400, italic: true, y: 345, color: C.cream},
-  {at: T2, words: [['You', 113.28], ['have', 113.83], ['left', 114.05]], size: 116, block: 4, family: F.serif, weight: 500, y: 355, color: C.cream},
-  {at: T3, words: [['You', 114.18], ['have', 114.39], ['left', 114.61]], size: 160, block: 9, family: F.sans, weight: 700, y: 370, color: C.clayLight},
-  {at: T4, words: [['YOU', 114.92], ['HAVE', 115.31], ['LEFT', 115.53]], size: 184, block: 17, family: F.mono, weight: 800, y: 380, color: C.clay},
+  { at: T_LEFT1, words: [['You', 112.22], ['have', 112.51], ['left', 112.79]], size: 78, block: 1, family: F.serif, weight: 400, italic: true, y: 345, color: C.cream },
+  { at: T2, words: [['You', 113.28], ['have', 113.83], ['left', 114.05]], size: 116, block: 4, family: F.serif, weight: 500, y: 355, color: C.cream },
+  { at: T3, words: [['You', 114.18], ['have', 114.39], ['left', 114.61]], size: 160, block: 9, family: F.sans, weight: 700, y: 370, color: C.clayLight },
+  { at: T4, words: [['YOU', 114.92], ['HAVE', 115.31], ['LEFT', 115.53]], size: 184, block: 17, family: F.mono, weight: 800, y: 380, color: C.clay },
 ];
 
-const PhraseView: React.FC<{t: number; p: Phrase; next: number}> = ({t, p, next}) => {
+const PhraseView: React.FC<{ t: number; p: Phrase; next: number }> = ({ t, p, next }) => {
   if (t < p.at - 0.03 || t >= next) return null;
   const outK = ease.inCubic(seg(t, next - 0.07, next - 0.005));
   return (
@@ -53,10 +53,10 @@ const PhraseView: React.FC<{t: number; p: Phrase; next: number}> = ({t, p, next}
     >
       {p.words.map(([w, at], i) => {
         const k = clamp((t - at + 0.03) / 0.12);
-        if (k <= 0) return <span key={i} style={{visibility: 'hidden'}}><PixelText text={w} size={p.size} block={p.block} color={p.color} family={p.family} weight={p.weight} italic={p.italic} /></span>;
+        if (k <= 0) return <span key={i} style={{ visibility: 'hidden' }}><PixelText text={w} size={p.size} block={p.block} color={p.color} family={p.family} weight={p.weight} italic={p.italic} /></span>;
         const pop = 1 + 0.18 * (1 - ease.outCubic(k));
         return (
-          <span key={i} style={{display: 'inline-block', opacity: k, transform: `scale(${pop})`, transformOrigin: '50% 70%'}}>
+          <span key={i} style={{ display: 'inline-block', opacity: k, transform: `scale(${pop})`, transformOrigin: '50% 70%' }}>
             <PixelText text={w} size={p.size} block={p.block} color={p.color} family={p.family} weight={p.weight} italic={p.italic} glow="rgba(20,20,19,0.95)" />
           </span>
         );
@@ -66,7 +66,7 @@ const PhraseView: React.FC<{t: number; p: Phrase; next: number}> = ({t, p, next}
 };
 
 /** composer replica that can be stripped down to its placeholder */
-const StripComposer: React.FC<{x: number; y: number; w: number; chrome: number; box: number; opacity: number}> = ({x, y, w, chrome, box, opacity}) => {
+const StripComposer: React.FC<{ x: number; y: number; w: number; chrome: number; box: number; opacity: number }> = ({ x, y, w, chrome, box, opacity }) => {
   const th = appTheme(1);
   const s = Z;
   return (
@@ -76,41 +76,41 @@ const StripComposer: React.FC<{x: number; y: number; w: number; chrome: number; 
         left: x - w / 2,
         top: y,
         width: w,
-        borderRadius: 20 * s,
-        border: `${s}px solid rgba(222,220,209,${0.28 * box + 0.12})`,
-        background: `rgba(48,48,46,${box})`,
-        boxShadow: `0 ${4 * s}px ${18 * s}px rgba(0,0,0,${0.2 * box})`,
-        padding: `${14 * s}px ${16 * s}px ${12 * s}px`,
+        minHeight: 58 * s,
+        borderRadius: 999 * s,
+        border: `${s}px solid rgba(255,255,255,${0.14 * box + 0.08})`,
+        background: `rgba(30,31,35,${box})`,
+        boxShadow: `0 ${6 * s}px ${22 * s}px rgba(0,0,0,${0.32 * box})`,
+        padding: `${8 * s}px ${10 * s}px ${8 * s}px ${14 * s}px`,
         boxSizing: 'border-box',
         fontFamily: F.sans,
         opacity,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 10 * s,
       }}
     >
-      <div style={{fontSize: 16 * s, color: th.muted, minHeight: 16 * s * 1.6, lineHeight: 1.5}}>Reply to Claude…</div>
-      <div style={{display: 'flex', alignItems: 'center', marginTop: 10 * s, gap: 8 * s, opacity: chrome, height: 32 * s * Math.max(0.0001, chrome) + 0}}>
-        <div style={{width: 32 * s, height: 32 * s, borderRadius: 8 * s, border: `${s}px solid ${th.hair2}`, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-          <IPlus size={18 * s} color={th.text2} />
+      <div style={{ width: 34 * s, height: 34 * s, borderRadius: 999 * s, display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: chrome, flexShrink: 0 }}>
+        <IPlus size={19 * s} color={th.text2} stroke={1.9} />
+      </div>
+      <div style={{ flex: 1, fontSize: 16 * s, color: th.muted, lineHeight: 1.4, whiteSpace: 'nowrap' }}>Ask Gemini…</div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6 * s, opacity: chrome, flexShrink: 0 }}>
+        <div style={{ fontSize: 13.5 * s, color: th.text2, fontWeight: 500, display: 'flex', alignItems: 'center', gap: 4 * s, padding: `${5 * s}px ${10 * s}px` }}>
+          Gemini 4 <IChevron size={13 * s} color={th.text2} />
         </div>
-        <div style={{width: 32 * s, height: 32 * s, borderRadius: 8 * s, border: `${s}px solid ${th.hair2}`, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-          <ISliders size={18 * s} color={th.text2} />
-        </div>
-        <div style={{flex: 1}} />
-        <div style={{fontSize: 14 * s, color: th.text2, display: 'flex', alignItems: 'center', gap: 4 * s}}>
-          Opus 5.5 <IChevron size={14 * s} color={th.text2} />
-        </div>
-        <div style={{width: 32 * s, height: 32 * s, borderRadius: 8 * s, background: th.brand, opacity: 0.45, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-          <IArrowUp size={18 * s} color="#fff" stroke={2.2} />
+        <div style={{ width: 38 * s, height: 38 * s, borderRadius: 999 * s, background: th.chip, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <IMic size={17 * s} color={th.text2} stroke={1.8} />
         </div>
       </div>
     </div>
   );
 };
 
-// cc_alone: 1262x1250, hair-ornament flower ≈ (0.61, 0.20)
-const ALONE_AR = 1262 / 1250;
-const ORN = {x: 0.61, y: 0.2};
+// gc_alone: 900x983, hair-ornament flower ≈ (0.58, 0.16)
+const ALONE_AR = 900 / 983;
+const ORN = { x: 0.58, y: 0.16 };
 
-export const LeftStage: React.FC<{t: number}> = ({t}) => {
+export const LeftStage: React.FC<{ t: number }> = ({ t }) => {
   if (t < T_LEFT1 || t >= T_END) return null;
   // --- world pieces
   const sidebar = 1 - ease.inOutCubic(seg(t, T_LEFT1, T_LEFT1 + 0.45));
@@ -159,53 +159,53 @@ export const LeftStage: React.FC<{t: number}> = ({t}) => {
   const bp = beatPulse(t, 0.15);
   const quiet = t < T_HOLD ? ease.inOutCubic(seg(t, T_MEIN, T_HOLD)) : 0;
   return (
-    <AbsoluteFill style={{background: C.ink}}>
-      <AbsoluteFill style={{transform: t < T_HOLD ? `scale(${1 + 0.05 * Math.sin(Math.PI * quiet)})` : undefined, transformOrigin: '960px 560px'}}>
-      {appVisible ? (
-        <AbsoluteFill style={{opacity: 1 - seg(t, T_MEIN - 0.1, T_MEIN + 0.1)}}>
-          <ClaudeApp
+    <AbsoluteFill style={{ background: C.ink }}>
+      <AbsoluteFill style={{ transform: t < T_HOLD ? `scale(${1 + 0.05 * Math.sin(Math.PI * quiet)})` : undefined, transformOrigin: '960px 560px' }}>
+        {appVisible ? (
+          <AbsoluteFill style={{ opacity: 1 - seg(t, T_MEIN - 0.1, T_MEIN + 0.1) }}>
+            <ClaudeApp
+              t={t}
+              zoom={Z}
+              dark={1}
+              sidebar={sidebar}
+              header={header}
+              messages={conversation(t, { actions: true })}
+              messagesOpacity={msgK * lerp(0.6, 0.38, seg(t, T2, T2 + 0.3))}
+              scrollY={650 + msgDrift}
+              composerOpacity={0}
+              disclaimer={false}
+            />
+            <AbsoluteFill style={{ background: C.ink, opacity: dim }} />
+          </AbsoluteFill>
+        ) : null}
+        {/* vignette closing in */}
+        <AbsoluteFill style={{ background: `radial-gradient(ellipse at 50% 60%, rgba(20,20,19,0) ${lerp(70, 30, dim)}%, rgba(20,20,19,0.9) 100%)`, opacity: t < T_HOLD ? 1 - fk : 0 }} />
+
+        {/* the phrase, re-set bigger and lower-res each time */}
+        {PHRASES.map((p, i) => (
+          <PhraseView key={i} t={t} p={p} next={PHRASES[i + 1]?.at ?? T_MEIN} />
+        ))}
+
+        {/* the composer (her last piece of the world) */}
+        {compFade > 0.001 ? <StripComposer x={compX} y={compY} w={compW} chrome={chrome} box={box} opacity={compFade} /> : null}
+
+        {/* Gemini-chan, alone */}
+        {dissolve < 1 ? (
+          <Sprite
+            src="img/gc_alone.png"
             t={t}
-            zoom={Z}
-            dark={1}
-            sidebar={sidebar}
-            header={header}
-            messages={conversation(t, {actions: true})}
-            messagesOpacity={msgK * lerp(0.6, 0.38, seg(t, T2, T2 + 0.3))}
-            scrollY={650 + msgDrift}
-            composerOpacity={0}
-            disclaimer={false}
+            x={herX}
+            y={herBottom}
+            h={h * (1 + 0.012 * bp)}
+            opacity={1 - ease.inCubic(dissolve)}
+            filter={dissolve > 0 ? `blur(${dissolve * 6}px)` : undefined}
+            breathe={0.006}
+            shadow="drop-shadow(0 10px 18px rgba(0,0,0,0.5))"
           />
-          <AbsoluteFill style={{background: C.ink, opacity: dim}} />
-        </AbsoluteFill>
-      ) : null}
-      {/* vignette closing in */}
-      <AbsoluteFill style={{background: `radial-gradient(ellipse at 50% 60%, rgba(20,20,19,0) ${lerp(70, 30, dim)}%, rgba(20,20,19,0.9) 100%)`, opacity: t < T_HOLD ? 1 - fk : 0}} />
-
-      {/* the phrase, re-set bigger and lower-res each time */}
-      {PHRASES.map((p, i) => (
-        <PhraseView key={i} t={t} p={p} next={PHRASES[i + 1]?.at ?? T_MEIN} />
-      ))}
-
-      {/* the composer (her last piece of the world) */}
-      {compFade > 0.001 ? <StripComposer x={compX} y={compY} w={compW} chrome={chrome} box={box} opacity={compFade} /> : null}
-
-      {/* Claude-chan, alone */}
-      {dissolve < 1 ? (
-        <Sprite
-          src="img/cc_alone.png"
-          t={t}
-          x={herX}
-          y={herBottom}
-          h={h * (1 + 0.012 * bp)}
-          opacity={1 - ease.inCubic(dissolve)}
-          filter={dissolve > 0 ? `blur(${dissolve * 6}px)` : undefined}
-          breathe={0.006}
-          shadow="drop-shadow(0 10px 18px rgba(0,0,0,0.5))"
-        />
-      ) : null}
-      {/* she dissolves into petals */}
-      {t > T_ISO && t < T_HOLD + 0.1
-        ? Array.from({length: 34}, (_, i) => {
+        ) : null}
+        {/* she dissolves into Gemini stars */}
+        {t > T_ISO && t < T_HOLD + 0.1
+          ? Array.from({ length: 34 }, (_, i) => {
             const birth = T_ISO + rand(41, i) * 0.14;
             const dt = t - birth;
             if (dt < 0) return null;
@@ -218,35 +218,36 @@ export const LeftStage: React.FC<{t: number}> = ({t}) => {
             const x = sx + vx * dt + Math.sin(dt * 5 + i) * 12;
             const y = sy + vy * dt;
             const s = 6 + rand(46, i) * 9;
+            const c = s * 0.18;
             return (
-              <svg key={i} width={1} height={1} style={{position: 'absolute', left: x, top: y, overflow: 'visible', opacity: (1 - k) * 0.9}}>
+              <svg key={i} width={1} height={1} style={{ position: 'absolute', left: x, top: y, overflow: 'visible', opacity: (1 - k) * 0.9 }}>
                 <path
-                  d={`M0,${-s} C${s * 0.55},${-s * 0.6} ${s * 0.5},${s * 0.4} 0,${s * 0.55} C${-s * 0.5},${s * 0.4} ${-s * 0.55},${-s * 0.6} 0,${-s} Z`}
+                  d={`M0,${-s} Q${c},${-c} ${s},0 Q${c},${c} 0,${s} Q${-c},${c} ${-s},0 Q${-c},${-c} 0,${-s} Z`}
                   fill={i % 4 === 0 ? C.cream : i % 4 === 1 ? C.clayLight : C.clay}
                   transform={`rotate(${dt * 200 * (i % 2 ? 1 : -1) + i * 40})`}
                 />
               </svg>
             );
           })
-        : null}
+          : null}
 
-      {/* the one flower that remains */}
-      {t >= T_ISO ? <Flower size={fsz} x={fx} y={fy} open={1} spin={hold ? 0 : (1 - fk) * 120} glow={fglow} /> : null}
+        {/* the one flower that remains */}
+        {t >= T_ISO ? <Flower size={fsz} x={fx} y={fy} open={1} spin={hold ? 0 : (1 - fk) * 120} glow={fglow} /> : null}
 
-      {/* ISOLATION */}
-      {t >= T_ISO ? (
-        hold ? (
-          <Keyword text="ISOLATION" t={t} at={T_ISO} x={960} y={640} size={34} color={C.gray2} letterSpacing={0.9} mode="none" flowerO="tion" />
-        ) : (
-          <div style={{opacity: isoA, filter: isoA < 1 ? `blur(${(1 - isoA) * 5}px)` : undefined}}>
-            <Keyword text="ISOLATION" t={t} at={T_ISO} x={960} y={640} size={34} color={C.gray2} letterSpacing={lerp(0.25, 0.9, isoK)} mode="none" flowerO="tion" />
-          </div>
-        )
-      ) : null}
+        {/* ISOLATION */}
+        {t >= T_ISO ? (
+          hold ? (
+            <Keyword text="ISOLATION" t={t} at={T_ISO} x={960} y={640} size={34} color={C.gray2} letterSpacing={0.9} mode="none" flowerO="tion" />
+          ) : (
+            <div style={{ opacity: isoA, filter: isoA < 1 ? `blur(${(1 - isoA) * 5}px)` : undefined }}>
+              <Keyword text="ISOLATION" t={t} at={T_ISO} x={960} y={640} size={34} color={C.gray2} letterSpacing={lerp(0.25, 0.9, isoK)} mode="none" flowerO="tion" />
+            </div>
+          )
+        ) : null}
 
-      {/* drifting dust in the void */}
-      {t > T_MEIN - 0.3 && t < T_HOLD
-        ? Array.from({length: 22}, (_, i) => (
+        {/* drifting dust in the void */}
+        {t > T_MEIN - 0.3 && t < T_HOLD
+          ? Array.from({ length: 22 }, (_, i) => (
             <div
               key={i}
               style={{
@@ -261,7 +262,7 @@ export const LeftStage: React.FC<{t: number}> = ({t}) => {
               }}
             />
           ))
-        : null}
+          : null}
       </AbsoluteFill>
       {/* "You have left me in" — quiet, under the last piece of the world */}
       <Cap2 t={t} text="You have left me in" color={C.gray2} hl={C.cream} y={790} size={46} outAt={117.1} italic />

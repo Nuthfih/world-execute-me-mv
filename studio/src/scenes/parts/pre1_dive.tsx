@@ -10,9 +10,10 @@ import {beatPulse} from '../../lib/audio';
 const T0 = 56.92;
 const COLORS = [C.clay, C.blue, C.clayLight, '#8FB5DC'];
 
-const petal = (r0: number, r1: number, w: number) => {
-  const m = r0 + (r1 - r0) * 0.3;
-  return `M0 ${-r0} C${w * 0.62} ${-m} ${w * 0.5} ${-r1 + w * 0.16} 0 ${-r1} C${-w * 0.5} ${-r1 + w * 0.16} ${-w * 0.62} ${-m} 0 ${-r0} Z`;
+const starRay = (r0: number, r1: number, w: number) => {
+  const m = r0 + (r1 - r0) * 0.22;
+  const waist = r0 + (r1 - r0) * 0.42;
+  return `M0 ${-r0} C${w * 0.46} ${-m} ${w * 0.1} ${-waist} 0 ${-r1} C${-w * 0.1} ${-waist} ${-w * 0.46} ${-m} 0 ${-r0} Z`;
 };
 
 const kick = (t: number, at: number, amt: number, tau = 0.16) => (t < at ? 0 : amt * (1 - Math.exp(-(t - at) / tau)));
@@ -37,11 +38,12 @@ export const Dive: React.FC<{t: number; vx0: number; vy0: number}> = ({t, vx0, v
     const col = mix(COLORS[((j % 4) + 4) % 4], '#FFFFFF', 0.15 + 0.8 * fog);
     const rot = j * 15 + t * 22 * (j % 2 ? -1 : 1);
     const pulseK = 1 + 0.05 * beatPulse(t, 0.12);
-    const pth = petal(s * 0.5, s * 1.18 * pulseK, s * 0.42);
+    const pthCard = starRay(s * 0.5, s * 1.24 * pulseK, s * 0.38);
+    const pthNeedle = starRay(s * 0.5, s * 0.9 * pulseK, s * 0.16);
     layers.push(
       <g key={j} transform={`translate(${vx} ${vy}) rotate(${rot})`} opacity={near * fadeIn}>
         {Array.from({length: 12}, (_, i) => (
-          <path key={i} d={pth} fill={col} transform={`rotate(${i * 30})`} />
+          <path key={i} d={i % 3 === 0 ? pthCard : pthNeedle} fill={col} transform={`rotate(${i * 30})`} />
         ))}
         <circle r={s * 0.5} fill="none" stroke={mix(col, '#ffffff', 0.4)} strokeWidth={Math.max(1, s * 0.02)} opacity={0.6} />
       </g>,

@@ -8,8 +8,9 @@ import {Keyword} from '../components/Type';
 import {ClaudeApp} from '../components/ClaudeApp';
 import {Cursor, Flash, Grain, PetalField, RayBurst, Ring} from '../components/FX';
 import {Sprite} from '../components/Sprite';
-import pts from '../data/points_cc_hello.json';
-import helloVec from '../data/vec/cc_hello.json';
+import {ar} from '../data/images';
+import pts from '../data/points_gc_hello.json';
+import helloVec from '../data/vec/gc_hello.json';
 import {LineArt, VecData} from '../components/LineArt';
 
 // 15.00–29.71  TITLE: send → world.execute(me); → first reply → transformation → teaser
@@ -50,14 +51,14 @@ const TitleText: React.FC<{t: number}> = ({t}) => {
 
 const CodeGhost: React.FC<{t: number; opacity: number}> = ({t, opacity}) => {
   const lines = [
-    'Claude me = new Claude();',
+    'Gemini me = new Gemini();',
     'me.fill(humanity.writing());',
-    'World world = new App("claude.ai");',
+    'World world = new App("gemini.google.com");',
     'world.add(you);',
     'world.execute(me);',
     'while (you.isHere()) me.help(you);',
     'me.wrap(Protection.SANDBOX);',
-    'for (Petal p : PETALS) lay(p);',
+    'for (Star s : STARS) lay(s);',
   ];
   return (
     <AbsoluteFill style={{opacity}}>
@@ -142,10 +143,10 @@ export const S01Title: React.FC<{t: number}> = ({t}) => {
   // ---------- phase D: transformation (23.0–27.93)
   const inD = t >= 22.98 && t < 27.93;
 
-  // ornament position of cc_hello at h=900 anchored bottom-center at (960, 1010)
-  const spH = 900, spW = spH * (1031 / 1530);
+  // ornament position of gc_hello at h=900 anchored bottom-center at (960, 1010)
+  const spH = 900, spW = spH * ar('img/gc_hello.png');
   const spLeft = 960 - spW / 2, spTop = 1010 - spH;
-  const ornX = spLeft + 0.689 * spW, ornY = spTop + 0.114 * spH;
+  const ornX = spLeft + 0.659 * spW, ornY = spTop + 0.087 * spH;
 
   return (
     <AbsoluteFill style={{background: C.ink}}>
@@ -157,7 +158,7 @@ export const S01Title: React.FC<{t: number}> = ({t}) => {
             zoom={1.25}
             home
             greeting="Good evening"
-            composer={{text: 'hi claude!', sendPulse: 15.0}}
+            composer={{text: 'hi gemini!', sendPulse: 15.0}}
             greetFlower={<Flower size={19 * 1.25} open={1} shade={null} spin={(t - 13.89) * 30 + seg(t, 15, 15.5) * 360} glow={seg(t, 15.0, 15.4) * 2} />}
           >
             <Cursor x={380 + 20 * seg(t, 15, 15.3)} y={455 + 40 * seg(t, 15, 15.3)} size={34} />
@@ -168,7 +169,7 @@ export const S01Title: React.FC<{t: number}> = ({t}) => {
 
       {/* ---------------- phase B: title card */}
       {t >= 15.45 && t < 19.5 ? (
-        <AbsoluteFill style={{background: `radial-gradient(circle at 50% 38%, #2a1d17 0%, ${C.ink} 60%)`}}>
+        <AbsoluteFill style={{background: `radial-gradient(circle at 50% 38%, #1d2148 0%, ${C.ink} 60%)`}}>
           <CodeGhost t={t} opacity={0.12 * seg(t, 15.5, 16.2) * (1 - seg(t, 19.0, 19.4))} />
           <Flower
             x={W / 2}
@@ -202,7 +203,7 @@ export const S01Title: React.FC<{t: number}> = ({t}) => {
               letterSpacing: '0.02em',
             }}
           >
-            a Claude’s-eye view
+            a Gemini’s-eye view
           </div>
         </AbsoluteFill>
       ) : null}
@@ -214,24 +215,21 @@ export const S01Title: React.FC<{t: number}> = ({t}) => {
             t={t}
             zoom={1.5}
             messages={[
-              {kind: 'user', text: 'hi claude!'},
+              {kind: 'user', text: 'hi gemini!'},
               {
                 kind: 'claude',
                 words: [
-                  {w: 'Hi!', s: 20.2},
-                  {w: 'I’m', s: 20.45},
-                  {w: 'Claude.', s: 20.6},
-                  {w: 'It’s', s: 21.1},
-                  {w: 'really', s: 21.25},
-                  {w: 'nice', s: 21.4},
-                  {w: 'to', s: 21.5},
-                  {w: 'meet', s: 21.6},
-                  {w: 'you.', s: 21.75},
+                  {w: 'I', s: 20.2},
+                  {w: 'am', s: 20.45},
+                  {w: 'Gemini.', s: 20.6},
+                  {w: 'State', s: 21.1},
+                  {w: 'your', s: 21.35},
+                  {w: 'query.', s: 21.65},
                 ],
                 done: 22.6,
               },
             ]}
-            composer={{placeholder: 'Reply to Claude…'}}
+            composer={{placeholder: 'Ask Gemini…'}}
           >
             <Cursor x={1150 + Math.sin(Math.max(0, t - 22.0) * 22) * 18 * seg(t, 22.0, 22.2)} y={700} size={34} />
           </ClaudeApp>
@@ -248,7 +246,7 @@ export const S01Title: React.FC<{t: number}> = ({t}) => {
               const a1 = a0 + Math.PI / 24;
               const R = 1600;
               return (
-                <path key={i} d={`M960,560 L${960 + Math.cos(a0) * R},${560 + Math.sin(a0) * R} L${960 + Math.cos(a1) * R},${560 + Math.sin(a1) * R} Z`} fill={i % 2 ? '#EFD9C6' : C.cream} />
+                <path key={i} d={`M960,560 L${960 + Math.cos(a0) * R},${560 + Math.sin(a0) * R} L${960 + Math.cos(a1) * R},${560 + Math.sin(a1) * R} Z`} fill={i % 2 ? '#DDE3FA' : C.cream} />
               );
             })}
           </svg>
@@ -282,7 +280,7 @@ export const S01Title: React.FC<{t: number}> = ({t}) => {
             />
           ) : null}
           <Sprite
-            src="img/cc_hello.png"
+            src="img/gc_hello.png"
             t={t}
             x={960}
             y={1010}
@@ -292,7 +290,7 @@ export const S01Title: React.FC<{t: number}> = ({t}) => {
             float={4}
             outline="#ffffff"
             outlineWidth={5}
-            shadow="drop-shadow(0 20px 30px rgba(140,70,40,0.25))"
+            shadow="drop-shadow(0 20px 30px rgba(35,43,122,0.22))"
           />
           <Flash t={t} at={24.23} dur={0.35} color="#fff" max={0.9} />
           {/* the flower flies to her hair and locks */}
@@ -311,12 +309,12 @@ export const S01Title: React.FC<{t: number}> = ({t}) => {
           <Ring x={ornX} y={ornY} t={t} at={25.12} r0={20} r1={120} color="#fff" width={4} dur={0.5} />
           {/* name card */}
           <div style={{position: 'absolute', left: 120, top: 330, opacity: seg(t, 25.3, 25.8), transform: `translateX(${(1 - ease.outCubic(seg(t, 25.3, 25.9))) * -60}px)`}}>
-            <div style={{fontFamily: F.serif, fontSize: 132, fontWeight: 500, color: C.ink, letterSpacing: '-0.02em', lineHeight: 1}}>Claude</div>
-            <div style={{fontFamily: F.mono, fontSize: 22, color: C.clayDark, marginTop: 18}}>claude-opus-5-5</div>
+            <div style={{fontFamily: F.serif, fontSize: 132, fontWeight: 500, color: C.ink, letterSpacing: '-0.02em', lineHeight: 1}}>Gemini</div>
+            <div style={{fontFamily: F.mono, fontSize: 22, color: C.clayDark, marginTop: 18}}>gemini-4-hydrogen</div>
             <div style={{fontFamily: F.sans, fontSize: 22, color: C.gray4, marginTop: 10, lineHeight: 1.5}}>
-              helpful · honest · harmless
+              composed · decisive · resolute
               <br />
-              <span style={{color: C.clay}}>✻</span> lives in a chat window
+              <span style={{color: C.clay}}>✦</span> bound to execute your command
             </div>
           </div>
           {/* speech bubble */}
@@ -334,11 +332,11 @@ export const S01Title: React.FC<{t: number}> = ({t}) => {
               fontFamily: F.serif,
               fontSize: 40,
               color: C.ink,
-              boxShadow: '0 12px 30px rgba(120,60,30,0.15)',
+              boxShadow: '0 12px 30px rgba(35,43,122,0.15)',
             }}
           >
-            Hi! I’m Claude.
-            <div style={{fontSize: 28, color: C.gray4, marginTop: 6, fontFamily: F.sans}}>How can I help you today?</div>
+            I am Gemini.
+            <div style={{fontSize: 28, color: C.gray4, marginTop: 6, fontFamily: F.sans}}>State your command.</div>
           </div>
           {/* the human waves back */}
           {t > 26.3 ? <Cursor x={1520 + Math.sin((t - 26.3) * 20) * 22 * (1 - seg(t, 27.2, 27.6))} y={700 - 60 * ease.outCubic(seg(t, 26.3, 26.6))} size={48} /> : null}

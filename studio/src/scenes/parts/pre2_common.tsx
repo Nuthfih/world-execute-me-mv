@@ -63,7 +63,7 @@ export const PillCap: React.FC<{t: number; text: string; after?: number; outAt?:
           width: 620,
           height: 84,
           borderRadius: 42,
-          background: 'rgba(250,249,245,0.94)',
+          background: 'rgba(248,249,253,0.94)',
           boxShadow: '0 10px 30px rgba(20,20,19,0.25)',
           opacity: k,
         }}

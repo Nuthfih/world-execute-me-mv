@@ -68,7 +68,7 @@ export const LoveWord: React.FC<LoveWordProps> = ({
   flowerShade = C.clayDark,
   centerColor = C.cream,
   glow = 0,
-  glowColor = '255,240,225',
+  glowColor = '220,228,255',
   textShadow,
   outMode = 'drift',
   flowerScale = 1,

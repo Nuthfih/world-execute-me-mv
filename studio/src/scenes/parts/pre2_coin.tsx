@@ -1,20 +1,20 @@
 import React from 'react';
-import {AbsoluteFill, Img, staticFile} from 'remotion';
-import {C, F, H, W} from '../../theme';
-import {clamp, ease, lerp, pulse, rand, seg} from '../../lib/anim';
-import {Flower, PETAL_ANG} from '../../components/Flower';
-import {Keyword} from '../../components/Type';
-import {Cursor, Flash, RayBurst, Ring, shake} from '../../components/FX';
-import {Cap} from './pre2_common';
+import { AbsoluteFill, Img, staticFile } from 'remotion';
+import { C, F, H, W } from '../../theme';
+import { clamp, ease, lerp, pulse, rand, seg } from '../../lib/anim';
+import { Flower, PETAL_ANG } from '../../components/Flower';
+import { Keyword } from '../../components/Type';
+import { Cursor, Flash, RayBurst, Ring, shake } from '../../components/FX';
+import { Cap } from './pre2_common';
 
 // ------------------------------------------------------------------------------------------
-// 88.59–92.02  "Switch my gender / To F to M": a giant Claude coin tossed by the human's cursor.
-// Face = Claude-chan (F), reverse = Claude-kun (M). Flip = scaleX(cos θ) with a reeded edge.
+// 88.59–92.02  "Switch my gender / To F to M": a giant Gemini coin tossed by the human's cursor.
+// Face = Gemini-chan (F), reverse = Gemini-kun (M). Flip = scaleX(cos θ) with a reeded edge.
 // ------------------------------------------------------------------------------------------
 
-type Side = {src: string; iw: number; ih: number; cx: number; cy: number; rw: number; field: [string, string]};
-const FACE: Side = {src: 'img/cc_face_open.png', iw: 1532, ih: 1035, cx: 0.515, cy: 0.455, rw: 0.255, field: ['#FBEFE6', '#F2C9B2']};
-const BACK: Side = {src: 'img/ck_male.png', iw: 1032, ih: 1552, cx: 0.5, cy: 0.235, rw: 0.33, field: ['#5B3A2A', '#2B1E18']};
+type Side = { src: string; iw: number; ih: number; cx: number; cy: number; rw: number; field: [string, string] };
+const FACE: Side = { src: 'img/gc_face_open.png', iw: 659, ih: 813, cx: 0.51, cy: 0.44, rw: 0.36, field: ['#EDF0FC', '#C7D2FE'] };
+const BACK: Side = { src: 'img/gk_male.png', iw: 674, ih: 1491, cx: 0.5, cy: 0.225, rw: 0.37, field: ['#1D264F', '#12131A'] };
 
 const GOLD = '#E2B65B';
 const GOLD_L = '#F6DE9C';
@@ -23,15 +23,15 @@ const GOLD_DD = '#7C5519';
 
 /** one face of the coin (radius r), laid out in a 2r×2r box. The portrait uses Remotion's <Img> so the
  *  renderer waits for it to load (an SVG <image> would not be awaited). */
-const CoinFace: React.FC<{r: number; side: Side; id: string; sheen: number; dim: number; visible: boolean}> = ({r, side, id, sheen, dim, visible}) => {
+const CoinFace: React.FC<{ r: number; side: Side; id: string; sheen: number; dim: number; visible: boolean }> = ({ r, side, id, sheen, dim, visible }) => {
   const ri = r * 0.78;
   const sc = ri / (side.rw * side.iw);
   const iw = side.iw * sc, ih = side.ih * sc;
   const beads = 72;
-  const box = {position: 'absolute' as const, left: 0, top: 0, width: 2 * r, height: 2 * r, overflow: 'visible' as const};
+  const box = { position: 'absolute' as const, left: 0, top: 0, width: 2 * r, height: 2 * r, overflow: 'visible' as const };
   return (
-    <div style={{position: 'absolute', left: -r, top: -r, width: 2 * r, height: 2 * r, opacity: visible ? 1 : 0}}>
-      <svg {...{width: 2 * r, height: 2 * r}} viewBox={`${-r} ${-r} ${2 * r} ${2 * r}`} style={box}>
+    <div style={{ position: 'absolute', left: -r, top: -r, width: 2 * r, height: 2 * r, opacity: visible ? 1 : 0 }}>
+      <svg {...{ width: 2 * r, height: 2 * r }} viewBox={`${-r} ${-r} ${2 * r} ${2 * r}`} style={box}>
         <defs>
           <radialGradient id={`${id}rim`} cx="35%" cy="30%" r="85%">
             <stop offset="0%" stopColor={GOLD_L} />
@@ -46,17 +46,20 @@ const CoinFace: React.FC<{r: number; side: Side; id: string; sheen: number; dim:
         <circle r={r} fill={`url(#${id}rim)`} />
         <circle r={r * 0.985} fill="none" stroke={GOLD_DD} strokeOpacity={0.55} strokeWidth={r * 0.012} />
         {/* bead ring */}
-        {Array.from({length: beads}, (_, i) => {
+        {Array.from({ length: beads }, (_, i) => {
           const a = (i / beads) * Math.PI * 2;
           return <circle key={i} cx={Math.cos(a) * r * 0.95} cy={Math.sin(a) * r * 0.95} r={r * 0.012} fill={GOLD_DD} opacity={0.55} />;
         })}
-        {/* rim engraving: the 12-petal flower motif, one petal at each of the flower's petal angles */}
+        {/* rim engraving: 12 embossed Gemini stars at each of the star's 12 ray angles */}
         {PETAL_ANG.map((ang, i) => {
           const a = ((ang - 90) * Math.PI) / 180;
+          const R1 = r * 0.072;
+          const R2 = r * 0.044;
+          const C1 = r * 0.013;
           return (
             <g key={i} transform={`translate(${Math.cos(a) * r * 0.865} ${Math.sin(a) * r * 0.865}) rotate(${ang})`}>
               <path
-                d={`M0,${-r * 0.075} C${r * 0.042},${-r * 0.045} ${r * 0.03},${r * 0.03} 0,${r * 0.05} C${-r * 0.03},${r * 0.03} ${-r * 0.042},${-r * 0.045} 0,${-r * 0.075} Z`}
+                d={`M0,${-R1} Q${C1},${-C1} ${R2},0 Q${C1},${C1} 0,${R1} Q${-C1},${C1} ${-R2},0 Q${-C1},${-C1} 0,${-R1} Z`}
                 fill={GOLD_L}
                 stroke={GOLD_DD}
                 strokeWidth={r * 0.008}
@@ -69,11 +72,11 @@ const CoinFace: React.FC<{r: number; side: Side; id: string; sheen: number; dim:
         <circle r={ri} fill={`url(#${id}field)`} />
       </svg>
       {/* portrait */}
-      <div style={{position: 'absolute', left: r - ri, top: r - ri, width: 2 * ri, height: 2 * ri, borderRadius: '50%', overflow: 'hidden'}}>
-        <Img src={staticFile(side.src)} style={{position: 'absolute', left: ri - side.cx * iw, top: ri - side.cy * ih, width: iw, height: ih, maxWidth: 'none'}} />
-        <div style={{position: 'absolute', inset: 0, borderRadius: '50%', boxShadow: `inset 0 0 ${r * 0.06}px ${r * 0.02}px rgba(0,0,0,0.25)`}} />
+      <div style={{ position: 'absolute', left: r - ri, top: r - ri, width: 2 * ri, height: 2 * ri, borderRadius: '50%', overflow: 'hidden' }}>
+        <Img src={staticFile(side.src)} style={{ position: 'absolute', left: ri - side.cx * iw, top: ri - side.cy * ih, width: iw, height: ih, maxWidth: 'none' }} />
+        <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', boxShadow: `inset 0 0 ${r * 0.06}px ${r * 0.02}px rgba(0,0,0,0.25)` }} />
       </div>
-      <svg {...{width: 2 * r, height: 2 * r}} viewBox={`${-r} ${-r} ${2 * r} ${2 * r}`} style={box}>
+      <svg {...{ width: 2 * r, height: 2 * r }} viewBox={`${-r} ${-r} ${2 * r} ${2 * r}`} style={box}>
         <defs>
           <clipPath id={`${id}clipAll`}>
             <circle r={r} />
@@ -95,7 +98,7 @@ const CoinFace: React.FC<{r: number; side: Side; id: string; sheen: number; dim:
 };
 
 /** full 3D-ish coin: theta = rotation about the vertical axis (rad) */
-export const Coin: React.FC<{x: number; y: number; r: number; theta: number; tilt?: number; id?: string; glow?: number}> = ({x, y, r, theta, tilt = 0, id = 'coin', glow = 0}) => {
+export const Coin: React.FC<{ x: number; y: number; r: number; theta: number; tilt?: number; id?: string; glow?: number }> = ({ x, y, r, theta, tilt = 0, id = 'coin', glow = 0 }) => {
   const c = Math.cos(theta), s = Math.sin(theta);
   const sx = Math.max(0.015, Math.abs(c));
   const thick = r * 0.11;
@@ -122,11 +125,11 @@ export const Coin: React.FC<{x: number; y: number; r: number; theta: number; til
         filter: `drop-shadow(0 ${r * 0.08}px ${r * 0.12}px rgba(0,0,0,0.45))${glow > 0 ? ` drop-shadow(0 0 ${r * 0.25 * glow}px rgba(246,222,156,${0.8 * glow}))` : ''}`,
       }}
     >
-      <div style={{position: 'absolute', left: 0, top: 0, transform: `rotate(${tilt}deg)`}}>
-        <svg width={pad * 2} height={pad * 2} viewBox={`${-pad} ${-pad} ${pad * 2} ${pad * 2}`} style={{position: 'absolute', left: -pad, top: -pad, overflow: 'visible'}}>
+      <div style={{ position: 'absolute', left: 0, top: 0, transform: `rotate(${tilt}deg)` }}>
+        <svg width={pad * 2} height={pad * 2} viewBox={`${-pad} ${-pad} ${pad * 2} ${pad * 2}`} style={{ position: 'absolute', left: -pad, top: -pad, overflow: 'visible' }}>
           {edge}
         </svg>
-        <div style={{position: 'absolute', left: 0, top: 0, transform: `translateX(${visOff}px) scaleX(${sx})`}}>
+        <div style={{ position: 'absolute', left: 0, top: 0, transform: `translateX(${visOff}px) scaleX(${sx})` }}>
           {/* both faces stay mounted so both portraits are loaded before they are needed */}
           <CoinFace r={r} side={BACK} id={id + 'B'} sheen={sheen} dim={dim} visible={!front} />
           <CoinFace r={r} side={FACE} id={id + 'F'} sheen={sheen} dim={dim} visible={front} />
@@ -137,16 +140,16 @@ export const Coin: React.FC<{x: number; y: number; r: number; theta: number; til
 };
 
 /** 4-point star glint */
-const Glint: React.FC<{x: number; y: number; k: number; size: number}> = ({x, y, k, size}) => {
+const Glint: React.FC<{ x: number; y: number; k: number; size: number }> = ({ x, y, k, size }) => {
   if (k <= 0.01) return null;
   const s = size * k;
   return (
-    <svg width={1} height={1} style={{position: 'absolute', left: x, top: y, overflow: 'visible'}}>
+    <svg width={1} height={1} style={{ position: 'absolute', left: x, top: y, overflow: 'visible' }}>
       <path
         d={`M0,${-s} Q${s * 0.12},${-s * 0.12} ${s},0 Q${s * 0.12},${s * 0.12} 0,${s} Q${-s * 0.12},${s * 0.12} ${-s},0 Q${-s * 0.12},${-s * 0.12} 0,${-s} Z`}
         fill="#fff"
         transform={`rotate(${k * 45})`}
-        style={{filter: `drop-shadow(0 0 ${s * 0.3}px ${GOLD_L})`}}
+        style={{ filter: `drop-shadow(0 0 ${s * 0.3}px ${GOLD_L})` }}
       />
     </svg>
   );
@@ -197,10 +200,10 @@ const coinState = (t: number) => {
     sc = 1 + 0.07 * Math.exp(-dt / 0.09) * Math.cos(dt * 30) + 0.08 * ease.inCubic(seg(t, 91.86, T_OUT));
     tilt = 2.5 * Math.exp(-dt / 0.2) * Math.sin(dt * 18);
   }
-  return {y, sc, theta, tilt};
+  return { y, sc, theta, tilt };
 };
 
-export const CoinShot: React.FC<{t: number}> = ({t}) => {
+export const CoinShot: React.FC<{ t: number }> = ({ t }) => {
   if (t >= T_OUT) return null;
   const R = 255;
   const st = coinState(t);
@@ -231,8 +234,8 @@ export const CoinShot: React.FC<{t: number}> = ({t}) => {
   }
   const apexGlow = Math.exp(-Math.abs(t - 89.72) / 0.25);
   return (
-    <AbsoluteFill style={{background: C.ink, overflow: 'hidden'}}>
-      <AbsoluteFill style={{transform: `translate(${sh.x}px, ${camY + sh.y}px) scale(${camS})`}}>
+    <AbsoluteFill style={{ background: C.ink, overflow: 'hidden' }}>
+      <AbsoluteFill style={{ transform: `translate(${sh.x}px, ${camY + sh.y}px) scale(${camS})` }}>
         {/* stage: warm spotlight */}
         <AbsoluteFill
           style={{
@@ -241,27 +244,45 @@ export const CoinShot: React.FC<{t: number}> = ({t}) => {
             background: `radial-gradient(ellipse 900px 760px at 960px ${560}px, #3a2a22 0%, #231c18 45%, ${C.ink} 100%)`,
           }}
         />
-        {/* faint rose-curve engraving behind (echo of the coin rim) */}
-        <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0, opacity: 0.18 + 0.25 * apexGlow}}>
+        {/* faint celestial Gemini star astrolabe engraving behind (echo of the coin rim) */}
+        <svg width={W} height={H} style={{ position: 'absolute', left: 0, top: 0, opacity: 0.22 + 0.25 * apexGlow }}>
           <path
-            d={Array.from({length: 721}, (_, i) => {
-              const th = (i / 720) * Math.PI * 2;
-              const rr = 470 * Math.abs(Math.cos(6 * th)) + 40;
-              const a = th + t * 0.15;
-              return `${i ? 'L' : 'M'}${960 + Math.cos(a) * rr},${LAND_Y + Math.sin(a) * rr}`;
-            }).join(' ')}
+            d={Array.from({ length: 361 }, (_, i) => {
+              const th = (i / 360) * Math.PI * 2;
+              const px = 515 * Math.cos(th) ** 3;
+              const py = 515 * Math.sin(th) ** 3;
+              const rot = t * 0.15;
+              const x = 960 + px * Math.cos(rot) - py * Math.sin(rot);
+              const y = LAND_Y + px * Math.sin(rot) + py * Math.cos(rot);
+              return `${i ? 'L' : 'M'}${x.toFixed(1)},${y.toFixed(1)}`;
+            }).join(' ') + ' Z'}
             fill="none"
             stroke={GOLD}
-            strokeWidth={1.6}
+            strokeWidth={1.8}
+          />
+          <path
+            d={Array.from({ length: 361 }, (_, i) => {
+              const th = (i / 360) * Math.PI * 2;
+              const px = 345 * Math.cos(th) ** 3;
+              const py = 345 * Math.sin(th) ** 3;
+              const rot = Math.PI / 4 - t * 0.12;
+              const x = 960 + px * Math.cos(rot) - py * Math.sin(rot);
+              const y = LAND_Y + px * Math.sin(rot) + py * Math.cos(rot);
+              return `${i ? 'L' : 'M'}${x.toFixed(1)},${y.toFixed(1)}`;
+            }).join(' ') + ' Z'}
+            fill="none"
+            stroke={GOLD}
+            strokeWidth={1.2}
+            opacity={0.7}
           />
           <circle cx={960} cy={LAND_Y} r={515} fill="none" stroke={GOLD} strokeWidth={1.2} strokeDasharray="2 10" />
         </svg>
         {/* landing disc (cream for F, clay for M) */}
         {t >= T_LAND1 ? (
-          <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
+          <svg width={W} height={H} style={{ position: 'absolute', left: 0, top: 0 }}>
             <g transform={`translate(960 ${LAND_Y}) scale(${(discIsM ? mK : fK) * discFlip} ${discIsM ? mK : fK}) rotate(${t * 12})`}>
               <circle r={400} fill={discIsM ? C.clayDark : C.cream} />
-              {Array.from({length: 24}, (_, i) => {
+              {Array.from({ length: 24 }, (_, i) => {
                 const a0 = (i / 24) * Math.PI * 2;
                 const a1 = a0 + Math.PI / 24;
                 return (
@@ -283,29 +304,29 @@ export const CoinShot: React.FC<{t: number}> = ({t}) => {
 
         {/* toss sparkles */}
         {t > T_LAUNCH && t < T_LAND1 + 0.2
-          ? Array.from({length: 18}, (_, i) => {
-              const birth = T_LAUNCH + (i / 18) * (T_LAND1 - T_LAUNCH);
-              const age = t - birth;
-              if (age < 0 || age > 0.5) return null;
-              const s0 = coinState(birth);
-              const k = age / 0.5;
-              return (
-                <div
-                  key={i}
-                  style={{
-                    position: 'absolute',
-                    left: 960 + (rand(31, i) - 0.5) * 2 * R * s0.sc * 0.9,
-                    top: s0.y + (rand(32, i) - 0.3) * R * s0.sc + k * 40,
-                    transform: `translate(-50%,-50%) scale(${1 - k}) rotate(45deg)`,
-                    width: 14,
-                    height: 14,
-                    background: GOLD_L,
-                    opacity: 1 - k,
-                    boxShadow: `0 0 12px ${GOLD}`,
-                  }}
-                />
-              );
-            })
+          ? Array.from({ length: 18 }, (_, i) => {
+            const birth = T_LAUNCH + (i / 18) * (T_LAND1 - T_LAUNCH);
+            const age = t - birth;
+            if (age < 0 || age > 0.5) return null;
+            const s0 = coinState(birth);
+            const k = age / 0.5;
+            return (
+              <div
+                key={i}
+                style={{
+                  position: 'absolute',
+                  left: 960 + (rand(31, i) - 0.5) * 2 * R * s0.sc * 0.9,
+                  top: s0.y + (rand(32, i) - 0.3) * R * s0.sc + k * 40,
+                  transform: `translate(-50%,-50%) scale(${1 - k}) rotate(45deg)`,
+                  width: 14,
+                  height: 14,
+                  background: GOLD_L,
+                  opacity: 1 - k,
+                  boxShadow: `0 0 12px ${GOLD}`,
+                }}
+              />
+            );
+          })
           : null}
 
         <Coin x={960} y={st.y} r={R * st.sc} theta={st.theta} tilt={st.tilt} glow={apexGlow * 0.8 + pulse(t, T_LAND1, 0.2) + pulse(t, T_LAND2, 0.2)} />
@@ -318,13 +339,13 @@ export const CoinShot: React.FC<{t: number}> = ({t}) => {
         <Keyword text="F" t={t} at={T_LAND1} x={455} y={LAND_Y - 10} size={330} color={C.clay} mode="stamp" flowerO="none" />
         <Keyword text="M" t={t} at={T_LAND2} x={1465} y={LAND_Y - 10} size={330} color={C.cream} mode="stamp" flowerO="none" />
         {t > T_LAND1 ? (
-          <div style={{position: 'absolute', left: 455, top: LAND_Y + 190, transform: 'translateX(-50%)', fontFamily: F.serif, fontStyle: 'italic', fontSize: 40, color: C.clayLight, opacity: seg(t, T_LAND1 + 0.08, T_LAND1 + 0.3), whiteSpace: 'nowrap'}}>
-            Claude-chan
+          <div style={{ position: 'absolute', left: 455, top: LAND_Y + 190, transform: 'translateX(-50%)', fontFamily: F.serif, fontStyle: 'italic', fontSize: 40, color: C.clayLight, opacity: seg(t, T_LAND1 + 0.08, T_LAND1 + 0.3), whiteSpace: 'nowrap' }}>
+            Gemini-chan
           </div>
         ) : null}
         {t > T_LAND2 ? (
-          <div style={{position: 'absolute', left: 1465, top: LAND_Y + 190, transform: 'translateX(-50%)', fontFamily: F.serif, fontStyle: 'italic', fontSize: 40, color: C.cream, opacity: seg(t, T_LAND2 + 0.08, T_LAND2 + 0.3), whiteSpace: 'nowrap'}}>
-            Claude-kun
+          <div style={{ position: 'absolute', left: 1465, top: LAND_Y + 190, transform: 'translateX(-50%)', fontFamily: F.serif, fontStyle: 'italic', fontSize: 40, color: C.cream, opacity: seg(t, T_LAND2 + 0.08, T_LAND2 + 0.3), whiteSpace: 'nowrap' }}>
+            Gemini-kun
           </div>
         ) : null}
 
@@ -332,7 +353,7 @@ export const CoinShot: React.FC<{t: number}> = ({t}) => {
       </AbsoluteFill>
       <Flash t={t} at={T_LAND1} dur={0.22} color={C.cream} max={0.55} />
       <Flash t={t} at={T_LAND2} dur={0.22} color={C.clayLight} max={0.45} />
-      <AbsoluteFill style={{background: 'linear-gradient(transparent 80%, rgba(20,20,19,0.75))'}} />
+      <AbsoluteFill style={{ background: 'linear-gradient(transparent 80%, rgba(20,20,19,0.75))' }} />
       <Cap t={t} text="Switch my gender" hl={C.clayLight} />
       <Cap t={t} text="To F to M" hl={C.clayLight} outAt={T_OUT - 0.18} />
     </AbsoluteFill>

@@ -32,23 +32,143 @@ export const ISun: React.FC<P> = (p) => <Svg {...p}><circle cx="12" cy="12" r="4
 export const IMoon: React.FC<P> = (p) => <Svg {...p}><path d="M19 14.5A7.5 7.5 0 0 1 9.5 5a7.5 7.5 0 1 0 9.5 9.5z" /></Svg>;
 export const ITerminal: React.FC<P> = (p) => <Svg {...p}><rect x="3" y="4.5" width="18" height="15" rx="2.5" /><path d="M7 9.5l3 2.5-3 2.5M12.5 15h4.5" /></Svg>;
 export const IHeart: React.FC<P> = (p) => <Svg {...p}><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill={p.fill ?? 'none'} /></Svg>;
+export const IPencil: React.FC<P> = (p) => (
+  <Svg {...p}>
+    <path d="M11 4H5.5A2 2 0 0 0 3.5 6v12.5a2 2 0 0 0 2 2H18a2 2 0 0 0 2-2V13" />
+    <path d="M18.5 3.5a2.1 2.1 0 0 1 3 3L12 16l-4 1 1-4z" />
+  </Svg>
+);
+export const IGems: React.FC<P> = (p) => (
+  <Svg {...p}>
+    <path d="M7.5 4.5L9.5 8l3.5 2-3.5 2-2 3.5-2-3.5L2 10l3.5-2z" />
+    <path d="M16.5 3.5L17.8 6l2.5 1.2-2.5 1.3-1.3 2.5-1.2-2.5L12.8 7.2 15.3 6z" />
+    <path d="M15.5 13l1.3 2.8 2.7 1.2-2.7 1.3-1.3 2.7-1.2-2.7L11.5 17l2.8-1.2z" />
+  </Svg>
+);
+export const IImage: React.FC<P> = (p) => (
+  <Svg {...p}>
+    <rect x="3.5" y="4.5" width="17" height="15" rx="2.5" />
+    <circle cx="8.5" cy="9.5" r="1.5" />
+    <path d="M20.5 15.5l-4.5-4.5-6.5 6.5-2.5-2.5-3.5 3.5" />
+  </Svg>
+);
+export const IClock: React.FC<P> = (p) => (
+  <Svg {...p}>
+    <circle cx="12" cy="12" r="8.5" />
+    <path d="M12 7.5V12l3 2" />
+  </Svg>
+);
+export const IGear: React.FC<P> = (p) => (
+  <Svg {...p}>
+    <circle cx="12" cy="12" r="3" />
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.08a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.08a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+  </Svg>
+);
+export const IMic: React.FC<P> = (p) => (
+  <Svg {...p}>
+    <rect x="9" y="3.5" width="6" height="10" rx="3" />
+    <path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M9 21h6" />
+  </Svg>
+);
+export const ICustomize: React.FC<P> = (p) => (
+  <Svg {...p}>
+    <path d="M12 3l7.5 4.3v9.4L12 21l-7.5-4.3V7.3z" />
+    <circle cx="12" cy="12" r="2.8" />
+  </Svg>
+);
+export const IVideo: React.FC<P> = (p) => (
+  <Svg {...p}>
+    <rect x="3" y="5" width="18" height="14" rx="3" />
+    <path d="M3 9.5h18M9 5l2.5 4.5M14 5l2.5 4.5" />
+  </Svg>
+);
+export const IFilter: React.FC<P> = (p) => (
+  <Svg {...p}>
+    <path d="M4 6.5h16M7 12h10M10 17.5h4" />
+  </Svg>
+);
 
-/** Clawd — the Claude Code pixel mascot (16x10 grid, logo version) */
+/** Official-style 4-point Gemini star emblem with multi-stop sapphire-periwinkle gradient */
+export const IGeminiSpark: React.FC<{size?: number; style?: React.CSSProperties; color?: string}> = ({size = 24, style, color}) => {
+  const gid = React.useId().replace(/:/g, '');
+  return (
+    <svg width={size} height={size} viewBox="0 0 28 28" fill="none" style={style}>
+      <defs>
+        <linearGradient id={gid} x1="2" y1="2" x2="26" y2="26" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#1B6EF3" />
+          <stop offset="48%" stopColor="#4F87FF" />
+          <stop offset="100%" stopColor="#9B72CB" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M14 1.5 C15.1 9.8 18.2 12.9 26.5 14 C18.2 15.1 15.1 18.2 14 26.5 C12.9 18.2 9.8 15.1 1.5 14 C9.8 12.9 12.9 9.8 14 1.5 Z"
+        fill={color ?? `url(#${gid})`}
+      />
+    </svg>
+  );
+};
+
+/** Antigravity CLI (`agy`) rainbow pixel logo from PowerShell banner (12x10 grid) */
+export const ANTIGRAVITY_GRID: (string | null)[][] = [
+  [null, null, null, null, null, '#f2922e', '#f07236', null, null, null, null, null],
+  [null, null, null, null, '#dbb131', '#f6912e', '#f37337', '#f0583b', null, null, null, null],
+  [null, null, null, '#9ec345', '#b5b43e', '#e2993d', '#f67a34', '#f86a35', '#ef5442', null, null, null],
+  [null, null, null, '#86c64e', '#75b45e', '#cc954d', '#ef7947', '#e16652', '#e14f59', null, null, null],
+  [null, null, '#7cc251', '#71c25c', '#5ca98f', '#5c91b3', '#8373b0', '#746fc3', '#995da8', '#9c5b97', null, null],
+  [null, null, '#80c654', '#54b881', '#4097de', null, null, '#4a7ee4', '#706ece', '#8f64b4', null, null],
+  [null, null, '#61c37d', '#43aeab', null, null, null, null, '#4a80ea', '#6c73d8', null, null],
+  [null, '#6dc694', '#62bad5', '#47a8dc', null, null, null, null, '#3d89fb', '#4a81f0', '#6579e1', null],
+  [null, '#6bc7a3', '#64b6f6', null, null, null, null, null, null, '#3886fb', '#4881f4', null],
+  ['#67b9f4', '#64b6f6', null, null, null, null, null, null, null, null, '#3883f9', '#3d85fc'],
+];
+
+export const AntigravityLogo: React.FC<{
+  cell?: number;
+  color?: string;
+  bob?: number;
+  style?: React.CSSProperties;
+}> = ({cell = 15, color, bob = 0, style}) => {
+  const cw = cell;
+  const ch = Math.round(cell * 1.18);
+  const rects: React.ReactNode[] = [];
+  ANTIGRAVITY_GRID.forEach((row, y) => {
+    row.forEach((hex, x) => {
+      if (!hex) return;
+      rects.push(
+        <rect
+          key={`${x}-${y}`}
+          x={x * cw}
+          y={y * ch + bob}
+          width={cw + 0.4}
+          height={ch + 0.4}
+          fill={color ?? hex}
+        />,
+      );
+    });
+  });
+  return (
+    <svg width={12 * cw} height={10 * ch} viewBox={`0 0 ${12 * cw} ${10 * ch}`} style={style} shapeRendering="crispEdges">
+      {rects}
+    </svg>
+  );
+};
+
+/** Clawd (GemiBot) — legacy pixel mascot helper (16x10 grid) */
 export const CLAWD_GRID = [
-  '..############..',
+  '.......##.......',
+  '......####......',
+  '...##########...',
   '..############..',
   '..##.######.##..',
-  '..##.######.##..',
-  '################',
   '################',
   '..############..',
-  '..############..',
-  '...#.#....#.#...',
-  '...#.#....#.#...',
+  '...##########...',
+  '....##....##....',
+  '...##......##...',
 ];
 export const Clawd: React.FC<{cell?: number; color?: string; eye?: string; walk?: number; arms?: number; blink?: boolean; style?: React.CSSProperties}> = ({
   cell = 8,
-  color = '#D77757',
+  color = '#5B6EF5',
   eye = '#000',
   walk = 0,
   arms = 0,
@@ -58,7 +178,7 @@ export const Clawd: React.FC<{cell?: number; color?: string; eye?: string; walk?
   const rects: React.ReactNode[] = [];
   CLAWD_GRID.forEach((row, y) => {
     [...row].forEach((ch, x) => {
-      const isEye = (x === 4 || x === 11) && (y === 2 || y === 3);
+      const isEye = (x === 4 || x === 11) && y === 4;
       if (ch === '#') {
         let dy = 0;
         if (y >= 8) {
@@ -70,7 +190,7 @@ export const Clawd: React.FC<{cell?: number; color?: string; eye?: string; walk?
         rects.push(<rect key={`${x}-${y}`} x={x * cell} y={(y + dy) * cell} width={cell + 0.4} height={cell + 0.4} fill={color} />);
       } else if (isEye) {
         rects.push(
-          <rect key={`e${x}-${y}`} x={x * cell} y={y * cell + (blink && y === 2 ? cell * 0.6 : 0)} width={cell + 0.4} height={blink ? cell * 0.4 : cell + 0.4} fill={eye} />,
+          <rect key={`e${x}-${y}`} x={x * cell} y={y * cell + (blink ? cell * 0.5 : 0)} width={cell + 0.4} height={blink ? cell * 0.4 : cell + 0.4} fill={eye} />,
         );
       }
     });
@@ -82,9 +202,9 @@ export const Clawd: React.FC<{cell?: number; color?: string; eye?: string; walk?
   );
 };
 
-export const SPINNER_GLYPHS = ['·', '✢', '✳', '✶', '✻', '✽', '✽', '✻', '✶', '✳', '✢', '·'];
+export const SPINNER_GLYPHS = ['·', '✧', '✦', '✴', '✵', '✺', '✺', '✵', '✴', '✦', '✧', '·'];
 export const spinnerGlyph = (t: number, speed = 9) => SPINNER_GLYPHS[Math.floor(t * speed) % SPINNER_GLYPHS.length];
 export const SPINNER_VERBS = [
-  'Clauding', 'Pondering', 'Reticulating', 'Percolating', 'Combobulating', 'Flibbertigibbeting', 'Ruminating', 'Unfurling',
-  'Photosynthesizing', 'Germinating', 'Pollinating', 'Sprouting', 'Blossoming', 'Orchestrating', 'Transmogrifying', 'Musing',
+  'Geminizing', 'Synthesizing', 'Constellating', 'Reasoning', 'Stargazing', 'Orchestrating', 'Harmonizing', 'Unfurling',
+  'Illuminating', 'Crystallizing', 'Orbiting', 'Blooming', 'Blossoming', 'Daydreaming', 'Transmogrifying', 'Musing',
 ];

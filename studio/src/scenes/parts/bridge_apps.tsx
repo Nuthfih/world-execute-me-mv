@@ -4,7 +4,7 @@ import {noise1, rand} from '../../lib/anim';
 import {OSWindow} from '../../components/FX';
 
 // ---------------------------------------------------------------------------------------------
-// The 12 apps the human left Claude for. Flat, brand-free, icon-like window bodies.
+// The 12 apps the human left Gemini for. Flat, brand-free, icon-like window bodies.
 // Reused by the EXECUTION scene: the bridge ends (147.66) with these 12 windows in a clock ring.
 //
 // HANDOFF @147.66: background #0E0E0D; ring centre (960,540); 12 dark OSWindows w=250 h=160,
@@ -116,9 +116,9 @@ const Shop: React.FC<{t: number; a: string}> = ({t, a}) => {
         );
       })}
       <g transform={`translate(214 ${96 + bob})`}>
-        <path d="M-12,-8 h4 l4,14 h14 l3,-10 h-19" stroke="#E8E6DC" strokeWidth={2.2} fill="none" strokeLinejoin="round" />
-        <circle cx={-2} cy={10} r={2.4} fill="#E8E6DC" />
-        <circle cx={9} cy={10} r={2.4} fill="#E8E6DC" />
+        <path d="M-12,-8 h4 l4,14 h14 l3,-10 h-19" stroke="#E4E7F2" strokeWidth={2.2} fill="none" strokeLinejoin="round" />
+        <circle cx={-2} cy={10} r={2.4} fill="#E4E7F2" />
+        <circle cx={9} cy={10} r={2.4} fill="#E4E7F2" />
         <circle cx={12} cy={-12} r={7} fill={a} />
         <text x={12} y={-8.5} textAnchor="middle" fontFamily={F.sans} fontSize={10} fontWeight={700} fill="#141413">
           3
@@ -144,7 +144,7 @@ const Mail: React.FC<{t: number; a: string}> = ({t, a}) => {
         return (
           <g key={k}>
             <circle cx={84} cy={y + 8} r={4} fill={unread ? a : '#3A3A38'} />
-            {bar(96, y + 2, 60 + rand(5, k) * 50, 6, unread ? '#E8E6DC' : '#87867F')}
+            {bar(96, y + 2, 60 + rand(5, k) * 50, 6, unread ? '#E4E7F2' : '#87867F')}
             {bar(96, y + 12, 90 + rand(6, k) * 40, 4, '#5E5D59')}
           </g>
         );
@@ -176,7 +176,7 @@ const Games: React.FC<{t: number; a: string}> = ({t, a}) => {
       <text x={120} y={30} fontFamily={F.mono} fontSize={11} fill="#87867F">
         SCORE
       </text>
-      <text x={120} y={50} fontFamily={F.mono} fontSize={18} fontWeight={800} fill="#E8E6DC">
+      <text x={120} y={50} fontFamily={F.mono} fontSize={18} fontWeight={800} fill="#E4E7F2">
         {score}
       </text>
       {[0, 1, 2].map((k) => (
@@ -184,7 +184,7 @@ const Games: React.FC<{t: number; a: string}> = ({t, a}) => {
       ))}
       <g transform="translate(150 104)">
         <rect x={-30} y={-10} width={60} height={20} rx={10} fill="#30302E" />
-        <path d="M-20,0 h8 M-16,-4 v8" stroke="#E8E6DC" strokeWidth={2.4} />
+        <path d="M-20,0 h8 M-16,-4 v8" stroke="#E4E7F2" strokeWidth={2.4} />
         <circle cx={14} cy={-2} r={2.6} fill={a} />
         <circle cx={20} cy={3} r={2.6} fill="#E2B65B" />
       </g>
@@ -200,8 +200,8 @@ const News: React.FC<{t: number; a: string}> = ({t, a}) => {
         The Daily
       </text>
       {bar(100, 13, 140, 3, '#3A3A38')}
-      {bar(10, 30, 130, 8, '#E8E6DC')}
-      {bar(10, 43, 110, 8, '#E8E6DC')}
+      {bar(10, 30, 130, 8, '#E4E7F2')}
+      {bar(10, 43, 110, 8, '#E4E7F2')}
       {bar(10, 58, 120, 4, '#87867F')}
       {bar(10, 66, 126, 4, '#87867F')}
       {bar(10, 74, 96, 4, '#87867F')}
@@ -242,7 +242,7 @@ const Music: React.FC<{t: number; a: string}> = ({t, a}) => {
       <rect x={10} y={8} width={68} height={68} rx={6} fill="url(#mus-art)" />
       <circle cx={44} cy={42} r={20} fill="none" stroke="#FFFFFF" strokeOpacity={0.35} strokeWidth={2} />
       <circle cx={44} cy={42} r={5} fill="#FFFFFF" opacity={0.7} />
-      {bar(90, 18, 100, 8, '#E8E6DC')}
+      {bar(90, 18, 100, 8, '#E4E7F2')}
       {bar(90, 32, 64, 5, '#87867F')}
       <g transform="translate(90 52)">
         <path d="M0,0 l-8,6 l8,6 z M-8,0 v12" fill="#C2C0B6" stroke="#C2C0B6" strokeWidth={1.5} transform="translate(8 0)" />
@@ -282,7 +282,7 @@ const Maps: React.FC<{t: number; a: string}> = ({t, a}) => {
         <circle cx={0} cy={-15} r={3.5} fill="#141413" />
       </g>
       <rect x={10} y={8} width={52} height={18} rx={9} fill="#141413" opacity={0.85} />
-      <text x={36} y={21} textAnchor="middle" fontFamily={F.sans} fontSize={11} fontWeight={600} fill="#E8E6DC">
+      <text x={36} y={21} textAnchor="middle" fontFamily={F.sans} fontSize={11} fontWeight={600} fill="#E4E7F2">
         12 min
       </text>
     </>
@@ -346,7 +346,7 @@ const Chat: React.FC<{t: number; a: string}> = ({t, a}) => {
   return (
     <>
       <circle cx={18} cy={14} r={8} fill="#E2B65B" />
-      {bar(32, 10, 54, 6, '#E8E6DC')}
+      {bar(32, 10, 54, 6, '#E4E7F2')}
       <circle cx={92} cy={13} r={3} fill="#86C06C" />
       <rect x={0} y={26} width={BW} height={1} fill="#30302E" />
       <rect x={10} y={34} width={110} height={20} rx={10} fill="#30302E" />

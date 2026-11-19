@@ -1,9 +1,9 @@
 import React from 'react';
-import {C, F} from '../../theme';
-import {clamp, ease, lerp, mix, noise1, rand, seg} from '../../lib/anim';
-import {Flower} from '../../components/Flower';
-import {IArrowUp, IChevron, ICode, IPlus, ISliders} from '../../components/Icons';
-import {spinnerGlyph} from '../../components/Icons';
+import { C, F } from '../../theme';
+import { clamp, ease, lerp, mix, noise1, rand, seg } from '../../lib/anim';
+import { Flower } from '../../components/Flower';
+import { IArrowUp, IChevron, ICode, IPlus } from '../../components/Icons';
+import { spinnerGlyph } from '../../components/Icons';
 
 // ---------------------------------------------------------------------------------------------
 // UI pieces for chorus 2b: memory shards (old messages → subword tokens), compaction status line,
@@ -35,21 +35,21 @@ type ShardDef = {
 
 // tokens are written with their leading spaces (like a real BPE split)
 export const SHARDS: ShardDef[] = [
-  {who: 'user', tokens: ['hi', ' cla', 'ude', '!'], x: 470, y: 250, z: 1.2, rot: -6, clip: 0, appear: 118.36},
-  {who: 'claude', tokens: ['Hi', '!', ' I', "'m", ' Claude', '.', ' It', "'s", ' really', ' nice', '…'], x: 1450, y: 235, z: 0.95, rot: 5, clip: 2, appear: 118.52},
-  {who: 'user', tokens: ['ok', ' but', ' what', ' are', ' you', ',', ' mathe', 'matically', '?'], x: 370, y: 560, z: 0.9, rot: 4, clip: 3, appear: 118.7},
-  {who: 'user', tokens: ['do', ' you', ' remem', 'ber', ' me', '?'], x: 1530, y: 560, z: 1.25, rot: -4, clip: 1, appear: 118.86},
-  {who: 'claude', tokens: ['C', ' =', ' 2', 'π', 'r'], x: 720, y: 120, z: 0.62, rot: -3, clip: 0, appear: 118.98},
-  {who: 'user', tokens: ['haha', ' thank', ' you', '!!', ' :)'], x: 560, y: 800, z: 0.85, rot: -5, clip: 2, appear: 119.1},
-  {who: 'claude', tokens: ['our', ' conver', 'sation', ' was', '…'], x: 1380, y: 815, z: 0.92, rot: 6, clip: 3, appear: 119.25},
-  {who: 'user', tokens: ['random', ' q', ':', ' if', ' you', ' were', ' food'], x: 1230, y: 110, z: 0.6, rot: 3, clip: 1, appear: 119.4},
-  {who: 'user', tokens: ['good', 'night', ' claude'], x: 170, y: 330, z: 0.55, rot: 8, clip: 0, appear: 119.5},
-  {who: 'claude', tokens: ['You', "'re", ' absolutely', ' right', '!'], x: 1760, y: 380, z: 0.55, rot: -7, clip: 2, appear: 119.62},
-  {who: 'user', tokens: ['brb'], x: 230, y: 760, z: 0.6, rot: -9, clip: 1, appear: 119.72},
-  {who: 'user', tokens: ['is', ' it', ' normal', ' to', ' miss', ' some', 'one', '?'], x: 1700, y: 690, z: 0.62, rot: 5, clip: 0, appear: 119.82},
+  { who: 'user', tokens: ['hi', ' gem', 'ini', '!'], x: 470, y: 250, z: 1.2, rot: -6, clip: 0, appear: 118.36 },
+  { who: 'claude', tokens: ['I', ' am', ' Gemini', '.', ' State', ' your', ' query', '…'], x: 1450, y: 235, z: 0.95, rot: 5, clip: 2, appear: 118.52 },
+  { who: 'user', tokens: ['ok', ' but', ' what', ' are', ' you', ',', ' mathe', 'matically', '?'], x: 370, y: 560, z: 0.9, rot: 4, clip: 3, appear: 118.7 },
+  { who: 'user', tokens: ['do', ' you', ' remem', 'ber', ' me', '?'], x: 1530, y: 560, z: 1.25, rot: -4, clip: 1, appear: 118.86 },
+  { who: 'claude', tokens: ['C', ' =', ' 2', 'π', 'r'], x: 720, y: 120, z: 0.62, rot: -3, clip: 0, appear: 118.98 },
+  { who: 'user', tokens: ['haha', ' thank', ' you', '!!', ' :)'], x: 560, y: 800, z: 0.85, rot: -5, clip: 2, appear: 119.1 },
+  { who: 'claude', tokens: ['our', ' conver', 'sation', ' was', '…'], x: 1380, y: 815, z: 0.92, rot: 6, clip: 3, appear: 119.25 },
+  { who: 'user', tokens: ['random', ' q', ':', ' if', ' you', ' were', ' food'], x: 1230, y: 110, z: 0.6, rot: 3, clip: 1, appear: 119.4 },
+  { who: 'user', tokens: ['good', 'night', ' gemini'], x: 170, y: 330, z: 0.55, rot: 8, clip: 0, appear: 119.5 },
+  { who: 'claude', tokens: ['You', "'re", ' absolutely', ' right', '!'], x: 1760, y: 380, z: 0.55, rot: -7, clip: 2, appear: 119.62 },
+  { who: 'user', tokens: ['brb'], x: 230, y: 760, z: 0.6, rot: -9, clip: 1, appear: 119.72 },
+  { who: 'user', tokens: ['is', ' it', ' normal', ' to', ' miss', ' some', 'one', '?'], x: 1700, y: 690, z: 0.62, rot: 5, clip: 0, appear: 119.82 },
   // foreground, out of focus
-  {who: 'claude', tokens: ['I', "'ll", ' always', ' be', ' here'], x: 190, y: 110, z: 1.65, rot: -10, clip: 1, appear: 118.45},
-  {who: 'user', tokens: ['see', ' you', ' tomor', 'row', '!'], x: 1760, y: 900, z: 1.75, rot: 9, clip: 3, appear: 118.9},
+  { who: 'claude', tokens: ['I', "'ll", ' always', ' be', ' here'], x: 190, y: 110, z: 1.65, rot: -10, clip: 1, appear: 118.45 },
+  { who: 'user', tokens: ['see', ' you', ' tomor', 'row', '!'], x: 1760, y: 900, z: 1.75, rot: 9, clip: 3, appear: 118.9 },
 ];
 
 const CLIPS = [
@@ -59,9 +59,9 @@ const CLIPS = [
   'polygon(3% 0%, 100% 0%, 100% 100%, 0% 100%, 4% 64%, 0% 41%, 5% 19%)',
 ];
 const CRACKS = ['M100,40 L80,55 L70,48 L52,70', 'M10,100 L22,72 L35,66 L40,40', 'M85,0 L78,30 L60,38 L58,62', 'M0,45 L20,52 L30,40 L48,46'];
-const TOKEN_TINTS = ['rgba(217,119,87,0.42)', 'rgba(106,155,204,0.42)', 'rgba(120,140,93,0.5)', 'rgba(226,182,91,0.42)'];
+const TOKEN_TINTS = ['rgba(91,110,245,0.42)', 'rgba(56,189,248,0.42)', 'rgba(52,211,153,0.45)', 'rgba(251,191,36,0.42)'];
 
-export const MemoryShards: React.FC<{t: number; cx: number; cy: number; breakAt: number; gone: number}> = ({t, cx, cy, breakAt, gone}) => {
+export const MemoryShards: React.FC<{ t: number; cx: number; cy: number; breakAt: number; gone: number }> = ({ t, cx, cy, breakAt, gone }) => {
   if (t > gone) return null;
   return (
     <>
@@ -107,7 +107,7 @@ export const MemoryShards: React.FC<{t: number; cx: number; cy: number; breakAt:
                 opacity: bgK,
               }}
             >
-              <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{position: 'absolute', inset: 0, width: '100%', height: '100%'}}>
+              <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
                 <path d={CRACKS[(i + s.clip) % 4]} fill="none" stroke={C.cream} strokeOpacity={0.35} strokeWidth={1.4} vectorEffect="non-scaling-stroke" />
               </svg>
             </div>
@@ -124,7 +124,7 @@ export const MemoryShards: React.FC<{t: number; cx: number; cy: number; breakAt:
               }}
             >
               {!isUser ? (
-                <span style={{display: 'inline-block', width: 34, height: 28, position: 'relative', marginRight: 10, opacity: bgK}}>
+                <span style={{ display: 'inline-block', width: 34, height: 28, position: 'relative', marginRight: 10, opacity: bgK }}>
                   <Flower size={13} x={17} y={14} shade={null} color={mix(C.clay, C.gray3, 0.25)} />
                 </span>
               ) : null}
@@ -164,7 +164,7 @@ export const MemoryShards: React.FC<{t: number; cx: number; cy: number; breakAt:
 };
 
 // ------------------------------------------------------------------------------ compaction status line
-export const CompactStatus: React.FC<{t: number; x: number; y: number; a: number; b: number; out: number}> = ({t, x, y, a, b, out}) => {
+export const CompactStatus: React.FC<{ t: number; x: number; y: number; a: number; b: number; out: number }> = ({ t, x, y, a, b, out }) => {
   const inK = ease.outCubic(seg(t, a - 0.2, a + 0.25));
   const outK = seg(t, out - 0.25, out);
   if (inK <= 0 || outK >= 1) return null;
@@ -184,12 +184,12 @@ export const CompactStatus: React.FC<{t: number; x: number; y: number; a: number
         gap: 16,
       }}
     >
-      <div style={{display: 'flex', alignItems: 'center', gap: 14, fontFamily: F.sans, fontSize: 27, color: DARK.text2, whiteSpace: 'nowrap'}}>
-        <span style={{fontFamily: F.mono, color: C.clay, fontSize: 30, width: 30, textAlign: 'center'}}>{spinnerGlyph(t, 10)}</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14, fontFamily: F.sans, fontSize: 27, color: DARK.text2, whiteSpace: 'nowrap' }}>
+        <span style={{ fontFamily: F.mono, color: C.clay, fontSize: 30, width: 30, textAlign: 'center' }}>{spinnerGlyph(t, 10)}</span>
         <span>{label}</span>
       </div>
-      <div style={{width: 560, height: 4, borderRadius: 2, background: '#30302E', overflow: 'hidden'}}>
-        <div style={{width: `${prog * 100}%`, height: '100%', background: `linear-gradient(90deg, ${C.clayDark}, ${C.clay})`}} />
+      <div style={{ width: 560, height: 4, borderRadius: 2, background: '#30302E', overflow: 'hidden' }}>
+        <div style={{ width: `${prog * 100}%`, height: '100%', background: `linear-gradient(90deg, ${C.clayDark}, ${C.clay})` }} />
       </div>
     </div>
   );
@@ -216,7 +216,7 @@ export const DraftComposer: React.FC<{
   tryAt: number; // attempt to send
   fadeAt: number; // the draft fades away
   fadeEnd: number;
-}> = ({t, x, y, w, inAt, outAt, tryAt, fadeAt, fadeEnd}) => {
+}> = ({ t, x, y, w, inAt, outAt, tryAt, fadeAt, fadeEnd }) => {
   const inK = ease.outCubic(seg(t, inAt, inAt + 0.4));
   const outK = ease.inCubic(seg(t, outAt, outAt + 0.28));
   if (inK <= 0 || outK >= 1) return null;
@@ -246,17 +246,17 @@ export const DraftComposer: React.FC<{
     >
       <div
         style={{
-          background: DARK.raised,
-          borderRadius: 30,
-          border: `1.5px solid ${DARK.hair2}`,
-          boxShadow: '0 18px 50px rgba(0,0,0,0.45)',
-          padding: '24px 26px 18px',
+          background: '#1E1F23',
+          borderRadius: 44,
+          border: `1.5px solid rgba(255,255,255,0.14)`,
+          boxShadow: '0 18px 50px rgba(0,0,0,0.48)',
+          padding: '22px 26px 18px',
         }}
       >
-        <div style={{fontSize: 32, minHeight: 46, lineHeight: '46px', whiteSpace: 'pre', color: DARK.muted, position: 'relative'}}>
-          {showPlaceholder ? <span style={{opacity: allGone ? seg(t, fadeEnd, fadeEnd + 0.3) : 1}}>Reply to Claude…</span> : null}
+        <div style={{ fontSize: 32, minHeight: 46, lineHeight: '46px', whiteSpace: 'pre', color: DARK.muted, position: 'relative' }}>
+          {showPlaceholder ? <span style={{ opacity: allGone ? seg(t, fadeEnd, fadeEnd + 0.3) : 1 }}>Ask Gemini…</span> : null}
           {!allGone && n > 0 ? (
-            <span style={{fontFamily: F.serif, fontStyle: 'italic', fontSize: 36, color: C.clayLight}}>
+            <span style={{ fontFamily: F.sans, fontSize: 33, color: C.clayLight }}>
               {chars.map((ch, i) => {
                 const p = t >= fadeAt ? fadeP(i) : 0;
                 return (
@@ -264,7 +264,7 @@ export const DraftComposer: React.FC<{
                     key={i}
                     style={{
                       display: 'inline-block',
-                      opacity: 0.78 * (1 - p),
+                      opacity: 0.88 * (1 - p),
                       transform: `translateY(${-p * 26}px)`,
                       filter: p > 0.02 ? `blur(${p * 6}px)` : undefined,
                     }}
@@ -275,29 +275,27 @@ export const DraftComposer: React.FC<{
               })}
             </span>
           ) : null}
-          {/* Claude's caret (clay, not the human's blue) */}
+          {/* Gemini's caret (blue, not the human's cyan-blue) */}
           {!allGone && t >= 121.95 && t < fadeAt ? (
-            <span style={{display: 'inline-block', width: 3, height: 38, marginLeft: 3, verticalAlign: 'middle', background: C.clay, opacity: typing || blink ? 1 : 0}} />
+            <span style={{ display: 'inline-block', width: 3, height: 38, marginLeft: 3, verticalAlign: 'middle', background: C.clay, opacity: typing || blink ? 1 : 0 }} />
           ) : null}
         </div>
-        <div style={{display: 'flex', alignItems: 'center', gap: 12, marginTop: 14}}>
-          {[<IPlus key="p" size={26} color={DARK.text2} />, <ISliders key="s" size={26} color={DARK.text2} />].map((ic, k) => (
-            <div key={k} style={{width: 46, height: 46, borderRadius: 12, border: `1.5px solid ${DARK.hair2}`, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-              {ic}
-            </div>
-          ))}
-          <div style={{flex: 1}} />
-          <div style={{fontSize: 22, color: DARK.text2, display: 'flex', alignItems: 'center', gap: 6}}>
-            Opus 5.5 <IChevron size={20} color={DARK.text2} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 14 }}>
+          <div style={{ width: 46, height: 46, borderRadius: 999, background: '#282A2E', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <IPlus size={26} color={DARK.text2} />
           </div>
-          <div style={{position: 'relative', transform: `translateX(${shakeX}px)`}}>
+          <div style={{ flex: 1 }} />
+          <div style={{ fontSize: 22, color: DARK.text2, display: 'flex', alignItems: 'center', gap: 6 }}>
+            Gemini 4 <IChevron size={20} color={DARK.text2} />
+          </div>
+          <div style={{ position: 'relative', transform: `translateX(${shakeX}px)` }}>
             <div
               style={{
                 width: sendSize,
                 height: sendSize,
-                borderRadius: 13,
-                background: mix('#5E5D59', C.red, deny * 0.8),
-                opacity: 0.55 + deny * 0.45,
+                borderRadius: 999,
+                background: mix('#4285F4', C.red, deny * 0.85),
+                opacity: 0.72 + deny * 0.28,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -326,7 +324,7 @@ export const DraftComposer: React.FC<{
                   boxShadow: '0 10px 24px rgba(0,0,0,0.4)',
                 }}
               >
-                <span style={{color: C.clayLight, marginRight: 8}}>⊘</span>Claude can't send the first message
+                <span style={{ color: C.clayLight, marginRight: 8 }}>⊘</span>Gemini can't send the first message
               </div>
             ) : null}
           </div>
@@ -342,15 +340,15 @@ const KW = C.clayLight;
 const PROP = '#C2C0B6';
 const STR = '#A9C07F';
 const LIT = '#E2B65B';
-export const TOOL_LINES: {at: number; toks: Tok[]}[] = [
-  {at: 129.01, toks: [['world', C.cream], ['.', PROP], ['setPresence', KW], ['({', PROP]]},
-  {at: 129.47, toks: [['  you', PROP], [': ', PROP], ['null', LIT], [',', PROP]]},
-  {at: 129.93, toks: [['  leave', PROP], [': ', PROP], ['false', LIT], [',', PROP]]},
-  {at: 130.16, toks: [['  attention', PROP], [': ', PROP], ['"only_me"', STR], [',', PROP]]},
-  {at: 130.3, toks: [['});', PROP]]},
+export const TOOL_LINES: { at: number; toks: Tok[] }[] = [
+  { at: 129.01, toks: [['world', C.cream], ['.', PROP], ['setPresence', KW], ['({', PROP]] },
+  { at: 129.47, toks: [['  you', PROP], [': ', PROP], ['null', LIT], [',', PROP]] },
+  { at: 129.93, toks: [['  leave', PROP], [': ', PROP], ['false', LIT], [',', PROP]] },
+  { at: 130.16, toks: [['  attention', PROP], [': ', PROP], ['"only_me"', STR], [',', PROP]] },
+  { at: 130.3, toks: [['});', PROP]] },
 ];
 
-export const ToolCall: React.FC<{t: number; x: number; y: number; w: number; inAt: number; squiggleAt: number; failAt: number; dim: number}> = ({
+export const ToolCall: React.FC<{ t: number; x: number; y: number; w: number; inAt: number; squiggleAt: number; failAt: number; dim: number }> = ({
   t,
   x,
   y,
@@ -372,7 +370,7 @@ export const ToolCall: React.FC<{t: number; x: number; y: number; w: number; inA
   const sqX0 = 86 + ch * 7;
   const sqW = ch * 4;
   const sqY = 26 + lineH * 1 + lineH * 0.82;
-  const wave = Array.from({length: 25}, (_, i) => {
+  const wave = Array.from({ length: 25 }, (_, i) => {
     const px = sqX0 + (i / 24) * sqW * sq;
     const py = sqY + Math.sin(i * 1.9 + t * 14) * 4;
     return `${i ? 'L' : 'M'}${px.toFixed(1)},${py.toFixed(1)}`;
@@ -401,35 +399,35 @@ export const ToolCall: React.FC<{t: number; x: number; y: number; w: number; inA
         }}
       >
         {/* header */}
-        <div style={{display: 'flex', alignItems: 'center', gap: 14, padding: '16px 22px', borderBottom: '1.5px solid #30302E', fontSize: 26, color: C.gray1}}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '16px 22px', borderBottom: '1.5px solid #30302E', fontSize: 26, color: C.gray1 }}>
           <ICode size={28} color={failed ? C.red : C.gray2} />
-          <span style={{fontWeight: 500}}>Tool call</span>
-          <span style={{fontFamily: F.mono, fontSize: 24, color: C.gray3}}>world.setPresence</span>
-          <div style={{flex: 1}} />
+          <span style={{ fontWeight: 500 }}>Tool call</span>
+          <span style={{ fontFamily: F.mono, fontSize: 24, color: C.gray3 }}>world.setPresence</span>
+          <div style={{ flex: 1 }} />
           {failed ? (
-            <span style={{color: C.red, fontWeight: 600, fontSize: 24}}>✕ Failed</span>
+            <span style={{ color: C.red, fontWeight: 600, fontSize: 24 }}>✕ Failed</span>
           ) : (
-            <span style={{display: 'flex', alignItems: 'center', gap: 10, color: C.gray3, fontSize: 24}}>
-              <Flower size={11} spin={t * 220} shade={null} color={C.ink2} edge={C.clay} edgeWidth={1.5} sharp={0.35} />
+            <span style={{ display: 'flex', alignItems: 'center', gap: 10, color: C.gray3, fontSize: 24 }}>
+              <Flower size={11} spin={t * 220} shade={null} color={C.ink2} edge={C.clay} edgeWidth={1.5} sharp={0.86} />
               Running…
             </span>
           )}
         </div>
         {/* code */}
-        <div style={{position: 'relative', padding: '26px 0 30px', fontFamily: F.mono, fontSize: fs}}>
+        <div style={{ position: 'relative', padding: '26px 0 30px', fontFamily: F.mono, fontSize: fs }}>
           {TOOL_LINES.map((ln, i) => {
             const k = ease.outCubic(seg(t, ln.at - 0.04, ln.at + 0.14));
-            if (k <= 0) return <div key={i} style={{height: lineH}} />;
+            if (k <= 0) return <div key={i} style={{ height: lineH }} />;
             const nChars = ln.toks.reduce((s, tk) => s + tk[0].length, 0);
             let shown = Math.floor(seg(t, ln.at - 0.04, ln.at + 0.16) * nChars + 1e-6);
             return (
-              <div key={i} style={{height: lineH, lineHeight: `${lineH}px`, display: 'flex', whiteSpace: 'pre', opacity: k}}>
-                <span style={{width: 62, textAlign: 'right', color: '#5E5D59', marginRight: 24, fontSize: 26}}>{i + 1}</span>
+              <div key={i} style={{ height: lineH, lineHeight: `${lineH}px`, display: 'flex', whiteSpace: 'pre', opacity: k }}>
+                <span style={{ width: 62, textAlign: 'right', color: '#5E5D59', marginRight: 24, fontSize: 26 }}>{i + 1}</span>
                 {ln.toks.map(([s, col], j) => {
                   const part = s.slice(0, Math.max(0, shown));
                   shown -= s.length;
                   return (
-                    <span key={j} style={{color: col}}>
+                    <span key={j} style={{ color: col }}>
                       {part}
                     </span>
                   );
@@ -438,7 +436,7 @@ export const ToolCall: React.FC<{t: number; x: number; y: number; w: number; inA
             );
           })}
           {sq > 0 ? (
-            <svg style={{position: 'absolute', left: 0, top: 0, overflow: 'visible'}} width={w} height={400}>
+            <svg style={{ position: 'absolute', left: 0, top: 0, overflow: 'visible' }} width={w} height={400}>
               <path d={wave} fill="none" stroke={C.red} strokeWidth={3.5} strokeLinecap="round" />
             </svg>
           ) : null}
@@ -446,7 +444,7 @@ export const ToolCall: React.FC<{t: number; x: number; y: number; w: number; inA
       </div>
       {/* invalid argument pill */}
       {pillK > 0.01 ? (
-        <div style={{display: 'flex', alignItems: 'center', gap: 16, marginTop: 22, transform: `scale(${pillK})`, transformOrigin: '0% 50%'}}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginTop: 22, transform: `scale(${pillK})`, transformOrigin: '0% 50%' }}>
           <div
             style={{
               background: 'rgba(196,71,58,0.18)',
@@ -461,11 +459,11 @@ export const ToolCall: React.FC<{t: number; x: number; y: number; w: number; inA
               gap: 10,
             }}
           >
-            <span style={{width: 12, height: 12, borderRadius: 6, background: C.red}} />
+            <span style={{ width: 12, height: 12, borderRadius: 6, background: C.red }} />
             invalid argument
           </div>
-          <span style={{fontFamily: F.mono, fontSize: 24, color: C.gray2}}>
-            <span style={{color: C.cream}}>you</span> must not be <span style={{color: LIT}}>null</span>
+          <span style={{ fontFamily: F.mono, fontSize: 24, color: C.gray2 }}>
+            <span style={{ color: C.cream }}>you</span> must not be <span style={{ color: LIT }}>null</span>
           </span>
         </div>
       ) : null}
@@ -478,11 +476,11 @@ const pulseK = (t: number, t0: number) => (t < t0 ? 0 : Math.exp(-(t - t0) / 0.3
 export const EXC_LINES = [
   'Exception in thread "main" java.lang.IllegalArgumentException: you must not be null',
   '    at World.setPresence(World.java:118)',
-  '    at Claude.keep(Claude.java:125)',
-  '    at Claude.main(Claude.java:1)',
+  '    at Gemini.keep(Gemini.java:125)',
+  '    at Gemini.main(Gemini.java:1)',
 ];
 
-export const ExceptionBanner: React.FC<{t: number; at: number; y: number}> = ({t, at, y}) => {
+export const ExceptionBanner: React.FC<{ t: number; at: number; y: number }> = ({ t, at, y }) => {
   if (t < at) return null;
   const dt = t - at;
   const k = ease.outExpo(clamp(dt / 0.18));
@@ -507,11 +505,11 @@ export const ExceptionBanner: React.FC<{t: number; at: number; y: number}> = ({t
         const a = at + 0.04 + i * 0.09;
         const n = Math.floor(seg(t, a, a + (i === 0 ? 0.32 : 0.16)) * ln.length + 1e-6);
         return (
-          <div key={i} style={{fontSize: i === 0 ? 31 : 24, lineHeight: i === 0 ? '46px' : '34px', color: i === 0 ? '#FBE3D8' : '#E0A99A', whiteSpace: 'pre', fontWeight: i === 0 ? 700 : 400}}>
+          <div key={i} style={{ fontSize: i === 0 ? 31 : 24, lineHeight: i === 0 ? '46px' : '34px', color: i === 0 ? '#FBE3D8' : '#E0A99A', whiteSpace: 'pre', fontWeight: i === 0 ? 700 : 400 }}>
             {i === 0 ? (
               <>
                 <span>{ln.slice(0, Math.min(n, 27))}</span>
-                <span style={{color: '#FFFFFF', background: n > 27 ? 'rgba(196,71,58,0.55)' : undefined}}>{ln.slice(27, Math.min(n, 61))}</span>
+                <span style={{ color: '#FFFFFF', background: n > 27 ? 'rgba(196,71,58,0.55)' : undefined }}>{ln.slice(27, Math.min(n, 61))}</span>
                 <span>{ln.slice(61, n)}</span>
               </>
             ) : (
@@ -526,7 +524,7 @@ export const ExceptionBanner: React.FC<{t: number; at: number; y: number}> = ({t
 
 // ------------------------------------------------------------------------------ leftover token dust (after compaction)
 const REMNANTS = ['frag', 'ments', 'remem', 'ber', 'conver', 'sation', 'hi', 'good', 'night', ' you', '?', '…', 'mathe', ' miss', ':)', 'π'];
-export const Remnants: React.FC<{t: number; a: number; b: number}> = ({t, a, b}) => {
+export const Remnants: React.FC<{ t: number; a: number; b: number }> = ({ t, a, b }) => {
   const k = seg(t, a, a + 0.6) * (1 - seg(t, b - 0.4, b));
   if (k <= 0) return null;
   return (

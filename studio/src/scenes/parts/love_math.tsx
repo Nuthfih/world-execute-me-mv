@@ -1,22 +1,22 @@
 import React from 'react';
-import {AbsoluteFill} from 'remotion';
-import {C, F, H, W} from '../../theme';
-import {clamp, ease, lerp, seg} from '../../lib/anim';
-import {kickPulse} from '../../lib/audio';
-import {Flower, PETAL_ANG, PETAL_LEN} from '../../components/Flower';
-import {Ring} from '../../components/FX';
-import {Glow, HEART_COEF, heartPath, heartXY} from './love_common';
+import { AbsoluteFill } from 'remotion';
+import { C, F, H, W } from '../../theme';
+import { clamp, ease, lerp, seg } from '../../lib/anim';
+import { kickPulse } from '../../lib/audio';
+import { Flower, PETAL_ANG, PETAL_LEN } from '../../components/Flower';
+import { Ring } from '../../components/FX';
+import { Glow, HEART_COEF, heartPath, heartXY } from './love_common';
 
 // ---------------------------------------------------------------------------------------------
 // 184.54–188.48  "I know the algebraic expression of LO-O-OVE"
-// graph paper · r = |cos 6θ| traced over our flower (the flower was an equation all along) ·
+// graph paper · x = r cos³θ, y = r sin³θ astroid traced over our Gemini Star (the star was an equation all along) ·
 // Fourier epicycles (8 exact circles) drawing the heart · typeset implicit + parametric forms ·
-// LO-O-OVE: the heart fills clay and beats with the kick.
+// LO-O-OVE: the heart fills royal-blue and beats with the kick.
 // ---------------------------------------------------------------------------------------------
 
 export const M_T0 = 184.54;
-const ROSE = {x: 330, y: 430, R: 205};
-const HEART = {x: 985, y: 420, s: 14};
+const ROSE = { x: 330, y: 430, R: 205 };
+const HEART = { x: 985, y: 420, s: 14 };
 const EQ_X = 1330;
 const TRACE_A = 185.95, TRACE_B = 187.58;
 const ROSE_A = 184.78, ROSE_B = 185.72;
@@ -28,10 +28,10 @@ const ink = '#2B2A27';
 const camAt = (t: number) => {
   // start: zoomed on the rose, rose centre on screen (960, 480) — exactly where the O of LO-O-OVE was
   const s0 = 1.45;
-  const a = {s: s0, x: 960 - ROSE.x * s0, y: 480 - ROSE.y * s0};
-  const b = {s: 1, x: 0, y: 0};
+  const a = { s: s0, x: 960 - ROSE.x * s0, y: 480 - ROSE.y * s0 };
+  const b = { s: 1, x: 0, y: 0 };
   const hs = 1.1;
-  const c = {s: hs, x: 960 - 960 * hs, y: 470 - 470 * hs};
+  const c = { s: hs, x: 960 - 960 * hs, y: 470 - 470 * hs };
   const k1 = ease.inOutCubic(seg(t, 185.5, 186.2));
   const k2 = ease.outExpo(seg(t, 187.64, 188.0));
   let s = lerp(a.s, b.s, k1), x = lerp(a.x, b.x, k1), y = lerp(a.y, b.y, k1);
@@ -41,34 +41,36 @@ const camAt = (t: number) => {
   // slow drift so nothing is ever static
   x += Math.sin(t * 0.7) * 6;
   y += Math.cos(t * 0.6) * 4;
-  return {s, x, y};
+  return { s, x, y };
 };
 export const mathCam = camAt;
 
-const roseD = (cx: number, cy: number, R: number, th: number) => {
-  const n = Math.max(2, Math.ceil((th / (Math.PI * 2)) * 720));
+/** Parametric 4-point Astroid Gemini Star: x = R cos³θ, y = R sin³θ */
+const starCurveD = (cx: number, cy: number, R: number, th: number) => {
+  const n = Math.max(2, Math.ceil((th / (Math.PI * 2)) * 360));
   let d = '';
   for (let i = 0; i <= n; i++) {
     const p = (i / n) * th;
-    const r = R * Math.abs(Math.cos(6 * p));
-    d += `${i ? 'L' : 'M'}${(cx + r * Math.cos(p)).toFixed(2)},${(cy - r * Math.sin(p)).toFixed(2)} `;
+    const x = cx + R * Math.cos(p) ** 3;
+    const y = cy - R * Math.sin(p) ** 3;
+    d += `${i ? 'L' : 'M'}${x.toFixed(2)},${y.toFixed(2)} `;
   }
   return d;
 };
 
-const Typed: React.FC<{text: string; t: number; a: number; dur: number; style: React.CSSProperties}> = ({text, t, a, dur, style}) => {
+const Typed: React.FC<{ text: string; t: number; a: number; dur: number; style: React.CSSProperties }> = ({ text, t, a, dur, style }) => {
   if (t < a) return null;
   const n = Math.floor(clamp((t - a) / dur) * text.length + 1e-6);
   const caret = t < a + dur + 0.25;
   return (
-    <div style={{whiteSpace: 'pre', ...style}}>
+    <div style={{ whiteSpace: 'pre', ...style }}>
       {text.slice(0, n)}
-      {caret ? <span style={{color: C.clay, fontStyle: 'normal'}}>|</span> : null}
+      {caret ? <span style={{ color: C.clay, fontStyle: 'normal' }}>|</span> : null}
     </div>
   );
 };
 
-export const LoveMath: React.FC<{t: number}> = ({t}) => {
+export const LoveMath: React.FC<{ t: number }> = ({ t }) => {
   const cam = camAt(t);
   // ---------------- rose
   const grow = ease.outBack(seg(t, M_T0, M_T0 + 0.38));
@@ -82,22 +84,22 @@ export const LoveMath: React.FC<{t: number}> = ({t}) => {
   // ---------------- heart epicycles
   const tau = Math.PI * 2 * ease.inOutQuad(seg(t, TRACE_A, TRACE_B));
   const circlesK = (j: number) => ease.outBack(seg(t, 185.83 + j * 0.05, 185.83 + j * 0.05 + 0.3)) * (1 - seg(t, 187.66, 187.95));
-  const chain: {x: number; y: number; r: number}[] = [];
+  const chain: { x: number; y: number; r: number }[] = [];
   let px = HEART.x, py = HEART.y;
   for (const [k, re, im] of HEART_COEF) {
     const r = Math.hypot(re, im) * HEART.s;
     const ang = k * tau + Math.atan2(im, re);
-    chain.push({x: px, y: py, r});
+    chain.push({ x: px, y: py, r });
     px += r * Math.cos(ang);
     py -= r * Math.sin(ang);
   }
-  const tip = {x: px, y: py};
+  const tip = { x: px, y: py };
   const loveK = seg(t, 187.66, 187.84);
   const beat = 1 + 0.085 * kickPulse(t, 0.13) * (t > 187.6 ? 1 : 0);
   const hcx = HEART.x, hcy = HEART.y + 2.5 * HEART.s;
   return (
-    <AbsoluteFill style={{background: '#FAF6EE', overflow: 'hidden'}}>
-      <div style={{position: 'absolute', left: 0, top: 0, width: W, height: H, transformOrigin: '0 0', transform: `translate(${cam.x}px, ${cam.y}px) scale(${cam.s})`}}>
+    <AbsoluteFill style={{ background: '#FAF6EE', overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', left: 0, top: 0, width: W, height: H, transformOrigin: '0 0', transform: `translate(${cam.x}px, ${cam.y}px) scale(${cam.s})` }}>
         {/* graph paper (oversized so camera moves never show an edge) */}
         <div
           style={{
@@ -111,7 +113,7 @@ export const LoveMath: React.FC<{t: number}> = ({t}) => {
             backgroundPosition: '0 0',
           }}
         />
-        <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0, overflow: 'visible'}}>
+        <svg width={W} height={H} style={{ position: 'absolute', left: 0, top: 0, overflow: 'visible' }}>
           {/* ---------- polar grid */}
           <g opacity={0.9}>
             {[0.25, 0.5, 0.75, 1].map((f, i) => {
@@ -132,7 +134,7 @@ export const LoveMath: React.FC<{t: number}> = ({t}) => {
                 />
               );
             })}
-            {Array.from({length: 12}, (_, i) => {
+            {Array.from({ length: 12 }, (_, i) => {
               const a = (i * Math.PI) / 6;
               const k = ease.outCubic(clamp(gridK * 1.4 - i * 0.03));
               return (
@@ -168,37 +170,39 @@ export const LoveMath: React.FC<{t: number}> = ({t}) => {
             })}
           </g>
         </svg>
-        {/* our flower (morphs to perfectly regular petals: it is the rose) */}
+        {/* our Gemini Star (morphs toward the astroid star curve) */}
         <Flower
           x={ROSE.x}
           y={ROSE.y}
-          size={flowerSize}
+          size={flowerSize * 0.96}
           open={1}
           spin={0}
           shade={C.clayDark}
           opacity={flowerOp}
-          petals={Array.from({length: 12}, (_, i) => ({
-            rot: (i * 30 - PETAL_ANG[i]) * regularK,
-            scale: lerp(1, 0.95 / PETAL_LEN[i], regularK),
-            width: lerp(1, 0.78, regularK),
-          }))}
-          centerScale={lerp(1, 0.7, regularK)}
+          petals={Array.from({ length: 12 }, (_, i) =>
+            i % 3 === 0 ? { scale: lerp(1, 0.92, regularK), width: lerp(1, 0.9, regularK) } : { opacity: 1 - regularK * 0.85 },
+          )}
+          centerScale={lerp(1, 0.72, regularK)}
           glow={0.2 * (1 - fillK)}
         />
-        <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0, overflow: 'visible'}}>
-          {/* rose fill once traced */}
+        <svg width={W} height={H} style={{ position: 'absolute', left: 0, top: 0, overflow: 'visible' }}>
+          {/* astroid star fill once traced */}
           {fillK > 0 ? (
-            <path d={roseD(ROSE.x, ROSE.y, ROSE.R * 0.95, Math.PI * 2)} fill={C.clay} fillOpacity={0.88 * fillK} stroke="none" />
+            <path d={starCurveD(ROSE.x, ROSE.y, ROSE.R * 0.98, Math.PI * 2)} fill={C.clay} fillOpacity={0.88 * fillK} stroke="none" />
           ) : null}
           {th > 0.001 ? (
-            <path d={roseD(ROSE.x, ROSE.y, ROSE.R * 0.95, th)} fill="none" stroke={ink} strokeWidth={3.2} strokeLinejoin="round" opacity={1 - 0.6 * fillK} />
+            <path d={starCurveD(ROSE.x, ROSE.y, ROSE.R * 0.98, th)} fill="none" stroke={ink} strokeWidth={3.2} strokeLinejoin="round" opacity={1 - 0.6 * fillK} />
           ) : null}
-          {fillK > 0 ? <circle cx={ROSE.x} cy={ROSE.y} r={ROSE.R * 0.13 * fillK} fill={C.cream} /> : null}
+          {fillK > 0 ? (
+            <path
+              d={`M${ROSE.x},${ROSE.y - ROSE.R * 0.24 * fillK} Q${ROSE.x + ROSE.R * 0.04 * fillK},${ROSE.y - ROSE.R * 0.04 * fillK} ${ROSE.x + ROSE.R * 0.24 * fillK},${ROSE.y} Q${ROSE.x + ROSE.R * 0.04 * fillK},${ROSE.y + ROSE.R * 0.04 * fillK} ${ROSE.x},${ROSE.y + ROSE.R * 0.24 * fillK} Q${ROSE.x - ROSE.R * 0.04 * fillK},${ROSE.y + ROSE.R * 0.04 * fillK} ${ROSE.x - ROSE.R * 0.24 * fillK},${ROSE.y} Q${ROSE.x - ROSE.R * 0.04 * fillK},${ROSE.y - ROSE.R * 0.04 * fillK} ${ROSE.x},${ROSE.y - ROSE.R * 0.24 * fillK} Z`}
+              fill={C.cream}
+            />
+          ) : null}
           {armOn ? (
             (() => {
-              const r = ROSE.R * 0.95 * Math.abs(Math.cos(6 * th));
               const ex = ROSE.x + Math.cos(th) * ROSE.R, ey = ROSE.y - Math.sin(th) * ROSE.R;
-              const qx = ROSE.x + Math.cos(th) * r, qy = ROSE.y - Math.sin(th) * r;
+              const qx = ROSE.x + ROSE.R * 0.98 * Math.cos(th) ** 3, qy = ROSE.y - ROSE.R * 0.98 * Math.sin(th) ** 3;
               const op = 1 - seg(t, ROSE_B, ROSE_B + 0.25);
               return (
                 <g opacity={op}>
@@ -235,8 +239,8 @@ export const LoveMath: React.FC<{t: number}> = ({t}) => {
           })}
         </svg>
         {/* heart trace & fill */}
-        <div style={{position: 'absolute', left: 0, top: 0, width: W, height: H, transformOrigin: `${hcx}px ${hcy}px`, transform: `scale(${beat})`}}>
-          <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0, overflow: 'visible'}}>
+        <div style={{ position: 'absolute', left: 0, top: 0, width: W, height: H, transformOrigin: `${hcx}px ${hcy}px`, transform: `scale(${beat})` }}>
+          <svg width={W} height={H} style={{ position: 'absolute', left: 0, top: 0, overflow: 'visible' }}>
             <defs>
               <linearGradient id="heartfill" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stopColor={C.clayLight} />
@@ -249,7 +253,7 @@ export const LoveMath: React.FC<{t: number}> = ({t}) => {
                 d={heartPath(HEART.x, HEART.y, HEART.s)}
                 fill="url(#heartfill)"
                 fillOpacity={loveK}
-                style={{filter: `drop-shadow(0 0 ${30 * loveK}px rgba(217,119,87,0.6))`}}
+                style={{ filter: `drop-shadow(0 0 ${30 * loveK}px rgba(91,110,245,0.6))` }}
               />
             ) : null}
             {tau > 0.001 ? (
@@ -268,25 +272,25 @@ export const LoveMath: React.FC<{t: number}> = ({t}) => {
             {tau > 0.001 && t < TRACE_B + 0.3 ? <circle cx={tip.x} cy={tip.y} r={8} fill={C.clay} stroke="#fff" strokeWidth={3} /> : null}
           </svg>
         </div>
-        {tau > 0.001 && t < TRACE_B + 0.3 ? <Glow x={tip.x} y={tip.y} r={50} color="240,162,127" opacity={0.8} blend="normal" /> : null}
+        {tau > 0.001 && t < TRACE_B + 0.3 ? <Glow x={tip.x} y={tip.y} r={50} color="147,165,253" opacity={0.8} blend="normal" /> : null}
 
         {/* ---------- labels */}
-        <div style={{position: 'absolute', left: ROSE.x - 260, width: 520, top: ROSE.y + ROSE.R + 52, textAlign: 'center'}}>
-          <Typed text="r = |cos 6θ|" t={t} a={185.13} dur={0.42} style={{fontFamily: F.serif, fontStyle: 'italic', fontSize: 54, color: ink}} />
+        <div style={{ position: 'absolute', left: ROSE.x - 280, width: 560, top: ROSE.y + ROSE.R + 52, textAlign: 'center' }}>
+          <Typed text="x = r cos³θ, y = r sin³θ" t={t} a={185.13} dur={0.45} style={{ fontFamily: F.serif, fontStyle: 'italic', fontSize: 44, color: ink }} />
           {t > 185.75 ? (
-            <div style={{fontFamily: F.serif, fontStyle: 'italic', fontSize: 30, color: C.clayDark, marginTop: 6, opacity: seg(t, 185.75, 186.05), transform: `translateY(${(1 - ease.outCubic(seg(t, 185.75, 186.1))) * 10}px)`}}>
-              ✿ the flower was an equation all along
+            <div style={{ fontFamily: F.serif, fontStyle: 'italic', fontSize: 30, color: C.clayDark, marginTop: 8, opacity: seg(t, 185.75, 186.05), transform: `translateY(${(1 - ease.outCubic(seg(t, 185.75, 186.1))) * 10}px)` }}>
+              ✦ the star was an equation all along
             </div>
           ) : null}
         </div>
-        <div style={{position: 'absolute', left: EQ_X, top: 260, width: 560}}>
-          <Typed text="// implicit" t={t} a={185.83} dur={0.15} style={{fontFamily: F.mono, fontSize: 21, color: C.gray3, marginBottom: 10}} />
-          <Typed text="(x² + y² − 1)³ − x²y³ = 0" t={t} a={185.9} dur={0.55} style={{fontFamily: F.serif, fontStyle: 'italic', fontSize: 48, color: ink}} />
-          <div style={{height: 46}} />
-          <Typed text="// parametric · 8 epicycles" t={t} a={186.81} dur={0.18} style={{fontFamily: F.mono, fontSize: 21, color: C.gray3, marginBottom: 10}} />
-          <Typed text="x = 16 sin³t" t={t} a={186.86} dur={0.2} style={{fontFamily: F.serif, fontStyle: 'italic', fontSize: 38, color: ink, lineHeight: '52px'}} />
-          <Typed text="y = 13 cos t − 5 cos 2t" t={t} a={187.05} dur={0.22} style={{fontFamily: F.serif, fontStyle: 'italic', fontSize: 38, color: ink, lineHeight: '52px'}} />
-          <Typed text="      − 2 cos 3t − cos 4t" t={t} a={187.25} dur={0.2} style={{fontFamily: F.serif, fontStyle: 'italic', fontSize: 38, color: ink, lineHeight: '52px'}} />
+        <div style={{ position: 'absolute', left: EQ_X, top: 260, width: 560 }}>
+          <Typed text="// implicit" t={t} a={185.83} dur={0.15} style={{ fontFamily: F.mono, fontSize: 21, color: C.gray3, marginBottom: 10 }} />
+          <Typed text="(x² + y² − 1)³ − x²y³ = 0" t={t} a={185.9} dur={0.55} style={{ fontFamily: F.serif, fontStyle: 'italic', fontSize: 48, color: ink }} />
+          <div style={{ height: 46 }} />
+          <Typed text="// parametric · 8 epicycles" t={t} a={186.81} dur={0.18} style={{ fontFamily: F.mono, fontSize: 21, color: C.gray3, marginBottom: 10 }} />
+          <Typed text="x = 16 sin³t" t={t} a={186.86} dur={0.2} style={{ fontFamily: F.serif, fontStyle: 'italic', fontSize: 38, color: ink, lineHeight: '52px' }} />
+          <Typed text="y = 13 cos t − 5 cos 2t" t={t} a={187.05} dur={0.22} style={{ fontFamily: F.serif, fontStyle: 'italic', fontSize: 38, color: ink, lineHeight: '52px' }} />
+          <Typed text="      − 2 cos 3t − cos 4t" t={t} a={187.25} dur={0.2} style={{ fontFamily: F.serif, fontStyle: 'italic', fontSize: 38, color: ink, lineHeight: '52px' }} />
         </div>
       </div>
       {/* LO-O-OVE rings from the heart */}

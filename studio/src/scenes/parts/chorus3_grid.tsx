@@ -6,7 +6,7 @@ import {AppWindowContent} from './exec_apps';
 import {APPS, WIN_H, WIN_W} from './exec_fx';
 
 // ------------------------------------------------------------------------------------------------
-// Final chorus, part 1 (162.63–166.6): windows keep spawning on a grid around Claude's window;
+// Final chorus, part 1 (162.63–166.6): windows keep spawning on a grid around Gemini's window;
 // she executes them in shock-waves (whack-a-mole). Pure functions of t.
 // ------------------------------------------------------------------------------------------------
 
@@ -51,7 +51,7 @@ export const executedCount = (t: number) => 12 + EVENTS.filter((e) => e.c <= t).
 
 const BADGES = ['3', '12', '99+', '7', '!', '24', '5', '1', '48', '2', '9', '31'];
 
-/** spawned app windows (sweep = 0..1 when Claude maximizes and pushes them out) */
+/** spawned app windows (sweep = 0..1 when Gemini maximizes and pushes them out) */
 export const GridWindows: React.FC<{t: number; sweep: number}> = ({t, sweep}) => {
   if (sweep >= 1) return null;
   return (
@@ -124,7 +124,7 @@ export const GridWindows: React.FC<{t: number; sweep: number}> = ({t, sweep}) =>
   );
 };
 
-/** execution shock-waves radiating from Claude's window */
+/** execution shock-waves radiating from Gemini's window */
 export const Waves: React.FC<{t: number}> = ({t}) => (
   <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0, overflow: 'visible', pointerEvents: 'none'}}>
     {WAVES.map((w, k) => {

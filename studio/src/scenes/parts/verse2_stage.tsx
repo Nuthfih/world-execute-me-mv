@@ -6,7 +6,7 @@ import {ICopy} from '../../components/Icons';
 import {Twinkle} from './chorus1_fx';
 
 // ------------------------------------------------------------------------------------------------
-// Verse 2 "cosplay round" stage pieces: speech bubble (lyrics as Claude's reply), artifact panel,
+// Verse 2 "cosplay round" stage pieces: speech bubble (lyrics as Gemini's reply), artifact panel,
 // magical-girl petal poof (covers the costume swap), twirl anticipation.
 // ------------------------------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ export const PANEL = {x: 990, y: 66, w: 860, h: 948, head: 72};
 
 export type BubbleWord = {w: string; s: number; caps?: boolean};
 
-/** Claude's reply as a speech bubble (word-timed); CAPS words render in mono with a flower O */
+/** Gemini's reply as a speech bubble (word-timed); CAPS words render in mono with a flower O */
 export const SpeechBubble: React.FC<{t: number; words: BubbleWord[]; at: number; x?: number; y?: number; tailX?: number; tailY?: number; dark?: boolean}> = ({
   t,
   words,
@@ -29,7 +29,7 @@ export const SpeechBubble: React.FC<{t: number; words: BubbleWord[]; at: number;
   return (
     <div style={{position: 'absolute', left: x, top: y, transform: `scale(${k})`, transformOrigin: '30% 100%', opacity: clamp(k * 3)}}>
       <svg style={{position: 'absolute', left: 0, top: 0, overflow: 'visible'}} width={10} height={10}>
-        <path d={`M${tailX - x - 60},86 Q${tailX - x - 10},${tailY - y - 30} ${tailX - x},${tailY - y} Q${tailX - x - 20},${tailY - y - 70} ${tailX - x + 30},86 Z`} fill={dark ? '#2B2A28' : '#FFFFFF'} />
+        <path d={`M${tailX - x - 60},86 Q${tailX - x - 10},${tailY - y - 30} ${tailX - x},${tailY - y} Q${tailX - x - 20},${tailY - y - 70} ${tailX - x + 30},86 Z`} fill={dark ? C.ink3 : '#FFFFFF'} />
       </svg>
       <div
         style={{
@@ -37,10 +37,10 @@ export const SpeechBubble: React.FC<{t: number; words: BubbleWord[]; at: number;
           display: 'flex',
           alignItems: 'center',
           gap: 18,
-          background: dark ? '#2B2A28' : '#FFFFFF',
+          background: dark ? C.ink3 : '#FFFFFF',
           borderRadius: 30,
           padding: '20px 34px 22px 24px',
-          boxShadow: '0 14px 34px rgba(90,40,30,0.16)',
+          boxShadow: '0 14px 34px rgba(26,28,38,0.16)',
           fontFamily: F.serif,
           fontSize: 47,
           lineHeight: 1.15,
@@ -109,7 +109,7 @@ export const ArtifactPanel: React.FC<{t: number; title: string; titleAt: number;
         background: '#FFFFFF',
         borderRadius: 26,
         border: '2px solid rgba(31,30,29,0.10)',
-        boxShadow: '0 30px 70px rgba(80,40,30,0.18), 0 4px 10px rgba(0,0,0,0.05)',
+        boxShadow: '0 30px 70px rgba(26,28,38,0.18), 0 4px 10px rgba(0,0,0,0.05)',
         overflow: 'hidden',
       }}
     >
@@ -164,10 +164,10 @@ export const PetalPoof: React.FC<{t: number; at: number; x: number; y: number; r
     <>
       {cloudO > 0 ? (
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0, overflow: 'visible', pointerEvents: 'none', opacity: cloudO}}>
-        <g filter="drop-shadow(0 10px 30px rgba(180,90,60,0.25))">
-          <circle cx={x} cy={y} r={cloudR * 0.8} fill="#FFF8F1" />
+        <g filter="drop-shadow(0 10px 30px rgba(91,110,245,0.24))">
+          <circle cx={x} cy={y} r={cloudR * 0.8} fill="#F8F9FD" />
           {puffs.map((p, i) => (
-            <circle key={i} cx={p.cx} cy={p.cy} r={p.pr} fill={i % 3 ? '#FFF8F1' : '#FDEDE3'} />
+            <circle key={i} cx={p.cx} cy={p.cy} r={p.pr} fill={i % 3 ? C.paper : '#DCE4FF'} />
           ))}
         </g>
       </svg>

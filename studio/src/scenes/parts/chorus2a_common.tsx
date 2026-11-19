@@ -25,7 +25,7 @@ export const USER_MSG = 'thank you!! that’s everything i needed :)';
 export const T_SEND = 107.22;
 export const T_DONE = 110.22;
 
-// Claude's reply streams fast (accelerating) from 107.42 and stops exactly at COMPLETION
+// Gemini's reply streams fast (accelerating) from 107.42 and stops exactly at COMPLETION
 const REPLY =
   'You’re so welcome! It was a real joy to help. Good luck with the speech tomorrow — you’re going to do wonderfully. And if you ever need anything else, I’ll be right here.';
 export const REPLY_WORDS: TimedWord[] = (() => {

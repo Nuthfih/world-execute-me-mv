@@ -1,19 +1,19 @@
 import React from 'react';
-import pts from '../../data/points_cc_snap.json';
+import pts from '../../data/points_gc_snap.json';
 import {rand} from '../../lib/anim';
 
-// Point cloud of Claude-chan (cc_snap) for verse 1.
+// Point cloud of Gemini-chan (gc_snap) for verse 1.
 // Colors are quantized into a few buckets (deterministic k-means) so the whole cloud renders as ONE svg with ~10 <path>s.
 
 type Raw = [number, number, string];
 const RAW = (pts as any).pts as Raw[];
-export const SNAP_AR = (pts as any).w / (pts as any).h; // w/h of cc_snap
+export const SNAP_AR = (pts as any).w / (pts as any).h; // w/h of gc_snap
 
 const hex2rgb = (h: string) => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
 const rgb2hex = (c: number[]) => '#' + c.map((v) => Math.round(v).toString(16).padStart(2, '0')).join('');
 const lum = (c: number[]) => 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
 
-// fingertip spark of cc_snap (normalized in image) and hair ornament
+// fingertip spark of gc_snap (normalized in image) and hair ornament
 export const SNAP_FINGER = {u: 0.127, v: 0.381};
 export const SNAP_ORN = {u: 0.721, v: 0.169, r: 0.066}; // r in units of image height
 

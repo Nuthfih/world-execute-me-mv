@@ -9,7 +9,7 @@ import {Cover, Glow, Motes, heartPath} from './love_common';
 
 // ---------------------------------------------------------------------------------------------
 // 188.48–189.75  "Though you are free"   hu_door, slow push into the daylight
-// 189.75–192.20  "I am trapped / Trapped in LO-O-OVE"   cc_glass behind the glass; the world she
+// 189.75–192.20  "I am trapped / Trapped in LO-O-OVE"   gc_glass behind the glass; the world she
 //                can't reach is reflected on it; a heart is traced on the glass and glows.
 // ---------------------------------------------------------------------------------------------
 
@@ -27,7 +27,7 @@ export const LoveDoor: React.FC<{t: number}> = ({t}) => {
       {/* daylight pouring in */}
       <Glow x={1150} y={330} r={620} color="255,244,214" opacity={0.42 + 0.12 * breathe} />
       <Glow x={1130} y={760} r={380} color="255,236,200" opacity={0.25} />
-      <Motes t={t} n={34} seed={21} area={[930, 60, 460, 820]} size={[1.5, 3.8]} speed={14} color="#FFF6DE" opacity={0.85} />
+      <Motes t={t} n={34} seed={21} area={[930, 60, 460, 820]} size={[1.5, 3.8]} speed={14} color={C.cream} opacity={0.85} />
       {/* faint glass of the screen we're looking through */}
       <AbsoluteFill style={{background: 'linear-gradient(115deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.07) 42%, rgba(255,255,255,0) 52%)'}} />
       <Vignette strength={0.45} color="10,14,30" />
@@ -35,7 +35,7 @@ export const LoveDoor: React.FC<{t: number}> = ({t}) => {
   );
 };
 
-// sprite placement (cc_glass 1040×1552)
+// sprite placement (gc_glass 1040×1552)
 const GH = 1150;
 const GW = GH * (1040 / 1552);
 const GX = 960, GY = 1185;
@@ -74,7 +74,7 @@ export const LoveGlass: React.FC<{t: number}> = ({t}) => {
         })}
         <PetalField t={t} n={20} seed={33} color={C.clayLight} speed={45} size={[8, 16]} opacity={0.55} />
         {/* her */}
-        <Sprite src="img/cc_glass.png" t={t} x={GX} y={GY} h={GH} breathe={0.004} float={3} seed={4} enter={{at: GLASS_T0, kind: 'fade', dur: 0.12}} />
+        <Sprite src="img/gc_glass.png" t={t} x={GX} y={GY} h={GH} breathe={0.004} float={3} seed={4} enter={{at: GLASS_T0, kind: 'fade', dur: 0.12}} />
       </div>
 
       {/* ---------------- the glass (slightly more parallax than her) */}
@@ -99,7 +99,7 @@ export const LoveGlass: React.FC<{t: number}> = ({t}) => {
           <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0, overflow: 'visible'}}>
             <defs>
               <radialGradient id="gheart" cx="45%" cy="40%" r="70%">
-                <stop offset="0%" stopColor="#FFC7A6" stopOpacity={0.95} />
+                <stop offset="0%" stopColor="#DCE4FF" stopOpacity={0.95} />
                 <stop offset="60%" stopColor={C.clay} stopOpacity={0.85} />
                 <stop offset="100%" stopColor={C.clayDark} stopOpacity={0.8} />
               </radialGradient>
@@ -108,11 +108,11 @@ export const LoveGlass: React.FC<{t: number}> = ({t}) => {
               style={{
                 transformOrigin: `${HEART_C.x}px ${HEART_C.y}px`,
                 transform: `scale(${1 + 0.06 * oBeat})`,
-                filter: `drop-shadow(0 0 ${10 + 18 * heartGlow}px rgba(240,140,100,${clamp(0.5 + 0.4 * heartGlow)})) drop-shadow(0 0 4px rgba(255,220,200,0.9))`,
+                filter: `drop-shadow(0 0 ${10 + 18 * heartGlow}px rgba(91,110,245,${clamp(0.5 + 0.4 * heartGlow)})) drop-shadow(0 0 4px rgba(220,228,255,0.9))`,
               }}
             >
               {loveOn > 0 ? <path d={heartPath(HEART_C.x, HEART_C.y, 8.6)} fill="url(#gheart)" opacity={loveOn} /> : null}
-              <path d={heartPath(HEART_C.x, HEART_C.y, 8.6, Math.PI * 2 * traceK)} fill="none" stroke="#FFF1E6" strokeWidth={5} strokeLinecap="round" strokeLinejoin="round" />
+              <path d={heartPath(HEART_C.x, HEART_C.y, 8.6, Math.PI * 2 * traceK)} fill="none" stroke="#EEF2FF" strokeWidth={5} strokeLinecap="round" strokeLinejoin="round" />
               {traceK < 1 ? (
                 (() => {
                   const th = Math.PI * 2 * traceK;
@@ -130,19 +130,19 @@ export const LoveGlass: React.FC<{t: number}> = ({t}) => {
         const x = randRange(211, i, 100, W - 100) + Math.sin(t * 0.7 + i) * 30;
         const y = randRange(212, i, 80, H - 120) - dt * randRange(213, i, 10, 40);
         const tw = 0.5 + 0.5 * Math.sin(t * randRange(214, i, 2, 5) + i);
-        return <Glow key={i} x={x} y={y} r={randRange(215, i, 6, 14)} color="255,236,214" opacity={tw * 0.8} />;
+        return <Glow key={i} x={x} y={y} r={randRange(215, i, 6, 14)} color="220,228,255" opacity={tw * 0.8} />;
       })}
-      <Vignette strength={0.55} color="8,5,4" />
+      <Vignette strength={0.55} color="10,12,24" />
       {/* warm bloom handing off to the outro */}
       {bloom > 0 ? (
         <>
-          <AbsoluteFill style={{background: `radial-gradient(circle at ${HEART_C.x}px ${HEART_C.y}px, rgba(255,240,222,1) 0%, rgba(255,226,200,1) 100%)`, mixBlendMode: 'screen', opacity: bloom}} />
+          <AbsoluteFill style={{background: `radial-gradient(circle at ${HEART_C.x}px ${HEART_C.y}px, rgba(237,240,252,1) 0%, rgba(220,228,255,1) 100%)`, mixBlendMode: 'screen', opacity: bloom}} />
           <AbsoluteFill
             style={{
-              background: `radial-gradient(circle at ${HEART_C.x}px ${HEART_C.y}px, rgba(255,252,248,1) 0px, rgba(255,250,244,1) ${lerp(0, 1250, bloom)}px, rgba(255,244,234,0) ${lerp(160, 2000, bloom)}px)`,
+              background: `radial-gradient(circle at ${HEART_C.x}px ${HEART_C.y}px, rgba(248,249,253,1) 0px, rgba(248,249,253,1) ${lerp(0, 1250, bloom)}px, rgba(248,249,253,0) ${lerp(160, 2000, bloom)}px)`,
             }}
           />
-          <AbsoluteFill style={{background: '#FFF8F0', opacity: Math.pow(bloom, 4)}} />
+          <AbsoluteFill style={{background: C.paper, opacity: Math.pow(bloom, 4)}} />
         </>
       ) : null}
     </AbsoluteFill>

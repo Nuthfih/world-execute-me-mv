@@ -8,7 +8,7 @@ import {Ring} from '../../components/FX';
 import {Cap} from './pre2_common';
 
 // ------------------------------------------------------------------------------------------
-// 99.35–103.49  "So we can enter / The trance the trance": a 12-fold kaleidoscope of cc_trance.
+// 99.35–103.49  "So we can enter / The trance the trance": a 12-fold kaleidoscope of gc_trance.
 // Back layer = true wedge mirror (rotate k·30°, odd wedges mirrored); front = a ring of 12
 // dancers forming the flower's petals; lyric tokens orbit; slow, dreamy, colour-cycling.
 // ------------------------------------------------------------------------------------------
@@ -47,7 +47,7 @@ const WedgeSource: React.FC<{t: number}> = ({t}) => {
           transformOrigin: `50% ${(h * 0.62 + off) / h * 100}%`,
         }}
       >
-        <Img src={staticFile('img/cc_trance.png')} style={{width: '100%', height: '100%'}} />
+        <Img src={staticFile('img/gc_trance.png')} style={{width: '100%', height: '100%'}} />
       </div>
       {Array.from({length: 7}, (_, i) => {
         const r = 120 + ((i * 97 + (t - T0) * 60) % 520);
@@ -119,7 +119,7 @@ const DancerRing: React.FC<{t: number; r0: number; h: number; rot: number; appea
               opacity: opacity * clamp(p * 2),
             }}
           >
-            <Img src={staticFile('img/cc_trance.png')} style={{width: '100%', height: '100%', transform: mirror ? 'scaleX(-1)' : undefined}} />
+            <Img src={staticFile('img/gc_trance.png')} style={{width: '100%', height: '100%', transform: mirror ? 'scaleX(-1)' : undefined}} />
           </div>
         );
       })}
@@ -223,7 +223,7 @@ export const TranceShot: React.FC<{t: number}> = ({t}) => {
                 fontSize: 26,
                 fontWeight: 700,
                 color: C.ink,
-                background: 'rgba(250,249,245,0.88)',
+                background: 'rgba(248,249,253,0.88)',
                 padding: '4px 12px',
                 borderRadius: 8,
                 opacity: p * 0.9,

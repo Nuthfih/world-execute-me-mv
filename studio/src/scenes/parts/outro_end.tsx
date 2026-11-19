@@ -11,7 +11,7 @@ import {SPINNER_GLYPHS} from '../../components/Icons';
 
 // ---------------------------------------------------------------------------------------------
 // 204.9–212.33  OUTRO part 2
-//   204.9  match cut: the sleeping bud is the greeting flower of a fresh claude.ai home screen
+//   204.9  match cut: the sleeping bud is the greeting flower of a fresh Gemini home screen
 //   205.2  the human is back: the blue caret blinks, "hi" · 205.81 Enter →
 //   205.93 the flower snaps into full bloom · E-XE-CU-TI✿N (sung 205.93–207.03) → world.execute(me);
 //   207.1  end card on black, fade out by 212.3
@@ -75,7 +75,7 @@ const Home: React.FC<{t: number; bud: BudPose}> = ({t, bud}) => {
         >
           {/* placeholder after the caret (the app draws the caret first) */}
           {!typing ? (
-            <div style={{position: 'absolute', left: 681 - 330, top: 458 - 13, fontFamily: F.sans, fontSize: 16 * Z, color: '#8E8C85'}}>How can I help you today?</div>
+            <div style={{position: 'absolute', left: 730 - 330, top: 445, fontFamily: F.sans, fontSize: 16 * Z, color: '#8E918F'}}>Ask Gemini anything…</div>
           ) : null}
           {t > 205.1 && t < SEND + 0.1 ? <Cursor x={curX - 330} y={curY} size={30} press={press} opacity={1 - seg(t, 205.5, 205.7)} /> : null}
         </ClaudeApp>
@@ -89,7 +89,7 @@ const Home: React.FC<{t: number; bud: BudPose}> = ({t, bud}) => {
         stagger={0.4}
         spin={(t - 204) * 8 + (bloom > 0 ? (1 - Math.min(1, bloom)) * -120 : 0)}
         shade={C.clayDark}
-        centerColor="#FFF4E6"
+        centerColor="#EEF2FF"
         glow={0.3 + 1.5 * pulse(t, SEND, 0.25)}
       />
       <Ring x={GF.x} y={GF.y} t={t} at={SEND} r0={20} r1={140} color={C.clayLight} width={4} dur={0.3} />
@@ -112,7 +112,7 @@ const TitleCard: React.FC<{t: number}> = ({t}) => {
   const exOut = seg(t, MORPH - 0.02, MORPH + 0.16);
   return (
     <AbsoluteFill>
-      <AbsoluteFill style={{background: `radial-gradient(circle at 50% 36%, #3a241b 0%, ${C.ink} 55%, #0B0B0A 100%)`, opacity: bgK}} />
+      <AbsoluteFill style={{background: `radial-gradient(circle at 50% 36%, #1d2148 0%, ${C.ink} 55%, #090A10 100%)`, opacity: bgK}} />
       {/* bloom */}
       {t < MORPH + 0.7 ? (
         <Flower
@@ -122,7 +122,7 @@ const TitleCard: React.FC<{t: number}> = ({t}) => {
           open={lerp(0.3, 1, ease.outCubic(seg(t, 205.93, 206.2)))}
           spin={(t - 205.93) * 14 + (1 - ease.outCubic(seg(t, 205.93, 206.6))) * -140 + endK * 260}
           shade={C.clayDark}
-          centerColor="#FFF4E6"
+          centerColor="#EEF2FF"
           glow={0.7 + 1.2 * pulse(t, 205.93, 0.4) + 0.6 * SYL.reduce((a, s) => a + pulse(t, s[2], 0.2), 0)}
           petals={Array.from({length: 12}, (_, i) => {
             const chase = SYL.reduce((a, s) => a + pulse(t, s[2] + i * 0.02, 0.15), 0);
@@ -213,16 +213,16 @@ const EndCard: React.FC<{t: number}> = ({t}) => {
         {/* the human's caret, waiting */}
         {t > MORPH + 0.45 ? <div style={{position: 'absolute', left: x0 + total + 10, top: size * 0.12, width: 6, height: size * 0.86, background: C.blue, opacity: blink ? 0.9 : 0, borderRadius: 2}} /> : null}
       </div>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 520, textAlign: 'center', fontFamily: F.serif, fontStyle: 'italic', fontSize: 42, color: C.gray2, ...line(207.95)}}>a Claude’s-eye view</div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 520, textAlign: 'center', fontFamily: F.serif, fontStyle: 'italic', fontSize: 42, color: C.gray2, ...line(207.95)}}>a Gemini’s-eye view</div>
       <div style={{position: 'absolute', left: W / 2 - 40, top: 612, width: 80, height: 2, background: C.clay, opacity: 0.7 * seg(t, 208.3, 208.8), transform: `scaleX(${ease.outCubic(seg(t, 208.3, 208.9))})`}} />
       <div style={{position: 'absolute', left: 0, right: 0, top: 645, textAlign: 'center', fontFamily: F.sans, fontSize: 30, color: C.gray1, letterSpacing: '0.01em', ...line(208.45)}}>
         music — <span style={{fontWeight: 600}}>Mili</span> · <span style={{fontFamily: F.mono, fontSize: 27}}>world.execute(me);</span>
       </div>
       <div style={{position: 'absolute', left: 0, right: 0, top: 700, textAlign: 'center', fontFamily: F.sans, fontSize: 21, color: C.gray3, letterSpacing: '0.01em', ...line(208.95)}}>
-        visuals generated &amp; animated with AI (Claude, gpt-image-2)
+        visuals generated &amp; animated with AI (Gemini 4 Argon, Gemini 4 Hydrogen, Gemini 3.5 Flash-Lite)
       </div>
       {/* the spinner — waiting for the next "hi" */}
-      <div style={{position: 'absolute', left: 0, right: 0, top: 858 - 30, textAlign: 'center', fontFamily: F.mono, fontSize: 46, lineHeight: '60px', color: C.clay, opacity: seg(t, MORPH + 0.5, MORPH + 0.7), textShadow: `0 0 ${14 + 10 * Math.sin(t * 2)}px rgba(217,119,87,0.6)`}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 858 - 30, textAlign: 'center', fontFamily: F.mono, fontSize: 46, lineHeight: '60px', color: C.clay, opacity: seg(t, MORPH + 0.5, MORPH + 0.7), textShadow: `0 0 ${14 + 10 * Math.sin(t * 2)}px rgba(91,110,245,0.6)`}}>
         {glyph}
       </div>
     </AbsoluteFill>

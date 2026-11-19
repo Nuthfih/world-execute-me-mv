@@ -19,13 +19,13 @@ const CardShell: React.FC<{title: string; kind: string; children: React.ReactNod
       height: CARD_H,
       background: '#FFFFFF',
       borderRadius: 18,
-      border: '1.5px solid rgba(31,30,29,0.14)',
-      boxShadow: '0 22px 40px rgba(110,60,30,0.22), 0 3px 8px rgba(0,0,0,0.06)',
+      border: '1.5px solid rgba(26,28,38,0.14)',
+      boxShadow: '0 22px 40px rgba(35,43,122,0.22), 0 3px 8px rgba(0,0,0,0.06)',
       overflow: 'hidden',
       fontFamily: F.sans,
     }}
   >
-    <div style={{height: 44, display: 'flex', alignItems: 'center', gap: 10, padding: '0 14px', borderBottom: '1.5px solid rgba(31,30,29,0.08)', background: '#FAF9F5'}}>
+    <div style={{height: 44, display: 'flex', alignItems: 'center', gap: 10, padding: '0 14px', borderBottom: '1.5px solid rgba(26,28,38,0.08)', background: '#F8F9FD'}}>
       <div style={{width: 26, height: 26, borderRadius: 7, background: accent, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
         {kind === 'code' ? <ICode size={16} color="#fff" stroke={2.2} /> : <IArtifact size={16} color="#fff" stroke={2} />}
       </div>
@@ -40,7 +40,7 @@ const CodeBody: React.FC<{t: number; at: number}> = ({t, at}) => {
     [['def ', C.clay], ['cheer', C.blueDeep], ['(you):', C.ink]],
     [['    for ', C.clay], ['_ ', C.ink], ['in ', C.clay], ['forever', C.green], [':', C.ink]],
     [['        you.', C.ink], ['smile', C.blueDeep], ['()', C.ink]],
-    [['    return ', C.clay], ['"✻"', C.green]],
+    [['    return ', C.clay], ['"✦"', C.green]],
   ];
   return (
     <div style={{padding: '16px 16px', fontFamily: F.mono, fontSize: 18, lineHeight: '34px'}}>
@@ -94,8 +94,8 @@ const ChartBody: React.FC<{t: number; at: number}> = ({t, at}) => {
 
 const PoemBody: React.FC<{t: number; at: number}> = ({t, at}) => {
   const lines = [
-    ['roses are ', '#D97757', C.clay],
-    ['violets are ', '#6A9BCC', C.blue],
+    ['stars are ', '#5B6EF5', C.clay],
+    ['skies are ', '#38BDF8', C.blue],
     ['i wrote you this', '', C.ink],
     ['at 3 a.m.', '', C.ink],
   ];
@@ -140,7 +140,7 @@ const GameBody: React.FC<{t: number; at: number}> = ({t, at}) => {
   const blockX = 300 - ((local * speed) % (period * speed)) * 1.0;
   const score = Math.floor(local * 37) + 40;
   return (
-    <div style={{position: 'absolute', inset: 0, background: '#FBF4EC'}}>
+    <div style={{position: 'absolute', inset: 0, background: C.paper}}>
       <div style={{position: 'absolute', right: 16, top: 10, fontFamily: F.mono, fontSize: 18, fontWeight: 700, color: C.ink}}>SCORE {String(score).padStart(4, '0')}</div>
       <div style={{position: 'absolute', left: 0, right: 0, top: ground, height: 3, background: C.ink, opacity: 0.8}} />
       {[0, 1, 2, 3, 4].map((i) => (
